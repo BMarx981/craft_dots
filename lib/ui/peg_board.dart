@@ -29,11 +29,14 @@ class _PegBoardState extends State<PegBoard> {
   }
 
   List<Widget> _generateBoard(int size) {
+    double dotSize = (size / 2);
+    print("Dot size $dotSize");
     List<Widget> board = [];
     for (var row = 0; row < size; row++) {
       List<Widget> rows = List.generate(size, (col) {
         return _buildADot(
-          size: size / 2,
+          // size: size / 2,
+          size: dotSize,
           color: colorLists[row][col],
           col: col,
           row: row,
@@ -116,16 +119,15 @@ class _PegBoardState extends State<PegBoard> {
             child: SingleChildScrollView(
               scrollDirection: Axis.horizontal,
               child: SizedBox(
-                width: SizeConfig.screenWidth + size * (size / 4),
+                // width: SizeConfig.screenWidth + size * (size / 6),
+                width: (size * (size / 2)),
+                height: (size * (size / 2)),
                 child: ListView.builder(
                   shrinkWrap: true,
                   itemBuilder: (context, index) {
-                    return Padding(
-                      padding: const EdgeInsets.all(1.0),
-                      child: board[index],
-                    );
+                    return board[index];
                   },
-                  itemCount: board.length,
+                  itemCount: size,
                 ),
               ),
             ),

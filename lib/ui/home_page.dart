@@ -17,12 +17,14 @@ class _HomePageState extends State<HomePage> {
           backgroundColor: Colors.green,
           title: const Text("Craft Dots"),
         ),
-        body: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Center(
-            child: Container(
-              decoration: BoxDecoration(color: Colors.grey.withOpacity(0.3)),
-              child: Center(child: const PegBoard()),
+        body: SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Center(
+              child: Container(
+                decoration: BoxDecoration(color: Colors.grey.withOpacity(0.3)),
+                child: const Center(child: PegBoard()),
+              ),
             ),
           ),
         ),
