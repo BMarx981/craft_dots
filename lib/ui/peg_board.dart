@@ -1,3 +1,4 @@
+import 'package:craft_dots/models/size_config.dart';
 import 'package:flutter/material.dart';
 
 class PegBoard extends StatefulWidget {
@@ -8,20 +9,22 @@ class PegBoard extends StatefulWidget {
 }
 
 class _PegBoardState extends State<PegBoard> {
+  List<Widget> board = [];
+  Color mainBoardColor = Colors.grey.withOpacity(.3);
   List<List<Color>> colorLists = [];
   Color currentColor = Colors.white;
-  int size = 15;
+  int size = 30;
 
   @override
   void initState() {
     colorLists = List.generate(
-        15,
+        size,
         (i) => List.generate(
-              15,
-              (_) => Colors.blue,
+              size,
+              (_) => mainBoardColor,
             ),
         growable: false);
-    _generateBoard(size);
+    board = _generateBoard(size);
     super.initState();
   }
 
@@ -29,17 +32,16 @@ class _PegBoardState extends State<PegBoard> {
     List<Widget> board = [];
     for (var row = 0; row < size; row++) {
       List<Widget> rows = List.generate(size, (col) {
-        return Padding(
-          padding: const EdgeInsets.all(2.0),
-          child: _buildADot(
-            size: 18,
-            color: colorLists[row][col],
-            col: col,
-            row: row,
-          ),
+        return _buildADot(
+          size: size / 2,
+          color: colorLists[row][col],
+          col: col,
+          row: row,
         );
       });
-      board.add(Row(children: rows));
+      board.add(Row(
+        children: rows,
+      ));
     }
     return board;
   }
@@ -51,6 +53,11 @@ class _PegBoardState extends State<PegBoard> {
       required Color color}) {
     return GestureDetector(
       onTap: () {
+        if (colorLists[row][col] == currentColor) {
+          colorLists[row][col] = mainBoardColor;
+          setState(() {});
+          return;
+        }
         colorLists[row][col] = currentColor;
         setState(() {});
       },
@@ -99,30 +106,39 @@ class _PegBoardState extends State<PegBoard> {
 
   @override
   Widget build(BuildContext context) {
-    List<Widget> board = _generateBoard(15);
+    SizeConfig().init(context);
+    board = _generateBoard(size);
     return Padding(
-      padding: const EdgeInsets.all(8.0),
+      padding: const EdgeInsets.all(1.0),
       child: Column(
         children: [
           Expanded(
-            child: ListView.builder(
-              itemBuilder: (context, index) {
-                return Padding(
-                  padding: const EdgeInsets.all(2.0),
-                  child: board[index],
-                );
-              },
-              itemCount: board.length,
+            child: SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: SizedBox(
+                width: SizeConfig.screenWidth + size * (size / 4),
+                child: ListView.builder(
+                  shrinkWrap: true,
+                  itemBuilder: (context, index) {
+                    return Padding(
+                      padding: const EdgeInsets.all(1.0),
+                      child: board[index],
+                    );
+                  },
+                  itemCount: board.length,
+                ),
+              ),
             ),
           ),
           const Divider(thickness: 2),
+          //Selected color bottom piece
           Column(
             children: [
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   const Padding(
-                    padding: EdgeInsets.all(8.0),
+                    padding: EdgeInsets.all(2.0),
                     child: Text("Selected Color:"),
                   ),
                   Container(
@@ -132,9 +148,12 @@ class _PegBoardState extends State<PegBoard> {
                   ),
                 ],
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: _buildColorRow(),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: _buildColorRow(),
+                ),
               ),
             ],
           )
