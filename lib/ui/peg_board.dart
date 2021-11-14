@@ -1,5 +1,6 @@
 import 'package:craft_dots/models/size_config.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 
 class PegBoard extends StatefulWidget {
   const PegBoard({Key? key}) : super(key: key);
@@ -30,7 +31,6 @@ class _PegBoardState extends State<PegBoard> {
 
   List<Widget> _generateBoard(int size) {
     double dotSize = (size / 2);
-    print("Dot size $dotSize");
     List<Widget> board = [];
     for (var row = 0; row < size; row++) {
       List<Widget> rows = List.generate(size, (col) {
@@ -75,6 +75,37 @@ class _PegBoardState extends State<PegBoard> {
     );
   }
 
+  void changeColor(Color color) {
+    setState(() => currentColor = color);
+  }
+
+  showAlert(BuildContext context) {
+    Widget okButton = TextButton(
+      child: const Text("OK"),
+      onPressed: () {
+        Navigator.pop(context);
+      },
+    );
+
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      title: const Text("ColorPicker"),
+      content:
+          ColorPicker(pickerColor: currentColor, onColorChanged: changeColor),
+      actions: [
+        okButton,
+      ],
+    );
+
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
+
   List<Widget> _buildColorRow() {
     List<Color> colors = [
       Colors.white,
@@ -92,6 +123,9 @@ class _PegBoardState extends State<PegBoard> {
     List<Widget> list = [];
     for (var i = 0; i < colors.length; i++) {
       list.add(GestureDetector(
+        onLongPress: () {
+          showAlert(context);
+        },
         onTap: () {
           setState(() {
             currentColor = colors[i];
