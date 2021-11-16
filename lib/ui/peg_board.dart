@@ -15,6 +15,19 @@ class _PegBoardState extends State<PegBoard> {
   List<List<Color>> colorLists = [];
   Color currentColor = Colors.white;
   int size = 30;
+  List<Color> colors = [
+    Colors.white,
+    Colors.black,
+    Colors.brown,
+    Colors.blue,
+    Colors.green,
+    Colors.purple,
+    Colors.orange,
+    Colors.yellow,
+    Colors.pink,
+    Colors.red,
+    Colors.grey,
+  ];
 
   @override
   void initState() {
@@ -76,10 +89,11 @@ class _PegBoardState extends State<PegBoard> {
   }
 
   void changeColor(Color color) {
+    colors.add(color);
     setState(() => currentColor = color);
   }
 
-  showAlert(BuildContext context) {
+  void showAlert(BuildContext context, Color original) {
     Widget okButton = TextButton(
       child: const Text("OK"),
       onPressed: () {
@@ -87,13 +101,22 @@ class _PegBoardState extends State<PegBoard> {
       },
     );
 
+    Widget cancelButton = TextButton(
+      child: const Text("CANCEL"),
+      onPressed: () {
+        setState(() => currentColor = original);
+        Navigator.pop(context);
+      },
+    );
+
     // set up the AlertDialog
     AlertDialog alert = AlertDialog(
-      title: const Text("ColorPicker"),
+      title: const Text("Color Picker"),
       content:
           ColorPicker(pickerColor: currentColor, onColorChanged: changeColor),
       actions: [
         okButton,
+        cancelButton,
       ],
     );
 
@@ -107,34 +130,24 @@ class _PegBoardState extends State<PegBoard> {
   }
 
   List<Widget> _buildColorRow() {
-    List<Color> colors = [
-      Colors.white,
-      Colors.black,
-      Colors.brown,
-      Colors.blue,
-      Colors.green,
-      Colors.purple,
-      Colors.orange,
-      Colors.yellow,
-      Colors.pink,
-      Colors.red,
-      Colors.grey,
-    ];
     List<Widget> list = [];
     for (var i = 0; i < colors.length; i++) {
-      list.add(GestureDetector(
-        onLongPress: () {
-          showAlert(context);
-        },
-        onTap: () {
-          setState(() {
-            currentColor = colors[i];
-          });
-        },
-        child: Container(
-          height: 30,
-          width: 30,
-          decoration: BoxDecoration(color: colors[i]),
+      list.add(Padding(
+        padding: const EdgeInsets.only(right: 2.0),
+        child: GestureDetector(
+          onLongPress: () {
+            showAlert(context, currentColor);
+          },
+          onTap: () {
+            setState(() {
+              currentColor = colors[i];
+            });
+          },
+          child: Container(
+            height: 30,
+            width: 30,
+            decoration: BoxDecoration(color: colors[i]),
+          ),
         ),
       ));
     }
@@ -186,9 +199,12 @@ class _PegBoardState extends State<PegBoard> {
               ),
               Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: _buildColorRow(),
+                child: SizedBox(
+                  height: 30,
+                  child: ListView(
+                    scrollDirection: Axis.horizontal,
+                    children: _buildColorRow(),
+                  ),
                 ),
               ),
             ],

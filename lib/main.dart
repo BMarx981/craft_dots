@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import 'models/dot_lists.dart';
+import 'models/settings_model.dart';
 
 void main() {
   runApp(const CraftDots());
@@ -15,7 +16,7 @@ class CraftDots extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
-      providers: [ChangeNotifierProvider(create: (_) => DotLists())],
+      providers: [ChangeNotifierProvider(create: (_) => SM())],
       child: MaterialApp(
         title: 'Craft Dots',
         theme: ThemeData(

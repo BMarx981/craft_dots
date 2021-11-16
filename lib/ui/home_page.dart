@@ -1,5 +1,7 @@
 import 'package:craft_dots/ui/peg_board.dart';
+import 'package:craft_dots/ui/settings.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -9,13 +11,28 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  int size = 0;
+
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
+    return AnnotatedRegion<SystemUiOverlayStyle>(
+      value: const SystemUiOverlayStyle(
+          statusBarColor: Colors.green,
+          statusBarBrightness: Brightness.light, // here what you need
+          statusBarIconBrightness: Brightness.light),
       child: Scaffold(
         appBar: AppBar(
           backgroundColor: Colors.green,
           title: const Text("Craft Dots"),
+          actions: [
+            IconButton(
+              icon: const Icon(Icons.settings),
+              onPressed: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => SettingsPage()));
+              },
+            )
+          ],
         ),
         body: SafeArea(
           child: Padding(
