@@ -45,23 +45,13 @@ class _PegBoardState extends State<PegBoard> {
     // size = Provider.of<SM>(context).getSize;
   }
 
-  // @override
-  // void didUpdateWidget(PegBoard oldWidget) {
-  //   super.didUpdateWidget(oldWidget);
-  //   print("Size is now: $size");
-  //   int s = Provider.of<SM>(context).getSize;
-  //   if (s != size) {
-  //     print("Old widget size is now: $size");
-  //   }
-  // }
-
   List<Widget> _generateBoard(int size) {
+    // size = Provider.of<SM>(context).getSize;
     double dotSize = (size / 2);
     List<Widget> board = [];
     for (var row = 0; row < size; row++) {
       List<Widget> rows = List.generate(size, (col) {
         return _buildADot(
-          // size: size / 2,
           size: dotSize,
           color: colorLists[row][col],
           col: col,
