@@ -1,6 +1,8 @@
+import 'package:craft_dots/models/settings_model.dart';
 import 'package:craft_dots/models/size_config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
+import 'package:provider/provider.dart';
 
 class PegBoard extends StatefulWidget {
   const PegBoard({Key? key}) : super(key: key);
@@ -40,7 +42,18 @@ class _PegBoardState extends State<PegBoard> {
         growable: false);
     board = _generateBoard(size);
     super.initState();
+    // size = Provider.of<SM>(context).getSize;
   }
+
+  // @override
+  // void didUpdateWidget(PegBoard oldWidget) {
+  //   super.didUpdateWidget(oldWidget);
+  //   print("Size is now: $size");
+  //   int s = Provider.of<SM>(context).getSize;
+  //   if (s != size) {
+  //     print("Old widget size is now: $size");
+  //   }
+  // }
 
   List<Widget> _generateBoard(int size) {
     double dotSize = (size / 2);

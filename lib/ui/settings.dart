@@ -12,13 +12,16 @@ class SettingsPage extends StatefulWidget {
 
 class _SettingsPageState extends State<SettingsPage> {
   TextEditingController sizeController = TextEditingController();
+  String _currentSize = "";
 
   @override
   Widget build(BuildContext context) {
+    //AnnotaedRegion is for a light colored safeArea
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: const SystemUiOverlayStyle(
           statusBarColor: Colors.green,
-          statusBarBrightness: Brightness.light, // here what you need
+          statusBarBrightness:
+              Brightness.light, // here's where the white color is sets
           statusBarIconBrightness: Brightness.light),
       child: Scaffold(
         appBar: AppBar(
@@ -35,63 +38,51 @@ class _SettingsPageState extends State<SettingsPage> {
                   color: Colors.green.withOpacity(.2),
                   borderRadius: BorderRadius.circular(35),
                 ),
-                child: Padding(
-                  padding: const EdgeInsets.all(18.0),
-                  child: TextField(
-                    textAlign: TextAlign.center,
-                    onSubmitted: (str) {
-                      Provider.of<SM>(context).updateSize(int.parse(str));
-                    },
-                    controller: sizeController,
-                    maxLength: 3,
-                    keyboardType: TextInputType.number,
-                  ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.all(18.0),
+                      child: SizedBox(
+                        width: 50,
+                        child: TextField(
+                            decoration: InputDecoration(
+                                //https://timesheet.sidonline.com/Html/TimeEntryGridView.aspx?SelectedBatch=2021-11-16
+                                hintText: Provider.of<SM>(context)
+                                    .getSize
+                                    .toString()),
+                            textAlign: TextAlign.center,
+                            onSubmitted: (str) {
+                              Provider.of<SM>(context)
+                                  .updateSize(int.parse(_currentSize));
+                            },
+                            onChanged: (str) {
+                              if (int.parse(str).isNaN) {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(
+                                        content: Text("Must be a number.")));
+                              }
+                              _currentSize = str;
+                            },
+                            controller: sizeController,
+                            maxLength: 3,
+                            keyboardType: TextInputType.number,
+                            textInputAction: TextInputAction.go),
+                      ),
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        Provider.of<SM>(context, listen: false)
+                            .updateSize(int.parse(_currentSize));
+                        FocusScope.of(context).unfocus();
+                      },
+                      child: const SizedBox(child: Text("Submit")),
+                    )
+                  ],
                 ),
               ),
             ),
           ]),
-          // Padding(
-          //   padding: const EdgeInsets.all(8.0),
-          //   child: Center(
-          //     child: Column(
-          //       children: [
-          //         Padding(
-          //           padding: const EdgeInsets.all(8.0),
-          //           child: Container(
-          //             padding: const EdgeInsets.all(8.0),
-          //             decoration: BoxDecoration(
-          //                 borderRadius: BorderRadius.circular(25),
-          //                 color: Colors.blue.withOpacity(.2)),
-          //             child: Padding(
-          //               padding: const EdgeInsets.all(8.0),
-          //               child: Row(
-          //                 children: [
-          //                   const Icon(Icons.menu),
-          //                   Padding(
-          //                     padding: const EdgeInsets.all(8.0),
-          //                     child: TextField(
-          //                       keyboardType: TextInputType.number,
-          //                       decoration: const InputDecoration(
-          //                         // border: OutlineInputBorder(
-          //                         //   borderRadius: BorderRadius.circular(25.0),
-          //                         //   borderSide: const BorderSide(),
-          //                         // ),
-          //                         label: Text("Enter size here."),
-          //                         // labelText: "Enter size here",
-          //                       ),
-          //                       maxLength: 3,
-          //                       controller: sizeController,
-          //                     ),
-          //                   ),
-          //                 ],
-          //               ),
-          //             ),
-          //           ),
-          //         ),
-          //       ],
-          //     ),
-          //   ),
-          // ),
         ),
       ),
     );

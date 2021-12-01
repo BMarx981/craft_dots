@@ -7,4 +7,6 @@ class SM extends ChangeNotifier {
     _size = size;
     notifyListeners();
   }
+
+  int get getSize => _size;
 }

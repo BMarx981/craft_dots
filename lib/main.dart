@@ -18,6 +18,7 @@ class CraftDots extends StatelessWidget {
     return MultiProvider(
       providers: [ChangeNotifierProvider(create: (_) => SM())],
       child: MaterialApp(
+        debugShowCheckedModeBanner: false,
         title: 'Craft Dots',
         theme: ThemeData(
           primarySwatch: Colors.blue,
