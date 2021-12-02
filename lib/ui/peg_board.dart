@@ -17,7 +17,7 @@ class _PegBoardState extends State<PegBoard> {
   Color mainBoardColor = Colors.grey.withOpacity(.3);
   List<List<Color>> colorLists = [];
   Color currentColor = Colors.white;
-  int _dotSize = 30;
+  final int _dotSize = 30;
   List<Color> colors = [
     Colors.white,
     Colors.black,
@@ -34,15 +34,12 @@ class _PegBoardState extends State<PegBoard> {
 
   @override
   void initState() {
-    _buildColorList();
+    colorLists = _buildColorList();
     board = _generateBoard();
-    print("Init board size ${widget.boardSize}");
-    _dotSize = widget.boardSize;
     super.initState();
   }
 
   List<Widget> _generateBoard() {
-    _buildColorList();
     int allSize = Provider.of<SM>(context, listen: false).getSize;
     double dotSize = (_dotSize / 2);
     List<Widget> board = [];
@@ -62,8 +59,24 @@ class _PegBoardState extends State<PegBoard> {
     return board;
   }
 
-  _buildColorList() {
-    colorLists = List.generate(
+  List<List<Color>> _buildColorList() {
+    List<List<Color>> list = [];
+    if (colorLists.isNotEmpty) {
+      print("Colorlists $colorLists");
+      int rem =
+          (colorLists.length - Provider.of<SM>(context, listen: false).getSize)
+              .abs();
+      print("REM $rem");
+      for (int i = widget.boardSize; i < rem; i++) {
+        List<Color> newList = [];
+        for (int j = colorLists.length; j < rem; j++) {
+          newList[j] = mainBoardColor;
+        }
+        list.add(newList);
+      }
+      return list;
+    }
+    return List.generate(
       widget.boardSize,
       (i) => List.generate(
         widget.boardSize,

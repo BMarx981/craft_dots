@@ -5,7 +5,6 @@ class SM extends ChangeNotifier {
 
   void updateSize(int inputSize) {
     _size = inputSize;
-    print("Size in SM is $_size");
     notifyListeners();
   }
 
