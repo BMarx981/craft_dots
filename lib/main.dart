@@ -16,14 +16,14 @@ class CraftDots extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
-      providers: [ChangeNotifierProvider(create: (_) => SM())],
+      providers: [ChangeNotifierProvider(create: (context) => SM())],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'Craft Dots',
         theme: ThemeData(
           primarySwatch: Colors.blue,
         ),
-        home: const HomePage(),
+        home: HomePage(),
       ),
     );
   }

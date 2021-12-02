@@ -1,18 +1,18 @@
+import 'package:craft_dots/models/settings_model.dart';
 import 'package:craft_dots/ui/peg_board.dart';
 import 'package:craft_dots/ui/settings.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:provider/provider.dart';
 
 class HomePage extends StatefulWidget {
-  const HomePage({Key? key}) : super(key: key);
+  HomePage({Key? key}) : super(key: key);
 
   @override
   _HomePageState createState() => _HomePageState();
 }
 
 class _HomePageState extends State<HomePage> {
-  int size = 0;
-
   @override
   Widget build(BuildContext context) {
     return AnnotatedRegion<SystemUiOverlayStyle>(
@@ -40,7 +40,13 @@ class _HomePageState extends State<HomePage> {
             child: Center(
               child: Container(
                 decoration: BoxDecoration(color: Colors.grey.withOpacity(0.3)),
-                child: const Center(child: PegBoard()),
+                child: Center(
+                  child: Consumer<SM>(
+                    builder: (context, settingsModel, child) => PegBoard(
+                      boardSize: settingsModel.getSize,
+                    ),
+                  ),
+                ),
               ),
             ),
           ),

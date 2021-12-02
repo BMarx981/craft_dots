@@ -5,7 +5,8 @@ import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:provider/provider.dart';
 
 class PegBoard extends StatefulWidget {
-  const PegBoard({Key? key}) : super(key: key);
+  final int boardSize;
+  PegBoard({required this.boardSize, Key? key}) : super(key: key);
 
   @override
   _PegBoardState createState() => _PegBoardState();
@@ -16,7 +17,7 @@ class _PegBoardState extends State<PegBoard> {
   Color mainBoardColor = Colors.grey.withOpacity(.3);
   List<List<Color>> colorLists = [];
   Color currentColor = Colors.white;
-  int size = 30;
+  int _dotSize = 30;
   List<Color> colors = [
     Colors.white,
     Colors.black,
@@ -33,24 +34,20 @@ class _PegBoardState extends State<PegBoard> {
 
   @override
   void initState() {
-    colorLists = List.generate(
-        size,
-        (i) => List.generate(
-              size,
-              (_) => mainBoardColor,
-            ),
-        growable: false);
-    board = _generateBoard(size);
+    _buildColorList();
+    board = _generateBoard();
+    print("Init board size ${widget.boardSize}");
+    _dotSize = widget.boardSize;
     super.initState();
-    // size = Provider.of<SM>(context).getSize;
   }
 
-  List<Widget> _generateBoard(int size) {
-    // size = Provider.of<SM>(context).getSize;
-    double dotSize = (size / 2);
+  List<Widget> _generateBoard() {
+    _buildColorList();
+    int allSize = Provider.of<SM>(context, listen: false).getSize;
+    double dotSize = (_dotSize / 2);
     List<Widget> board = [];
-    for (var row = 0; row < size; row++) {
-      List<Widget> rows = List.generate(size, (col) {
+    for (var row = 0; row < allSize; row++) {
+      List<Widget> rows = List.generate(allSize, (col) {
         return _buildADot(
           size: dotSize,
           color: colorLists[row][col],
@@ -63,6 +60,16 @@ class _PegBoardState extends State<PegBoard> {
       ));
     }
     return board;
+  }
+
+  _buildColorList() {
+    colorLists = List.generate(
+      widget.boardSize,
+      (i) => List.generate(
+        widget.boardSize,
+        (_) => mainBoardColor,
+      ),
+    );
   }
 
   _buildADot(
@@ -160,7 +167,7 @@ class _PegBoardState extends State<PegBoard> {
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
-    board = _generateBoard(size);
+    board = _generateBoard();
     return Padding(
       padding: const EdgeInsets.all(1.0),
       child: Column(
@@ -169,15 +176,14 @@ class _PegBoardState extends State<PegBoard> {
             child: SingleChildScrollView(
               scrollDirection: Axis.horizontal,
               child: SizedBox(
-                // width: SizeConfig.screenWidth + size * (size / 6),
-                width: (size * (size / 2)),
-                height: (size * (size / 2)),
+                width: (_dotSize * (_dotSize / 2)),
+                height: (_dotSize * (_dotSize / 2)),
                 child: ListView.builder(
                   shrinkWrap: true,
                   itemBuilder: (context, index) {
                     return board[index];
                   },
-                  itemCount: size,
+                  itemCount: Provider.of<SM>(context).getSize,
                 ),
               ),
             ),
