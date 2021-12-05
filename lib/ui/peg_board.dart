@@ -2,7 +2,7 @@ import 'package:craft_dots/models/settings_model.dart';
 import 'package:craft_dots/models/size_config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
-import 'package:provider/provider.dart';
+// import 'package:provider/provider.dart';
 
 class PegBoard extends StatefulWidget {
   final int boardSize;
@@ -17,7 +17,7 @@ class _PegBoardState extends State<PegBoard> {
   Color mainBoardColor = Colors.grey.withOpacity(.3);
   List<List<Color>> colorLists = [];
   Color currentColor = Colors.white;
-  final int _dotSize = 30;
+  int _dotSize = 30;
   List<Color> colors = [
     Colors.white,
     Colors.black,
@@ -35,23 +35,29 @@ class _PegBoardState extends State<PegBoard> {
   @override
   void initState() {
     colorLists = _buildColorList();
-    board = _generateBoard();
+    board = _generateBoard(widget.boardSize);
     super.initState();
   }
 
-  List<Widget> _generateBoard() {
-    int allSize = Provider.of<SM>(context, listen: false).getSize;
+  List<Widget> _generateBoard(int allSize) {
     double dotSize = (_dotSize / 2);
     List<Widget> board = [];
-    for (var row = 0; row < allSize; row++) {
-      List<Widget> rows = List.generate(allSize, (col) {
-        return _buildADot(
-          size: dotSize,
-          color: colorLists[row][col],
-          col: col,
-          row: row,
+    if (colorLists.length < allSize) {
+      colorLists = _buildColorList();
+    }
+
+    for (int row = 0; row < allSize; row++) {
+      List<Widget> rows = [];
+      for (int col = 0; col < allSize; col++) {
+        rows.add(
+          _buildADot(
+            size: dotSize,
+            row: row,
+            col: col,
+            color: colorLists[row][col],
+          ),
         );
-      });
+      }
       board.add(Row(
         children: rows,
       ));
@@ -59,30 +65,16 @@ class _PegBoardState extends State<PegBoard> {
     return board;
   }
 
-  List<List<Color>> _buildColorList() {
-    List<List<Color>> list = [];
-    if (colorLists.isNotEmpty) {
-      print("Colorlists $colorLists");
-      int rem =
-          (colorLists.length - Provider.of<SM>(context, listen: false).getSize)
-              .abs();
-      print("REM $rem");
-      for (int i = widget.boardSize; i < rem; i++) {
-        List<Color> newList = [];
-        for (int j = colorLists.length; j < rem; j++) {
-          newList[j] = mainBoardColor;
-        }
-        list.add(newList);
+  List<List<Color>> _buildColorList({previousColors}) {
+    List<List<Color>> mainList = [];
+    for (int i = 0; i < widget.boardSize; i++) {
+      List<Color> list = [];
+      for (int j = 0; j < widget.boardSize; j++) {
+        list.add(mainBoardColor);
       }
-      return list;
+      mainList.add(list);
     }
-    return List.generate(
-      widget.boardSize,
-      (i) => List.generate(
-        widget.boardSize,
-        (_) => mainBoardColor,
-      ),
-    );
+    return mainList;
   }
 
   _buildADot(
@@ -116,42 +108,6 @@ class _PegBoardState extends State<PegBoard> {
     setState(() => currentColor = color);
   }
 
-  void showAlert(BuildContext context, Color original) {
-    Widget okButton = TextButton(
-      child: const Text("OK"),
-      onPressed: () {
-        Navigator.pop(context);
-      },
-    );
-
-    Widget cancelButton = TextButton(
-      child: const Text("CANCEL"),
-      onPressed: () {
-        setState(() => currentColor = original);
-        Navigator.pop(context);
-      },
-    );
-
-    // set up the AlertDialog
-    AlertDialog alert = AlertDialog(
-      title: const Text("Color Picker"),
-      content:
-          ColorPicker(pickerColor: currentColor, onColorChanged: changeColor),
-      actions: [
-        okButton,
-        cancelButton,
-      ],
-    );
-
-    // show the dialog
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return alert;
-      },
-    );
-  }
-
   List<Widget> _buildColorRow() {
     List<Widget> list = [];
     for (var i = 0; i < colors.length; i++) {
@@ -180,7 +136,7 @@ class _PegBoardState extends State<PegBoard> {
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
-    board = _generateBoard();
+    board = _generateBoard(widget.boardSize);
     return Padding(
       padding: const EdgeInsets.all(1.0),
       child: Column(
@@ -189,14 +145,14 @@ class _PegBoardState extends State<PegBoard> {
             child: SingleChildScrollView(
               scrollDirection: Axis.horizontal,
               child: SizedBox(
-                width: (_dotSize * (_dotSize / 2)),
-                height: (_dotSize * (_dotSize / 2)),
+                width: (widget.boardSize * (widget.boardSize)).toDouble() / 2,
+                height: (widget.boardSize * (widget.boardSize)).toDouble() / 2,
                 child: ListView.builder(
                   shrinkWrap: true,
                   itemBuilder: (context, index) {
                     return board[index];
                   },
-                  itemCount: Provider.of<SM>(context).getSize,
+                  itemCount: widget.boardSize,
                 ),
               ),
             ),
@@ -233,6 +189,42 @@ class _PegBoardState extends State<PegBoard> {
           )
         ],
       ),
+    );
+  }
+
+  void showAlert(BuildContext context, Color original) {
+    Widget okButton = TextButton(
+      child: const Text("OK"),
+      onPressed: () {
+        Navigator.pop(context);
+      },
+    );
+
+    Widget cancelButton = TextButton(
+      child: const Text("CANCEL"),
+      onPressed: () {
+        setState(() => currentColor = original);
+        Navigator.pop(context);
+      },
+    );
+
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      title: const Text("Color Picker"),
+      content:
+          ColorPicker(pickerColor: currentColor, onColorChanged: changeColor),
+      actions: [
+        okButton,
+        cancelButton,
+      ],
+    );
+
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
     );
   }
 }
