@@ -44,6 +44,7 @@ class _HomePageState extends State<HomePage> {
                   child: Consumer<SM>(
                     builder: (context, settingsModel, child) => PegBoard(
                       boardSize: settingsModel.getSize,
+                      dotSize: settingsModel.getDotSize,
                     ),
                   ),
                 ),

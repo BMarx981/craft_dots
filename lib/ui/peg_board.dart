@@ -1,12 +1,12 @@
-import 'package:craft_dots/models/settings_model.dart';
 import 'package:craft_dots/models/size_config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
-// import 'package:provider/provider.dart';
 
 class PegBoard extends StatefulWidget {
   final int boardSize;
-  PegBoard({required this.boardSize, Key? key}) : super(key: key);
+  final int dotSize;
+  PegBoard({required this.boardSize, required this.dotSize, Key? key})
+      : super(key: key);
 
   @override
   _PegBoardState createState() => _PegBoardState();
@@ -17,7 +17,6 @@ class _PegBoardState extends State<PegBoard> {
   Color mainBoardColor = Colors.grey.withOpacity(.3);
   List<List<Color>> colorLists = [];
   Color currentColor = Colors.white;
-  int _dotSize = 30;
   List<Color> colors = [
     Colors.white,
     Colors.black,
@@ -40,7 +39,7 @@ class _PegBoardState extends State<PegBoard> {
   }
 
   List<Widget> _generateBoard(int allSize) {
-    double dotSize = (_dotSize / 2);
+    double dotSize = widget.dotSize.toDouble();
     List<Widget> board = [];
     if (colorLists.length < allSize) {
       colorLists = _buildColorList();
@@ -145,8 +144,8 @@ class _PegBoardState extends State<PegBoard> {
             child: SingleChildScrollView(
               scrollDirection: Axis.horizontal,
               child: SizedBox(
-                width: (widget.boardSize * (widget.boardSize)).toDouble() / 2,
-                height: (widget.boardSize * (widget.boardSize)).toDouble() / 2,
+                width: (widget.boardSize * widget.dotSize).toDouble(),
+                height: (widget.boardSize * widget.dotSize).toDouble(),
                 child: ListView.builder(
                   shrinkWrap: true,
                   itemBuilder: (context, index) {
