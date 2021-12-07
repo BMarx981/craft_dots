@@ -50,12 +50,13 @@ class _SettingsPageState extends State<SettingsPage> {
                         width: 50,
                         child: TextField(
                             decoration: InputDecoration(
-                                hintText: Provider.of<SM>(context)
-                                    .getSize
-                                    .toString()),
+                                hintText:
+                                    Provider.of<SM>(context, listen: false)
+                                        .getSize
+                                        .toString()),
                             textAlign: TextAlign.center,
                             onSubmitted: (str) {
-                              Provider.of<SM>(context)
+                              Provider.of<SM>(context, listen: false)
                                   .updateSize(int.parse(_currentSize));
                             },
                             onChanged: (str) {
@@ -121,12 +122,13 @@ class _SettingsPageState extends State<SettingsPage> {
                         width: 50,
                         child: TextField(
                             decoration: InputDecoration(
-                                hintText: Provider.of<SM>(context)
-                                    .getDotSize
-                                    .toString()),
+                                hintText:
+                                    Provider.of<SM>(context, listen: false)
+                                        .getDotSize
+                                        .toString()),
                             textAlign: TextAlign.center,
                             onSubmitted: (str) {
-                              Provider.of<SM>(context)
+                              Provider.of<SM>(context, listen: false)
                                   .updateDotSize(int.parse(_currentDotSize));
                             },
                             onChanged: (str) {

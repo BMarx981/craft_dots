@@ -192,9 +192,11 @@ class _PegBoardState extends State<PegBoard> {
   }
 
   void showAlert(BuildContext context, Color original) {
+    Color tempColor = currentColor;
     Widget okButton = TextButton(
       child: const Text("OK"),
       onPressed: () {
+        changeColor(tempColor);
         Navigator.pop(context);
       },
     );
@@ -207,11 +209,15 @@ class _PegBoardState extends State<PegBoard> {
       },
     );
 
+    changeTempColor(Color colorTemp) {
+      tempColor = colorTemp;
+    }
+
     // set up the AlertDialog
     AlertDialog alert = AlertDialog(
       title: const Text("Color Picker"),
-      content:
-          ColorPicker(pickerColor: currentColor, onColorChanged: changeColor),
+      content: ColorPicker(
+          pickerColor: currentColor, onColorChanged: changeTempColor),
       actions: [
         okButton,
         cancelButton,
