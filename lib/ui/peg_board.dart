@@ -5,7 +5,7 @@ import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 class PegBoard extends StatefulWidget {
   final int boardSize;
   final int dotSize;
-  PegBoard({required this.boardSize, required this.dotSize, Key? key})
+  const PegBoard({required this.boardSize, required this.dotSize, Key? key})
       : super(key: key);
 
   @override
