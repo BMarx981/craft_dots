@@ -21,10 +21,18 @@ class HomePage extends StatelessWidget {
           title: const Text("Craft Dots"),
           actions: [
             IconButton(
+              icon: const Icon(Icons.save),
+              onPressed: () {
+                print("Saved");
+              },
+            ),
+            IconButton(
               icon: const Icon(Icons.settings),
               onPressed: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => SettingsPage()));
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const SettingsPage()));
               },
             )
           ],

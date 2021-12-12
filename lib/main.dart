@@ -2,6 +2,7 @@ import 'package:craft_dots/ui/home_page.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import 'common/board_utils.dart';
 import 'models/dot_lists.dart';
 import 'models/settings_model.dart';
 
@@ -16,14 +17,17 @@ class CraftDots extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
-      providers: [ChangeNotifierProvider(create: (context) => SM())],
+      providers: [
+        ChangeNotifierProvider(create: (context) => SM()),
+        ChangeNotifierProvider(create: (context) => BoardUtils())
+      ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'Craft Dots',
         theme: ThemeData(
           primarySwatch: Colors.blue,
         ),
-        home: HomePage(),
+        home: const HomePage(),
       ),
     );
   }
