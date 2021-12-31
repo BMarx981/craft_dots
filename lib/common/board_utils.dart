@@ -2,13 +2,16 @@ import 'package:craft_dots/ui/dot.dart';
 import 'package:flutter/material.dart';
 
 class BoardUtils extends ChangeNotifier {
-  List<List<Color>> colorLists = [];
+  static List<List<Color>> colorLists = [];
   List<Widget> board = [];
   static Color mainBoardColor = Colors.white;
   static Color standardColor = Colors.grey.withOpacity(.3);
   int colorListsSize = 0;
 
   void generateBoard(int allSize, int dotSize) {
+    if (colorLists.isEmpty) {
+      return;
+    }
     for (int row = 0; row < allSize; row++) {
       List<Widget> rows = [];
       for (int col = 0; col < allSize; col++) {

@@ -1,5 +1,6 @@
 import 'package:craft_dots/models/settings_model.dart';
 import 'package:craft_dots/ui/peg_board.dart';
+import 'package:craft_dots/ui/save_page.dart';
 import 'package:craft_dots/ui/settings.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -23,7 +24,8 @@ class HomePage extends StatelessWidget {
             IconButton(
               icon: const Icon(Icons.save),
               onPressed: () {
-                print("Saved");
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => const SavePage()));
               },
             ),
             IconButton(
