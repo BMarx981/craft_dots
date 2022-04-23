@@ -8,6 +8,8 @@ class BoardUtils extends ChangeNotifier {
   static Color standardColor = Colors.grey.withOpacity(.3);
   int colorListsSize = 0;
 
+  List<List<Color>> get getColorLists => colorLists;
+
   void generateBoard(int allSize, int dotSize) {
     if (colorLists.isEmpty) {
       return;

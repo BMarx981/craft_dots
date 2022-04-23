@@ -65,6 +65,7 @@ class _PegBoardState extends State<PegBoard> {
             ),
           ),
           const Divider(thickness: 2),
+
           //Selected color bottom piece
           Column(
             children: [

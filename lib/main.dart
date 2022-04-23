@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import 'common/board_utils.dart';
-import 'models/dot_lists.dart';
 import 'models/settings_model.dart';
 
 void main() {

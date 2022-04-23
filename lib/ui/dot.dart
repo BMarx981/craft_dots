@@ -19,15 +19,18 @@ class Dot extends StatefulWidget {
 }
 
 class _DotState extends State<Dot> {
+  BoardUtils bu = BoardUtils();
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
         if (widget.color == BoardUtils.mainBoardColor) {
           setState(() => widget.color = BoardUtils.standardColor);
+          bu.getColorLists[widget.row][widget.col] = BoardUtils.standardColor;
           return;
         }
         setState(() => widget.color = BoardUtils.mainBoardColor);
+        bu.getColorLists[widget.row][widget.col] = BoardUtils.mainBoardColor;
       },
       child: Container(
         height: widget.size,

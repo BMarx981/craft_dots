@@ -1,3 +1,4 @@
+import 'package:craft_dots/common/board_utils.dart';
 import 'package:flutter/material.dart';
 
 class SavePage extends StatefulWidget {
@@ -8,6 +9,7 @@ class SavePage extends StatefulWidget {
 }
 
 class _SavePageState extends State<SavePage> {
+  BoardUtils boardUtils = BoardUtils();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -28,7 +30,18 @@ class _SavePageState extends State<SavePage> {
                   ),
                 ),
                 onTap: () {
-                  print("on Tap hit.");
+                  print("OnTap hit.");
+                  String output = "";
+                  for (int i = 0; i < boardUtils.getColorLists.length; i++) {
+                    for (int j = 0;
+                        j < boardUtils.getColorLists[i].length;
+                        j++) {
+                      output += boardUtils.getColorLists[i][j].value
+                              .toRadixString(16) +
+                          " ";
+                    }
+                  }
+                  print(output);
                 }),
           ],
         ),
