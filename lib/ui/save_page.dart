@@ -14,7 +14,25 @@ class _SavePageState extends State<SavePage> {
       appBar: AppBar(
         backgroundColor: Colors.green,
       ),
-      body: const Text("Help me be something."),
+      body: Container(
+        padding: const EdgeInsets.all(8.0),
+        child: Row(
+          children: [
+            GestureDetector(
+                child: const Text(
+                  "Save",
+                  style: TextStyle(
+                    color: Colors.blue,
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                onTap: () {
+                  print("on Tap hit.");
+                }),
+          ],
+        ),
+      ),
     );
   }
 }
