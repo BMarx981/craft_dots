@@ -6,27 +6,29 @@ import 'package:flutter/material.dart';
 class SaveModel {
   String? id;
   String name;
-  List<List<Color>> finalList = [];
-  static String delimiter = ",|";
-  static String lineDelimiter = "??||";
+  List<List<Color>> saveColorList = [];
+  String delimiter = ",|";
+  BoardUtils bu = BoardUtils();
 
-  SaveModel({this.id, required this.name, required this.finalList});
+  SaveModel({this.id, required this.name, required this.saveColorList});
 
   factory SaveModel.fromMap(Map<String, dynamic> json) {
+    String delimiter = ",|";
     List<List<Color>> mainList = [];
-    List<String> lineSplit = json['finalList'].split(lineDelimiter);
+    List<String> lineSplit = json['finalList'].split(delimiter);
 
     for (String line in lineSplit) {
-      List<String> list = line.split(delimiter);
+      List<String> listOfColors = line.split(" ");
       List<Color> colors = [];
-      for (String element in list) {
+      for (String element in listOfColors) {
         print(element.toString());
         colors.add(Color(int.parse(element.toString())));
       }
       mainList.add(colors);
       colors.clear();
     }
-    return SaveModel(name: json['name'], finalList: mainList, id: json['id']);
+    return SaveModel(
+        name: json['name'], saveColorList: mainList, id: json['id']);
   }
 
   Map<String, dynamic> toMap() {
@@ -39,27 +41,24 @@ class SaveModel {
 
   String _processFinalList() {
     String str = "";
-    for (int i = 0; i < finalList.length; i++) {
-      for (int j = 0; j < finalList[i].length; j++) {
-        str += finalList[i].elementAt(j).toString();
-        str += delimiter;
-        print(str);
+    for (int i = 0; i < saveColorList.length; i++) {
+      for (int j = 0; j < saveColorList[i].length; j++) {
+        str += bu.getColorLists[i][j].value.toString() + " ";
       }
-      str += lineDelimiter;
+      str += delimiter;
     }
     return str;
   }
 
   List<List<Color>> extractList(String json) {
     List<List<Color>> mainList = [];
-    List<String> lineSplit = json.split(lineDelimiter);
+    List<String> lineSplit = json.split(delimiter);
 
     for (String line in lineSplit) {
-      List<String> list = line.split(delimiter);
+      List<String> colorStrings = line.split(delimiter);
       List<Color> colors = [];
-      for (String element in list) {
-        print(element.toString());
-        colors.add(Color(int.parse(element.toString())));
+      for (String color in colorStrings) {
+        colors.add(Color(int.parse(color)));
       }
       mainList.add(colors);
       colors.clear();

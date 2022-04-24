@@ -43,4 +43,14 @@ class BoardUtils extends ChangeNotifier {
     }
     mainBoardColor = Colors.white;
   }
+
+  void boardToString() {
+    String mainString = "";
+    for (List<Color> colors in colorLists) {
+      for (Color color in colors) {
+        mainString += color.value.toString() + " ";
+      }
+    }
+    print(mainString);
+  }
 }

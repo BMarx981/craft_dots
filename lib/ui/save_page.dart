@@ -30,18 +30,8 @@ class _SavePageState extends State<SavePage> {
                   ),
                 ),
                 onTap: () {
-                  print("OnTap hit.");
-                  String output = "";
-                  for (int i = 0; i < boardUtils.getColorLists.length; i++) {
-                    for (int j = 0;
-                        j < boardUtils.getColorLists[i].length;
-                        j++) {
-                      output += boardUtils.getColorLists[i][j].value
-                              .toRadixString(16) +
-                          " ";
-                    }
-                  }
-                  print(output);
+                  boardUtils.boardToString();
+                  print("Save button hit.");
                 }),
           ],
         ),

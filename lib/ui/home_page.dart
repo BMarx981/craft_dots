@@ -46,7 +46,7 @@ class HomePage extends StatelessWidget {
               child: Container(
                 decoration: BoxDecoration(color: Colors.grey.withOpacity(0.3)),
                 child: Center(
-                  child: Consumer<SM>(
+                  child: Consumer<SettingsModel>(
                     builder: (context, settingsModel, child) => PegBoard(
                       boardSize: settingsModel.getSize,
                       dotSize: settingsModel.getDotSize,

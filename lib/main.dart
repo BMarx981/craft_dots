@@ -17,7 +17,7 @@ class CraftDots extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (context) => SM()),
+        ChangeNotifierProvider(create: (context) => SettingsModel()),
         ChangeNotifierProvider(create: (context) => BoardUtils())
       ],
       child: MaterialApp(
