@@ -1,5 +1,6 @@
 import 'package:craft_dots/models/settings_model.dart';
 import 'package:craft_dots/ui/peg_board.dart';
+import 'package:craft_dots/ui/save_page.dart';
 import 'package:craft_dots/ui/settings.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -21,10 +22,19 @@ class HomePage extends StatelessWidget {
           title: const Text("Craft Dots"),
           actions: [
             IconButton(
-              icon: const Icon(Icons.settings),
+              icon: const Icon(Icons.save),
               onPressed: () {
                 Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => SettingsPage()));
+                    MaterialPageRoute(builder: (context) => const SavePage()));
+              },
+            ),
+            IconButton(
+              icon: const Icon(Icons.settings),
+              onPressed: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const SettingsPage()));
               },
             )
           ],
@@ -36,7 +46,7 @@ class HomePage extends StatelessWidget {
               child: Container(
                 decoration: BoxDecoration(color: Colors.grey.withOpacity(0.3)),
                 child: Center(
-                  child: Consumer<SM>(
+                  child: Consumer<SettingsModel>(
                     builder: (context, settingsModel, child) => PegBoard(
                       boardSize: settingsModel.getSize,
                       dotSize: settingsModel.getDotSize,

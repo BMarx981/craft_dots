@@ -1,37 +1,43 @@
-import 'package:craft_dots/models/dot_lists.dart';
+import 'package:craft_dots/common/board_utils.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
-class Dot extends StatelessWidget {
+class Dot extends StatefulWidget {
   Dot({
     Key? key,
     this.size = 0,
     this.color = Colors.white,
     this.row = 0,
     this.col = 0,
-    required this.callback,
   }) : super(key: key);
-  double size;
+  final double size;
   Color color;
-  int row;
-  int col;
-  Function callback;
+  final int row;
+  final int col;
 
+  @override
+  State<Dot> createState() => _DotState();
+}
+
+class _DotState extends State<Dot> {
+  BoardUtils bu = BoardUtils();
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        Provider.of<DotLists>(context, listen: false)
-            .updateList(row, col, color);
-        print("Callback called? $row $col ${color}");
-        callback;
+        if (widget.color == BoardUtils.mainBoardColor) {
+          setState(() => widget.color = BoardUtils.standardColor);
+          bu.getColorLists[widget.row][widget.col] = BoardUtils.standardColor;
+          return;
+        }
+        setState(() => widget.color = BoardUtils.mainBoardColor);
+        bu.getColorLists[widget.row][widget.col] = BoardUtils.mainBoardColor;
       },
       child: Container(
-        height: size,
-        width: size,
+        height: widget.size,
+        width: widget.size,
         decoration: BoxDecoration(
-          color: color,
-          borderRadius: BorderRadius.circular(size),
+          color: widget.color,
+          borderRadius: BorderRadius.circular(widget.size),
         ),
       ),
     );

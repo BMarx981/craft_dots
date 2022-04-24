@@ -50,13 +50,13 @@ class _SettingsPageState extends State<SettingsPage> {
                         width: 50,
                         child: TextField(
                             decoration: InputDecoration(
-                                hintText:
-                                    Provider.of<SM>(context, listen: false)
-                                        .getSize
-                                        .toString()),
+                                hintText: Provider.of<SettingsModel>(context,
+                                        listen: false)
+                                    .getSize
+                                    .toString()),
                             textAlign: TextAlign.center,
                             onSubmitted: (str) {
-                              Provider.of<SM>(context, listen: false)
+                              Provider.of<SettingsModel>(context, listen: false)
                                   .updateSize(int.parse(_currentSize));
                             },
                             onChanged: (str) {
@@ -81,7 +81,7 @@ class _SettingsPageState extends State<SettingsPage> {
                         padding: const EdgeInsets.all(8.0),
                         child: GestureDetector(
                           onTap: () {
-                            Provider.of<SM>(context, listen: false)
+                            Provider.of<SettingsModel>(context, listen: false)
                                 .updateSize(int.parse(_currentSize));
                             FocusScope.of(context).unfocus();
                           },
@@ -122,13 +122,13 @@ class _SettingsPageState extends State<SettingsPage> {
                         width: 50,
                         child: TextField(
                             decoration: InputDecoration(
-                                hintText:
-                                    Provider.of<SM>(context, listen: false)
-                                        .getDotSize
-                                        .toString()),
+                                hintText: Provider.of<SettingsModel>(context,
+                                        listen: false)
+                                    .getDotSize
+                                    .toString()),
                             textAlign: TextAlign.center,
                             onSubmitted: (str) {
-                              Provider.of<SM>(context, listen: false)
+                              Provider.of<SettingsModel>(context, listen: false)
                                   .updateDotSize(int.parse(_currentDotSize));
                             },
                             onChanged: (str) {
@@ -153,7 +153,7 @@ class _SettingsPageState extends State<SettingsPage> {
                         padding: const EdgeInsets.all(8.0),
                         child: GestureDetector(
                           onTap: () {
-                            Provider.of<SM>(context, listen: false)
+                            Provider.of<SettingsModel>(context, listen: false)
                                 .updateDotSize(int.parse(_currentDotSize));
                             FocusScope.of(context).unfocus();
                           },
