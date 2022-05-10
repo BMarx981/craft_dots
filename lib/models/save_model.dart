@@ -1,21 +1,21 @@
 import 'dart:io';
 
 import 'package:craft_dots/common/board_utils.dart';
+import 'package:craft_dots/db/db_helper.dart';
 import 'package:flutter/material.dart';
 
 class SaveModel {
   String? id;
   String name;
   List<List<Color>> saveColorList = [];
-  String delimiter = ",|";
+  String delimiter = " ";
   BoardUtils bu = BoardUtils();
 
   SaveModel({this.id, required this.name, required this.saveColorList});
 
   factory SaveModel.fromMap(Map<String, dynamic> json) {
-    String delimiter = ",|";
     List<List<Color>> mainList = [];
-    List<String> lineSplit = json['finalList'].split(delimiter);
+    List<String> lineSplit = json[DBHelper.columnCanvas].split(' ');
 
     for (String line in lineSplit) {
       List<String> listOfColors = line.split(" ");
@@ -28,14 +28,16 @@ class SaveModel {
       colors.clear();
     }
     return SaveModel(
-        name: json['name'], saveColorList: mainList, id: json['id']);
+        name: json[DBHelper.columnName],
+        saveColorList: mainList,
+        id: json[DBHelper.columnId]);
   }
 
   Map<String, dynamic> toMap() {
     return {
-      'id': id,
-      'name': name,
-      'finalList': _processFinalList(),
+      DBHelper.columnId: id,
+      DBHelper.columnName: name,
+      DBHelper.columnCanvas: _processFinalList(),
     };
   }
 

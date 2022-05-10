@@ -1,3 +1,4 @@
+import 'package:craft_dots/db/db_helper.dart';
 import 'package:craft_dots/ui/dot.dart';
 import 'package:flutter/material.dart';
 
@@ -44,13 +45,13 @@ class BoardUtils extends ChangeNotifier {
     mainBoardColor = Colors.white;
   }
 
-  void boardToString() {
+  String boardToString() {
     String mainString = "";
     for (List<Color> colors in colorLists) {
       for (Color color in colors) {
         mainString += color.value.toString() + " ";
       }
     }
-    print(mainString);
+    return mainString;
   }
 }
