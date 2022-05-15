@@ -1,4 +1,5 @@
-import 'package:craft_dots/db/db_helper.dart';
+import 'dart:math';
+
 import 'package:craft_dots/ui/dot.dart';
 import 'package:flutter/material.dart';
 
@@ -8,10 +9,14 @@ class BoardUtils extends ChangeNotifier {
   static Color mainBoardColor = Colors.white;
   static Color standardColor = Colors.grey.withOpacity(.3);
   int colorListsSize = 0;
+  int _dotSize = 0;
+
+  int get getDotSize => _dotSize;
 
   List<List<Color>> get getColorLists => colorLists;
 
   void generateBoard(int allSize, int dotSize) {
+    _dotSize = _dotSize;
     if (colorLists.isEmpty) {
       return;
     }
@@ -53,5 +58,18 @@ class BoardUtils extends ChangeNotifier {
       }
     }
     return mainString;
+  }
+
+  void loadBoard(String data) {
+    List<String> split = data.split(" ");
+    int rowLength = sqrt(split.length - 1).ceil();
+    int k = 0;
+    for (int i = 0; i < rowLength; i++) {
+      for (int j = 0; j < rowLength; j++) {
+        colorLists[i][j] = Color(int.parse(split[k++]));
+      }
+    }
+    generateBoard(rowLength, _dotSize);
+    notifyListeners();
   }
 }

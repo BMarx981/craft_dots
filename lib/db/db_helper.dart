@@ -1,13 +1,11 @@
 import 'dart:io';
 
 import 'package:craft_dots/models/save_model.dart';
-import 'package:path/path.dart';
 import 'package:../sqflite/sqflite.dart';
 import 'package:../path_provider/path_provider.dart';
 
 class DBHelper {
   static const _databaseName = "SaveDatabase.db";
-  static const _databaseVersion = 1;
 
   static const table = 'save_canvas';
 
@@ -26,18 +24,7 @@ class DBHelper {
 
   static Future<void> createTable() async {
     await _database.execute(
-        'CREATE TABLE $table ($columnId TEXT, $columnName TEXT, $columnCanvas TEXT)');
-  }
-
-  // SQL code to create the database table
-  Future _onCreate(Database db, int version) async {
-    await db.execute('''
-          CREATE TABLE IF NOT EXISTS $table (
-            $columnId INTEGER PRIMARY KEY NOT NULL,
-            $columnName TEXT NOT NULL,
-            $columnCanvas TEXT NOT NULL
-          )
-          ''');
+        'CREATE TABLE IF NOT EXISTS $table ($columnId TEXT, $columnName TEXT, $columnCanvas TEXT)');
   }
 
   // Inserts a row in the database where each key in the Map is a column name
@@ -53,15 +40,20 @@ class DBHelper {
   }
 
   static Future<List<Map<String, dynamic>>> queryAllRows() async {
-    return await _database.query(table);
+    List<Map<String, Object?>> response = await _database.query(table);
+    print(response);
+    return response;
   }
 
-  static Future<SaveModel> getData({required String name}) async {
-    List<Map> list = await _database
-        .rawQuery('SELECT * FROM $table WHERE $columnName = $name');
+  static Future<List<Map<String, dynamic>>> getAllData() async {
+    return await _database.rawQuery('SELECT * FROM $table');
+  }
 
-    return SaveModel(
-        name: list[0][columnName], saveColorList: list[0][columnCanvas]);
+  static Future<String> getData({required String name}) async {
+    List<Map> list = await _database
+        .rawQuery('SELECT * FROM $table WHERE $columnName = "$name"');
+    print(list);
+    return list[0]['canvas'];
   }
 
   // All of the methods (insert, query, update, delete) can also be done using
@@ -83,15 +75,36 @@ class DBHelper {
 
   // We are assuming here that the id column in the map is set. The other
   // column values will be used to update the row.
-  // Future<int> update(Map<String, dynamic> row) async {
-  //
-  //   int id = row[columnId];
-  //   return await update(table, row, where: '$columnId = ?', whereArgs: [id]);
-  // }
-  //
-  // // Deletes the row specified by the id. The number of affected rows is
-  // // returned. This should be 1 as long as the row exists.
+  static Future<int> update(String name, String data) async {
+    Map<String, dynamic> row = {columnName: name, columnCanvas: data};
+    return await _database.update(table, row);
+  }
+
+  // Deletes the row specified by the id. The number of affected rows is
+  // returned. This should be 1 as long as the row exists.
   static Future<void> delete(String name) async {
     await _database.delete(table, where: '$columnName = ?', whereArgs: [name]);
   }
+
+  // Map<String, dynamic> toMap(
+  //   String id,
+  //   String name,
+  // ) {
+  //   return {
+  //     DBHelper.columnId: id,
+  //     DBHelper.columnName: name,
+  //     DBHelper.columnCanvas: _processFinalList(),
+  //   };
+  // }
+  //
+  // String _processFinalList() {
+  //   String str = "";
+  //   for (int i = 0; i < saveColorList.length; i++) {
+  //     for (int j = 0; j < saveColorList[i].length; j++) {
+  //       str += bu.getColorLists[i][j].value.toString() + " ";
+  //     }
+  //     str += delimiter;
+  //   }
+  //   return str;
+  // }
 }

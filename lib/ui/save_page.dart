@@ -12,17 +12,24 @@ class SavePage extends StatefulWidget {
 
 class _SavePageState extends State<SavePage> {
   BoardUtils boardUtils = BoardUtils();
-  int? dbRowCount = 0;
+  List<Map<String, dynamic>> list = [];
 
   @override
   void initState() {
     super.initState();
-    DBHelper.createDB();
+    DBHelper.createDB().then((_) {
+      getAllTheData();
+    });
   }
 
-  Future<void> getRowCount() async {
-    dbRowCount = await DBHelper.queryRowCount();
-    setState(() {});
+  Future<void> getAllTheData() async {
+    await DBHelper.getAllData().then((value) {
+      setState(() {
+        for (var element in value) {
+          list.add(element);
+        }
+      });
+    });
   }
 
   @override
@@ -90,45 +97,81 @@ class _SavePageState extends State<SavePage> {
               ],
             ),
             const Divider(),
-            FutureBuilder(
-              future: DBHelper.queryAllRows(),
-              builder: (BuildContext context,
-                  AsyncSnapshot<List<Map<String, dynamic>>> snapshot) {
-                if (snapshot.hasData) {
-                  List<Map<String, dynamic>>? list = snapshot.data;
-                  return Expanded(
+            list.isNotEmpty
+                ? Expanded(
                     child: ListView.builder(
-                      itemBuilder: (context, index) {
-                        return Dismissible(
-                          onDismissed: (di) {
-                            setState(() {
-                              DBHelper.delete(list![index]['name']);
-                              list.removeAt(index);
-                            });
-                          },
-                          key: Key(index.toString()),
-                          background: Container(
-                            color: Colors.red,
-                            child: const Icon(
-                              Icons.delete_outline,
+                        itemCount: list.length,
+                        itemBuilder: (context, index) {
+                          return Dismissible(
+                            onDismissed: (di) {
+                              setState(() {
+                                DBHelper.delete(list[index]['name']);
+                                list.removeAt(index);
+                              });
+                            },
+                            key: Key(index.toString()),
+                            background: Container(
+                              color: Colors.red,
+                              child: const Icon(
+                                Icons.delete_outline,
+                              ),
                             ),
-                          ),
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: SaveItem(name: list![index]['name']),
-                          ),
-                        );
-                      },
-                      itemCount: list?.length,
-                    ),
-                  );
-                }
-                return SaveItem(name: "Nothing saved ");
-              },
-            )
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: SaveItem(name: list[index]['name']),
+                            ),
+                          );
+                        }),
+                  )
+                : const CircularProgressIndicator(),
           ],
         ),
       ),
     );
   }
 }
+
+// FutureBuilder(
+//   builder: (BuildContext context,
+//       AsyncSnapshot<List<Map<String, dynamic>>> snapshot) {
+//     print(snapshot.hasData);
+//     if (ConnectionState.done == snapshot.connectionState) {
+//       if (snapshot.hasData) {
+//         List<Map<String, dynamic>>? list = snapshot.data;
+//         return Expanded(
+//           child: ListView.builder(
+//             itemBuilder: (context, index) {
+//               return Dismissible(
+//                 onDismissed: (di) {
+//                   setState(() {
+//                     DBHelper.delete(list![index]['name']);
+//                     list.removeAt(index);
+//                   });
+//                 },
+//                 key: Key(index.toString()),
+//                 background: Container(
+//                   color: Colors.red,
+//                   child: const Icon(
+//                     Icons.delete_outline,
+//                   ),
+//                 ),
+//                 child: Padding(
+//                   padding: const EdgeInsets.all(8.0),
+//                   child: SaveItem(name: list![index]['name']),
+//                 ),
+//               );
+//             },
+//             itemCount: list?.length,
+//           ),
+//         );
+//       }
+//       if (snapshot.hasError) {
+//         return const Text("There was an Error");
+//       }
+//     } else if (snapshot.connectionState ==
+//         ConnectionState.waiting) {
+//       return const CircularProgressIndicator();
+//     }
+//     return const Text("");
+//   },
+// )
