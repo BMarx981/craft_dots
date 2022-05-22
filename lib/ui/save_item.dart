@@ -21,14 +21,7 @@ class SaveItem extends StatelessWidget {
             children: [
               // Save button starts here !!!!!
               GestureDetector(
-                  child: const Text(
-                    "Save",
-                    style: TextStyle(
-                      color: Colors.blue,
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
+                  child: const Icon(Icons.save_outlined, color: Colors.blue),
                   onTap: () {
                     String board =
                         Provider.of<BoardUtils>(context, listen: false)
@@ -40,20 +33,20 @@ class SaveItem extends StatelessWidget {
                   }), // End save button
               //Load button starts here!!!!!!
               GestureDetector(
-                  child: const Text(
-                    "Load",
-                    style: TextStyle(
-                      color: Colors.blue,
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
+                  child: const Icon(Icons.edit, color: Colors.blue),
                   onTap: () async {
                     String board = await DBHelper.getData(name: name);
                     Provider.of<BoardUtils>(context, listen: false)
                         .loadBoard(board, context);
                     ScaffoldMessenger.of(context)
                         .showSnackBar(SnackBar(content: Text("$name Loaded.")));
+                    Navigator.pop(context);
+                  }),
+              GestureDetector(
+                  child: const Icon(Icons.print_outlined, color: Colors.blue),
+                  onTap: () {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text("Printing $name.")));
                     Navigator.pop(context);
                   }), // End load button
             ],
