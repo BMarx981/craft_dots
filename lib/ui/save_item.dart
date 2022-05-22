@@ -1,14 +1,13 @@
 import 'package:craft_dots/db/db_helper.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../common/board_utils.dart';
-import '../models/save_model.dart';
 
 class SaveItem extends StatelessWidget {
   final String name;
-  final BoardUtils boardUtils = BoardUtils();
 
-  SaveItem({Key? key, required this.name}) : super(key: key);
+  const SaveItem({Key? key, required this.name}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -20,6 +19,7 @@ class SaveItem extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
+              // Save button starts here !!!!!
               GestureDetector(
                   child: const Text(
                     "Save",
@@ -30,11 +30,15 @@ class SaveItem extends StatelessWidget {
                     ),
                   ),
                   onTap: () {
-                    String board = boardUtils.boardToString();
+                    String board =
+                        Provider.of<BoardUtils>(context, listen: false)
+                            .boardToString();
                     DBHelper.update(name, board);
                     ScaffoldMessenger.of(context)
                         .showSnackBar(SnackBar(content: Text("$name Saved.")));
-                  }),
+                    Navigator.pop(context);
+                  }), // End save button
+              //Load button starts here!!!!!!
               GestureDetector(
                   child: const Text(
                     "Load",
@@ -45,12 +49,13 @@ class SaveItem extends StatelessWidget {
                     ),
                   ),
                   onTap: () async {
-                    String sm = await DBHelper.getData(name: name);
-                    boardUtils.loadBoard(sm);
+                    String board = await DBHelper.getData(name: name);
+                    Provider.of<BoardUtils>(context, listen: false)
+                        .loadBoard(board, context);
                     ScaffoldMessenger.of(context)
                         .showSnackBar(SnackBar(content: Text("$name Loaded.")));
                     Navigator.pop(context);
-                  }),
+                  }), // End load button
             ],
           ),
         ],

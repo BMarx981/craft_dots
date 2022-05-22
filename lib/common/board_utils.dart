@@ -2,6 +2,9 @@ import 'dart:math';
 
 import 'package:craft_dots/ui/dot.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import '../models/settings_model.dart';
 
 class BoardUtils extends ChangeNotifier {
   static List<List<Color>> colorLists = [];
@@ -9,17 +12,21 @@ class BoardUtils extends ChangeNotifier {
   static Color mainBoardColor = Colors.white;
   static Color standardColor = Colors.grey.withOpacity(.3);
   int colorListsSize = 0;
+  int _boardSize = 0;
   int _dotSize = 0;
 
+  int get getBoardSize => _boardSize;
   int get getDotSize => _dotSize;
 
   List<List<Color>> get getColorLists => colorLists;
 
   void generateBoard(int allSize, int dotSize) {
-    _dotSize = _dotSize;
+    _boardSize = allSize;
+    _dotSize = dotSize;
     if (colorLists.isEmpty) {
       return;
     }
+    board.clear();
     for (int row = 0; row < allSize; row++) {
       List<Widget> rows = [];
       for (int col = 0; col < allSize; col++) {
@@ -36,6 +43,7 @@ class BoardUtils extends ChangeNotifier {
         children: rows,
       ));
     }
+    notifyListeners();
   }
 
   void initColorList(int boardSize, {previousColors}) {
@@ -60,7 +68,7 @@ class BoardUtils extends ChangeNotifier {
     return mainString;
   }
 
-  void loadBoard(String data) {
+  void loadBoard(String data, BuildContext context) {
     List<String> split = data.split(" ");
     int rowLength = sqrt(split.length - 1).ceil();
     int k = 0;
@@ -69,7 +77,10 @@ class BoardUtils extends ChangeNotifier {
         colorLists[i][j] = Color(int.parse(split[k++]));
       }
     }
-    generateBoard(rowLength, _dotSize);
+    generateBoard(
+      rowLength,
+      Provider.of<SettingsModel>(context, listen: false).getDotSize,
+    );
     notifyListeners();
   }
 }

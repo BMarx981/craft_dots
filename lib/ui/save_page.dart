@@ -2,6 +2,7 @@ import 'package:craft_dots/common/board_utils.dart';
 import 'package:craft_dots/db/db_helper.dart';
 import 'package:craft_dots/ui/save_item.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class SavePage extends StatefulWidget {
   const SavePage({Key? key}) : super(key: key);
@@ -11,25 +12,31 @@ class SavePage extends StatefulWidget {
 }
 
 class _SavePageState extends State<SavePage> {
-  BoardUtils boardUtils = BoardUtils();
   List<Map<String, dynamic>> list = [];
 
   @override
   void initState() {
     super.initState();
+    list.clear();
     DBHelper.createDB().then((_) {
-      getAllTheData();
+      getAllTheData().then((_) {
+        setState(() {});
+      });
     });
   }
 
   Future<void> getAllTheData() async {
-    await DBHelper.getAllData().then((value) {
+    List<Map<String, dynamic>> temp = [];
+    temp = await DBHelper.getAllData();
+    for (Map<String, dynamic> element in temp) {
       setState(() {
-        for (var element in value) {
-          list.add(element);
-        }
+        list.add({
+          'name': element['name'],
+          'canvas': element['canvas'],
+          'id': element['id']
+        });
       });
-    });
+    }
   }
 
   @override
@@ -55,7 +62,8 @@ class _SavePageState extends State<SavePage> {
                       ),
                     ),
                     onTap: () {
-                      String b = boardUtils.boardToString();
+                      String b = Provider.of<BoardUtils>(context, listen: false)
+                          .boardToString();
                       TextEditingController controller =
                           TextEditingController();
                       showDialog(
@@ -80,13 +88,20 @@ class _SavePageState extends State<SavePage> {
                                 ),
                                 TextButton(
                                   onPressed: () {
-                                    DBHelper.save(controller.text, b);
+                                    DBHelper.saveAs(controller.text, b);
+                                    Provider.of<BoardUtils>(context,
+                                            listen: false)
+                                        .loadBoard(b, context);
                                     Navigator.pop(context);
-                                    setState(() {});
                                     ScaffoldMessenger.of(context).showSnackBar(
                                         SnackBar(
                                             content: Text(
                                                 "${controller.text} Saved.")));
+                                    setState(() {
+                                      list.add({
+                                        'name': controller.text,
+                                      });
+                                    });
                                   },
                                   child: const Text('SAVE'),
                                 ),
@@ -103,13 +118,12 @@ class _SavePageState extends State<SavePage> {
                         itemCount: list.length,
                         itemBuilder: (context, index) {
                           return Dismissible(
-                            onDismissed: (di) {
-                              setState(() {
-                                DBHelper.delete(list[index]['name']);
-                                list.removeAt(index);
-                              });
+                            onDismissed: (di) async {
+                              await DBHelper.delete(list[index]['name']);
+                              list.removeAt(index);
+                              setState(() {});
                             },
-                            key: Key(index.toString()),
+                            key: UniqueKey(),
                             background: Container(
                               color: Colors.red,
                               child: const Icon(
@@ -123,55 +137,10 @@ class _SavePageState extends State<SavePage> {
                           );
                         }),
                   )
-                : const CircularProgressIndicator(),
+                : const SaveItem(name: 'No Saved data'),
           ],
         ),
       ),
     );
   }
 }
-
-// FutureBuilder(
-//   builder: (BuildContext context,
-//       AsyncSnapshot<List<Map<String, dynamic>>> snapshot) {
-//     print(snapshot.hasData);
-//     if (ConnectionState.done == snapshot.connectionState) {
-//       if (snapshot.hasData) {
-//         List<Map<String, dynamic>>? list = snapshot.data;
-//         return Expanded(
-//           child: ListView.builder(
-//             itemBuilder: (context, index) {
-//               return Dismissible(
-//                 onDismissed: (di) {
-//                   setState(() {
-//                     DBHelper.delete(list![index]['name']);
-//                     list.removeAt(index);
-//                   });
-//                 },
-//                 key: Key(index.toString()),
-//                 background: Container(
-//                   color: Colors.red,
-//                   child: const Icon(
-//                     Icons.delete_outline,
-//                   ),
-//                 ),
-//                 child: Padding(
-//                   padding: const EdgeInsets.all(8.0),
-//                   child: SaveItem(name: list![index]['name']),
-//                 ),
-//               );
-//             },
-//             itemCount: list?.length,
-//           ),
-//         );
-//       }
-//       if (snapshot.hasError) {
-//         return const Text("There was an Error");
-//       }
-//     } else if (snapshot.connectionState ==
-//         ConnectionState.waiting) {
-//       return const CircularProgressIndicator();
-//     }
-//     return const Text("");
-//   },
-// )

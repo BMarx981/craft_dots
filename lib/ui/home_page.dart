@@ -6,6 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
+import '../common/board_utils.dart';
+
 class HomePage extends StatelessWidget {
   const HomePage({Key? key}) : super(key: key);
 
@@ -45,13 +47,8 @@ class HomePage extends StatelessWidget {
             child: Center(
               child: Container(
                 decoration: BoxDecoration(color: Colors.grey.withOpacity(0.3)),
-                child: Center(
-                  child: Consumer<SettingsModel>(
-                    builder: (context, settingsModel, child) => PegBoard(
-                      boardSize: settingsModel.getSize,
-                      dotSize: settingsModel.getDotSize,
-                    ),
-                  ),
+                child: const Center(
+                  child: PegBoard(),
                 ),
               ),
             ),

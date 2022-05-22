@@ -2,21 +2,20 @@ import 'package:craft_dots/common/board_utils.dart';
 import 'package:craft_dots/models/size_config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
+import 'package:provider/provider.dart';
+
+import '../models/settings_model.dart';
 
 class PegBoard extends StatefulWidget {
-  final int boardSize;
-  final int dotSize;
-  const PegBoard({required this.boardSize, required this.dotSize, Key? key})
-      : super(key: key);
+  const PegBoard({Key? key}) : super(key: key);
 
   @override
   _PegBoardState createState() => _PegBoardState();
 }
 
 class _PegBoardState extends State<PegBoard> {
-  List<List<Color>> colorLists = [];
-  Color currentColor = Colors.white;
-  BoardUtils boardUtils = BoardUtils();
+  int boardSize = 0;
+  int dotSize = 0;
   List<Color> colors = [
     Colors.white,
     Colors.black,
@@ -33,8 +32,11 @@ class _PegBoardState extends State<PegBoard> {
 
   @override
   void initState() {
-    boardUtils.initColorList(widget.boardSize);
-    boardUtils.generateBoard(widget.boardSize, widget.dotSize);
+    boardSize = Provider.of<SettingsModel>(context, listen: false).getSize;
+    dotSize = Provider.of<SettingsModel>(context, listen: false).getDotSize;
+    Provider.of<BoardUtils>(context, listen: false).initColorList(boardSize);
+    Provider.of<BoardUtils>(context, listen: false)
+        .generateBoard(boardSize, dotSize);
     super.initState();
   }
 
@@ -51,14 +53,16 @@ class _PegBoardState extends State<PegBoard> {
               child: SingleChildScrollView(
                 scrollDirection: Axis.horizontal,
                 child: SizedBox(
-                  width: (widget.boardSize * widget.dotSize).toDouble(),
-                  height: (widget.boardSize * widget.dotSize).toDouble(),
+                  width: (boardSize * dotSize).toDouble(),
+                  height: (boardSize * dotSize).toDouble(),
                   child: ListView.builder(
                     shrinkWrap: true,
                     itemBuilder: (context, index) {
-                      return boardUtils.board[index];
+                      return Provider.of<BoardUtils>(context).board[index];
                     },
-                    itemCount: boardUtils.board.length,
+                    itemCount: Provider.of<BoardUtils>(context, listen: false)
+                        .board
+                        .length,
                   ),
                 ),
               ),

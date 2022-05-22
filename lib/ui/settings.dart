@@ -91,7 +91,7 @@ class _SettingsPageState extends State<SettingsPage> {
                               child: Text(
                                 "Board Size",
                                 style: TextStyle(
-                                  fontSize: 40,
+                                  fontSize: 30,
                                   fontWeight: FontWeight.bold,
                                   color: Colors.black,
                                 ),
@@ -163,7 +163,7 @@ class _SettingsPageState extends State<SettingsPage> {
                               child: Text(
                                 "Dot Size",
                                 style: TextStyle(
-                                  fontSize: 40,
+                                  fontSize: 30,
                                   fontWeight: FontWeight.bold,
                                   color: Colors.black,
                                 ),
