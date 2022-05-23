@@ -24,7 +24,7 @@ class DBHelper {
 
   static Future<void> createTable() async {
     await _database.execute(
-        'CREATE TABLE IF NOT EXISTS $table ($columnId TEXT, $columnName TEXT, $columnCanvas TEXT, $columnDotSize INT)');
+        'CREATE TABLE IF NOT EXISTS $table ($columnId INTEGER PRIMARY KEY, $columnName TEXT, $columnCanvas TEXT, $columnDotSize INT)');
   }
 
   // Inserts a row in the database where each key in the Map is a column name
@@ -34,13 +34,21 @@ class DBHelper {
     return await _database.insert(table, row);
   }
 
-  static Future<int> saveAs(String name, String data) async {
-    Map<String, String> row = {columnName: name, columnCanvas: data};
+  static Future<int> saveAs(String name, String data, int dotSize) async {
+    Map<String, dynamic> row = {
+      columnName: name,
+      columnCanvas: data,
+      columnDotSize: dotSize
+    };
     return _database.insert(table, row);
   }
 
-  static Future<int> save(String name, String data) async {
-    Map<String, String> row = {columnName: name, columnCanvas: data};
+  static Future<int> save(String name, String data, int dotSize) async {
+    Map<String, dynamic> row = {
+      columnName: name,
+      columnCanvas: data,
+      columnDotSize: dotSize
+    };
     return _database.update(table, row);
   }
 
@@ -58,10 +66,17 @@ class DBHelper {
     return li;
   }
 
-  static Future<String> getData({required String name}) async {
+  static Future<Map> getData({required String name}) async {
     List<Map> list = await _database
         .rawQuery('SELECT * FROM $table WHERE $columnName = "$name"');
-    return list[0]['canvas'];
+    Map<String, dynamic> map = {};
+    if (list.isNotEmpty) {
+      map = {
+        columnCanvas: list[0][columnCanvas],
+        columnDotSize: list[0][columnDotSize]
+      };
+    }
+    return map;
   }
 
   // All of the methods (insert, query, update, delete) can also be done using
@@ -83,8 +98,12 @@ class DBHelper {
 
   // We are assuming here that the id column in the map is set. The other
   // column values will be used to update the row.
-  static Future<int> update(String name, String data) async {
-    Map<String, dynamic> row = {columnName: name, columnCanvas: data};
+  static Future<int> update(String name, String data, int dotSize) async {
+    Map<String, dynamic> row = {
+      columnName: name,
+      columnCanvas: data,
+      columnDotSize: dotSize
+    };
     return await _database
         .update(table, row, where: '$columnName = ?', whereArgs: [name]);
   }

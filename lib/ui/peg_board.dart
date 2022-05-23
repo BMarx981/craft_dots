@@ -1,5 +1,6 @@
 import 'package:craft_dots/common/board_utils.dart';
 import 'package:craft_dots/models/size_config.dart';
+import 'package:craft_dots/ui/peg_board_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:provider/provider.dart';
@@ -31,13 +32,13 @@ class _PegBoardState extends State<PegBoard> {
   ];
 
   @override
-  void initState() {
-    boardSize = Provider.of<SettingsModel>(context, listen: false).getSize;
-    dotSize = Provider.of<SettingsModel>(context, listen: false).getDotSize;
-    Provider.of<BoardUtils>(context, listen: false).initColorList(boardSize);
+  void didChangeDependencies() {
+    boardSize = Provider.of<SettingsModel>(context).getSize;
+    dotSize = Provider.of<SettingsModel>(context).getDotSize;
+    // Provider.of<BoardUtils>(context, listen: false).initColorList(boardSize);
     Provider.of<BoardUtils>(context, listen: false)
         .generateBoard(boardSize, dotSize);
-    super.initState();
+    super.didChangeDependencies();
   }
 
   @override
@@ -50,22 +51,10 @@ class _PegBoardState extends State<PegBoard> {
           Expanded(
             child: InteractiveViewer(
               clipBehavior: Clip.none,
-              child: SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: SizedBox(
-                  width: (boardSize * dotSize).toDouble(),
-                  height: (boardSize * dotSize).toDouble(),
-                  child: ListView.builder(
-                    shrinkWrap: true,
-                    itemBuilder: (context, index) {
-                      return Provider.of<BoardUtils>(context).board[index];
-                    },
-                    itemCount: Provider.of<BoardUtils>(context, listen: false)
-                        .board
-                        .length,
-                  ),
-                ),
-              ),
+              child: PegBoardWidget(
+                  board: Provider.of<BoardUtils>(context).board,
+                  boardSize: boardSize,
+                  dotSize: dotSize),
             ),
           ),
           const Divider(thickness: 2),
@@ -104,7 +93,7 @@ class _PegBoardState extends State<PegBoard> {
     );
   }
 
-  void changeColor(Color color) {
+  void _changeColor(Color color) {
     colors.add(color);
     setState(() => BoardUtils.mainBoardColor = color);
   }
@@ -141,7 +130,7 @@ class _PegBoardState extends State<PegBoard> {
     Widget okButton = TextButton(
       child: const Text("OK"),
       onPressed: () {
-        changeColor(tempColor);
+        _changeColor(tempColor);
         Navigator.pop(context);
       },
     );

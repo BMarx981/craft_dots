@@ -1,5 +1,6 @@
 import 'package:craft_dots/common/board_utils.dart';
 import 'package:craft_dots/db/db_helper.dart';
+import 'package:craft_dots/models/settings_model.dart';
 import 'package:craft_dots/ui/save_item.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -18,6 +19,7 @@ class _SavePageState extends State<SavePage> {
   void initState() {
     super.initState();
     list.clear();
+    // DBHelper.dropTable();
     DBHelper.createDB().then((_) {
       getAllTheData().then((_) {
         setState(() {});
@@ -33,7 +35,8 @@ class _SavePageState extends State<SavePage> {
         list.add({
           'name': element['name'],
           'canvas': element['canvas'],
-          'id': element['id']
+          'id': element['id'],
+          'dotSize': element['dotSize']
         });
       });
     }
@@ -57,7 +60,7 @@ class _SavePageState extends State<SavePage> {
                       "Save As",
                       style: TextStyle(
                         color: Colors.blue,
-                        fontSize: 20,
+                        fontSize: 30,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
@@ -88,15 +91,22 @@ class _SavePageState extends State<SavePage> {
                                 ),
                                 TextButton(
                                   onPressed: () {
-                                    DBHelper.saveAs(controller.text, b);
+                                    int dotSize = Provider.of<SettingsModel>(
+                                            context,
+                                            listen: false)
+                                        .getDotSize;
+                                    DBHelper.saveAs(
+                                        controller.text, b, dotSize);
                                     Provider.of<BoardUtils>(context,
                                             listen: false)
-                                        .loadBoard(b, context);
+                                        .loadBoard(b, dotSize);
                                     Navigator.pop(context);
                                     ScaffoldMessenger.of(context).showSnackBar(
-                                        SnackBar(
-                                            content: Text(
-                                                "${controller.text} Saved.")));
+                                      SnackBar(
+                                        content:
+                                            Text("${controller.text} Saved."),
+                                      ),
+                                    );
                                     setState(() {
                                       list.add({
                                         'name': controller.text,
@@ -137,7 +147,7 @@ class _SavePageState extends State<SavePage> {
                           );
                         }),
                   )
-                : const SaveItem(name: 'No Saved data'),
+                : SaveItem(name: 'No Saved data'),
           ],
         ),
       ),
