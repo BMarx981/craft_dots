@@ -32,18 +32,13 @@ class _PegBoardState extends State<PegBoard> {
   ];
 
   @override
-  void didChangeDependencies() {
-    boardSize = Provider.of<SettingsModel>(context).getSize;
-    dotSize = Provider.of<SettingsModel>(context).getDotSize;
-    // Provider.of<BoardUtils>(context, listen: false).initColorList(boardSize);
-    Provider.of<BoardUtils>(context, listen: false)
-        .generateBoard(boardSize, dotSize);
-    super.didChangeDependencies();
-  }
-
-  @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
+    boardSize = Provider.of<SettingsModel>(context, listen: false).getSize;
+    dotSize = Provider.of<SettingsModel>(context, listen: false).getDotSize;
+    Provider.of<BoardUtils>(context, listen: false).initColorList(boardSize);
+    Provider.of<BoardUtils>(context, listen: false)
+        .generateBoard(boardSize, dotSize);
     return Padding(
       padding: const EdgeInsets.all(1.0),
       child: Column(

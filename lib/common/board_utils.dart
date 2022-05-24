@@ -7,6 +7,8 @@ import 'package:craft_dots/ui/dot.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:pdf/pdf.dart';
+import 'package:printing/printing.dart';
 import 'package:provider/provider.dart';
 import 'package:screenshot/screenshot.dart';
 import 'package:pdf/widgets.dart' as pw;
@@ -56,14 +58,18 @@ class BoardUtils extends ChangeNotifier {
 
   void initColorList(int boardSize, {previousColors}) {
     colorListsSize = boardSize;
-    for (int i = 0; i < boardSize; i++) {
-      List<Color> colors = [];
-      for (int j = 0; j < boardSize; j++) {
-        colors.add(standardColor);
+    if (colorLists.length == boardSize) {
+      mainBoardColor = Colors.white;
+    } else {
+      for (int i = 0; i < boardSize; i++) {
+        List<Color> colors = [];
+        for (int j = 0; j < boardSize; j++) {
+          colors.add(standardColor);
+        }
+        colorLists.add(colors);
       }
-      colorLists.add(colors);
+      mainBoardColor = Colors.white;
     }
-    mainBoardColor = Colors.white;
   }
 
   String boardToString() {
@@ -118,8 +124,7 @@ class BoardUtils extends ChangeNotifier {
     return localBoard;
   }
 
-  Future<File?> _getImageOfBoard(
-      List<String> boardStrings, int boardSize, dotSize) async {
+  File? _getImageOfBoard(List<String> boardStrings, int boardSize, dotSize) {
     ScreenshotController ssc = ScreenshotController();
     File? file;
     ssc
@@ -156,6 +161,7 @@ class BoardUtils extends ChangeNotifier {
     List<String> split = data['canvas'].split(' ');
     int len = sqrt(split.length - 1).ceil();
     final file = _getImageOfBoard(data['canvas'], len, data['dotsize']);
-    // await file.writeAsBytes(await pdf.save());
+    await Printing.layoutPdf(
+        onLayout: (PdfPageFormat format) async => pdf.save());
   }
 }
