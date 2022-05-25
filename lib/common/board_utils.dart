@@ -1,32 +1,46 @@
-import 'dart:io';
 import 'dart:math';
 import 'dart:typed_data';
 
 import 'package:craft_dots/db/db_helper.dart';
 import 'package:craft_dots/ui/dot.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:pdf/pdf.dart';
 import 'package:printing/printing.dart';
-import 'package:provider/provider.dart';
 import 'package:screenshot/screenshot.dart';
 import 'package:pdf/widgets.dart' as pw;
 
-import '../models/settings_model.dart';
 import '../ui/peg_board_widget.dart';
 
 class BoardUtils extends ChangeNotifier {
-  static List<List<Color>> colorLists = [];
+  List<List<Color>> colorLists = [];
   List<Widget> board = [];
-  static Color mainBoardColor = Colors.white;
+  Color mainBoardColor = Colors.white;
   static Color standardColor = Colors.grey.withOpacity(.3);
   int colorListsSize = 0;
   int _boardSize = 0;
   int _dotSize = 0;
 
+  List<Color> colors = [
+    Colors.white,
+    Colors.black,
+    Colors.brown,
+    Colors.blue,
+    Colors.green,
+    Colors.purple,
+    Colors.orange,
+    Colors.yellow,
+    Colors.pink,
+    Colors.red,
+    Colors.grey,
+  ];
+
   int get getBoardSize => _boardSize;
   int get getDotSize => _dotSize;
+
+  void setMainColor(Color color) {
+    mainBoardColor = color;
+    notifyListeners();
+  }
 
   List<List<Color>> get getColorLists => colorLists;
 
@@ -53,13 +67,12 @@ class BoardUtils extends ChangeNotifier {
         children: rows,
       ));
     }
-    notifyListeners();
   }
 
   void initColorList(int boardSize, {previousColors}) {
     colorListsSize = boardSize;
     if (colorLists.length == boardSize) {
-      mainBoardColor = Colors.white;
+      return;
     } else {
       for (int i = 0; i < boardSize; i++) {
         List<Color> colors = [];
@@ -68,7 +81,7 @@ class BoardUtils extends ChangeNotifier {
         }
         colorLists.add(colors);
       }
-      mainBoardColor = Colors.white;
+      mainBoardColor = Colors.blue;
     }
   }
 
@@ -102,7 +115,41 @@ class BoardUtils extends ChangeNotifier {
     notifyListeners();
   }
 
-  List<Widget> genBoard(List<String> list, int dotSize) {
+  Future<void> printBoard(String name) async {
+    Map data = await DBHelper.getData(name: name);
+    List<String> split = data['canvas'].split(' ');
+    int len = sqrt(split.length - 1).ceil();
+    _processImageOfBoard(data['canvas'], len, data['dotsize']);
+  }
+
+  void _processImageOfBoard(List<String> boardStrings, int boardSize, dotSize) {
+    ScreenshotController ssc = ScreenshotController();
+    Uint8List file;
+    ssc
+        .captureFromWidget(
+      PegBoardWidget(
+          board: _genBoard(boardStrings, dotSize),
+          boardSize: boardSize,
+          dotSize: dotSize),
+    )
+        .then((image) async {
+      await _getImageCallback(image);
+    });
+  }
+
+  _getImageCallback(Uint8List img) async {
+    final pdf = pw.Document();
+    pdf.addPage(
+      pw.Page(
+        build: (pw.Context context) =>
+            pw.Center(child: pw.Image(pw.MemoryImage(img))),
+      ),
+    );
+    await Printing.layoutPdf(
+        onLayout: (PdfPageFormat format) async => pdf.save());
+  }
+
+  List<Widget> _genBoard(List<String> list, int dotSize) {
     int allSize = sqrt(list.length).ceil();
     List<Widget> localBoard = [];
     for (int row = 0; row < allSize; row++) {
@@ -124,44 +171,11 @@ class BoardUtils extends ChangeNotifier {
     return localBoard;
   }
 
-  File? _getImageOfBoard(List<String> boardStrings, int boardSize, dotSize) {
-    ScreenshotController ssc = ScreenshotController();
-    File? file;
-    ssc
-        .captureFromWidget(
-      PegBoardWidget(
-          board: genBoard(boardStrings, dotSize),
-          boardSize: boardSize,
-          dotSize: dotSize),
-    )
-        .then((image) async {
-      file = await _widgetToImageFile(image);
-    });
-    return file;
-  }
-
-  Future<File> _widgetToImageFile(Uint8List capturedImage) async {
-    Directory tempDir = await getTemporaryDirectory();
-    String tempPath = tempDir.path;
-    final ts = DateTime.now().millisecondsSinceEpoch.toString();
-    String path = '$tempPath/$ts.png';
-    return await File(path).writeAsBytes(capturedImage);
-  }
-
-  Future<void> printBoard(String name) async {
-    Map data = await DBHelper.getData(name: name);
-    final pdf = pw.Document();
-
-    pdf.addPage(
-      pw.Page(
-        build: (pw.Context context) =>
-            pw.Center(child: pw.Text('This should be an image')),
-      ),
-    );
-    List<String> split = data['canvas'].split(' ');
-    int len = sqrt(split.length - 1).ceil();
-    final file = _getImageOfBoard(data['canvas'], len, data['dotsize']);
-    await Printing.layoutPdf(
-        onLayout: (PdfPageFormat format) async => pdf.save());
-  }
+  // Future<File> _widgetToImageFile(Uint8List capturedImage) async {
+  //   Directory tempDir = await getTemporaryDirectory();
+  //   String tempPath = tempDir.path;
+  //   final ts = DateTime.now().millisecondsSinceEpoch.toString();
+  //   String path = '$tempPath/$ts.png';
+  //   return await File(path).writeAsBytes(capturedImage);
+  // }
 }

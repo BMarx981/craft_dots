@@ -1,4 +1,3 @@
-import 'package:craft_dots/models/settings_model.dart';
 import 'package:craft_dots/ui/peg_board.dart';
 import 'package:craft_dots/ui/save_page.dart';
 import 'package:craft_dots/ui/settings.dart';
@@ -47,7 +46,7 @@ class HomePage extends StatelessWidget {
             child: Center(
               child: Container(
                 decoration: BoxDecoration(color: Colors.grey.withOpacity(0.3)),
-                child: const Center(
+                child: Center(
                   child: PegBoard(),
                 ),
               ),

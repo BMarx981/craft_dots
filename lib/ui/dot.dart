@@ -1,5 +1,6 @@
 import 'package:craft_dots/common/board_utils.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class Dot extends StatefulWidget {
   Dot({
@@ -24,13 +25,18 @@ class _DotState extends State<Dot> {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        if (widget.color == BoardUtils.mainBoardColor) {
+        if (widget.color ==
+            Provider.of<BoardUtils>(context, listen: false).mainBoardColor) {
           setState(() => widget.color = BoardUtils.standardColor);
-          bu.getColorLists[widget.row][widget.col] = BoardUtils.standardColor;
+          Provider.of<BoardUtils>(context, listen: false)
+              .getColorLists[widget.row][widget.col] = BoardUtils.standardColor;
           return;
         }
-        setState(() => widget.color = BoardUtils.mainBoardColor);
-        bu.getColorLists[widget.row][widget.col] = BoardUtils.mainBoardColor;
+        setState(() => widget.color =
+            Provider.of<BoardUtils>(context, listen: false).mainBoardColor);
+        Provider.of<BoardUtils>(context, listen: false)
+                .getColorLists[widget.row][widget.col] =
+            Provider.of<BoardUtils>(context, listen: false).mainBoardColor;
       },
       child: Container(
         height: widget.size,
