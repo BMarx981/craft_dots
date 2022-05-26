@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
-import '../common/board_utils.dart';
+import '../models/settings_model.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -15,7 +15,7 @@ class HomePage extends StatelessWidget {
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: const SystemUiOverlayStyle(
           statusBarColor: Colors.green,
-          statusBarBrightness: Brightness.light, // here what you need
+          statusBarBrightness: Brightness.light,
           statusBarIconBrightness: Brightness.light),
       child: Scaffold(
         appBar: AppBar(
@@ -47,7 +47,13 @@ class HomePage extends StatelessWidget {
               child: Container(
                 decoration: BoxDecoration(color: Colors.grey.withOpacity(0.3)),
                 child: Center(
-                  child: PegBoard(),
+                  child: PegBoard(
+                    boardSize:
+                        Provider.of<SettingsModel>(context, listen: false)
+                            .getSize,
+                    dotSize: Provider.of<SettingsModel>(context, listen: false)
+                        .getDotSize,
+                  ),
                 ),
               ),
             ),
