@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
 class SettingsModel extends ChangeNotifier {
-  int _size = 30;
-  int _dotSize = 15;
+  int _size = 29;
+  int _dotSize = 11;
 
   void updateSize(int inputSize) {
     _size = inputSize;

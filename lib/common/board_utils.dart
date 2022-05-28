@@ -1,5 +1,6 @@
 import 'dart:math';
 import 'dart:typed_data';
+import 'dart:io';
 
 import 'package:craft_dots/db/db_helper.dart';
 import 'package:craft_dots/ui/dot.dart';
@@ -12,7 +13,7 @@ import 'package:pdf/widgets.dart' as pw;
 import '../ui/peg_board_widget.dart';
 
 class BoardUtils extends ChangeNotifier {
-  List<List<Color>> colorLists = [];
+  List<List<Color>> _colorLists = [];
   List<Widget> board = [];
   Color mainBoardColor = Colors.white;
   static Color standardColor = Colors.grey.withOpacity(.3);
@@ -47,12 +48,12 @@ class BoardUtils extends ChangeNotifier {
     notifyListeners();
   }
 
-  List<List<Color>> get getColorLists => colorLists;
+  List<List<Color>> get getColorLists => _colorLists;
 
   void generateBoard(int allSize, int dotSize) {
     _boardSize = allSize;
     _dotSize = dotSize;
-    if (colorLists.isEmpty) {
+    if (_colorLists.isEmpty) {
       return;
     }
     board.clear();
@@ -64,7 +65,7 @@ class BoardUtils extends ChangeNotifier {
             size: dotSize.toDouble(),
             row: row,
             col: col,
-            color: colorLists[row][col],
+            color: _colorLists[row][col],
           ),
         );
       }
@@ -76,7 +77,7 @@ class BoardUtils extends ChangeNotifier {
 
   void initColorList(int boardSize, {previousColors}) {
     colorListsSize = boardSize;
-    if (colorLists.length == boardSize) {
+    if (_colorLists.length == boardSize) {
       return;
     } else {
       for (int i = 0; i < boardSize; i++) {
@@ -84,7 +85,7 @@ class BoardUtils extends ChangeNotifier {
         for (int j = 0; j < boardSize; j++) {
           colors.add(standardColor);
         }
-        colorLists.add(colors);
+        _colorLists.add(colors);
       }
       mainBoardColor = Colors.blue;
     }
@@ -92,7 +93,7 @@ class BoardUtils extends ChangeNotifier {
 
   String boardToString() {
     String mainString = "";
-    for (List<Color> colors in colorLists) {
+    for (List<Color> colors in _colorLists) {
       for (Color color in colors) {
         mainString += color.value.toString() + " ";
       }
@@ -106,7 +107,7 @@ class BoardUtils extends ChangeNotifier {
     int k = 0;
     for (int i = 0; i < rowLength; i++) {
       for (int j = 0; j < rowLength; j++) {
-        colorLists[i][j] = Color(
+        _colorLists[i][j] = Color(
           int.parse(
             split[k++],
           ),
@@ -130,7 +131,6 @@ class BoardUtils extends ChangeNotifier {
 
   void _processImageOfBoard(List<String> boardStrings, int boardSize, dotSize) {
     ScreenshotController ssc = ScreenshotController();
-    Uint8List file;
     ssc
         .captureFromWidget(
       PegBoardWidget(
@@ -154,7 +154,7 @@ class BoardUtils extends ChangeNotifier {
             size: dotSize.toDouble(),
             row: row,
             col: col,
-            color: colorLists[row][col],
+            color: _colorLists[row][col],
           ),
         );
       }
@@ -169,8 +169,18 @@ class BoardUtils extends ChangeNotifier {
     final pdf = pw.Document();
     pdf.addPage(
       pw.Page(
-        build: (pw.Context context) =>
-            pw.Center(child: pw.Image(pw.MemoryImage(img))),
+        build: (pw.Context context) => pw.Column(
+          children: [
+            pw.SizedBox(height: 20),
+            pw.Container(
+              padding: const pw.EdgeInsets.all(15),
+              width: 440,
+              child: pw.Image(
+                pw.MemoryImage(img),
+              ),
+            )
+          ],
+        ),
       ),
     );
     await Printing.layoutPdf(
