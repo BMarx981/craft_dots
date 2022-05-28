@@ -23,7 +23,7 @@ class ColorRow extends StatelessWidget {
 
   void _changeColor(Color color, BuildContext context) {
     Provider.of<BoardUtils>(context, listen: false).colors.add(color);
-    Provider.of<BoardUtils>(context).setMainColor(color);
+    Provider.of<BoardUtils>(context, listen: false).setMainColor(color);
   }
 
   List<Widget> _buildColorRow(BuildContext context) {
@@ -74,13 +74,13 @@ class ColorRow extends StatelessWidget {
     Widget cancelButton = TextButton(
       child: const Text("CANCEL"),
       onPressed: () {
-        Provider.of<BoardUtils>(context).setMainColor(original);
+        Provider.of<BoardUtils>(context, listen: false).setMainColor(original);
         Navigator.pop(context);
       },
     );
 
     changeTempColor(Color colorTemp) {
-      tempColor = colorTemp;
+      Provider.of<BoardUtils>(context, listen: false).addColorToList(colorTemp);
     }
 
     // set up the AlertDialog

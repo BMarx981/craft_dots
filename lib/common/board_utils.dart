@@ -42,6 +42,11 @@ class BoardUtils extends ChangeNotifier {
     notifyListeners();
   }
 
+  void addColorToList(Color color) {
+    colors.add(color);
+    notifyListeners();
+  }
+
   List<List<Color>> get getColorLists => colorLists;
 
   void generateBoard(int allSize, int dotSize) {
@@ -118,8 +123,9 @@ class BoardUtils extends ChangeNotifier {
   Future<void> printBoard(String name) async {
     Map data = await DBHelper.getData(name: name);
     List<String> split = data['canvas'].split(' ');
+    split.removeLast();
     int len = sqrt(split.length - 1).ceil();
-    _processImageOfBoard(data['canvas'], len, data['dotsize']);
+    _processImageOfBoard(split, len, data['dotsize']);
   }
 
   void _processImageOfBoard(List<String> boardStrings, int boardSize, dotSize) {
@@ -135,18 +141,6 @@ class BoardUtils extends ChangeNotifier {
         .then((image) async {
       await _getImageCallback(image);
     });
-  }
-
-  _getImageCallback(Uint8List img) async {
-    final pdf = pw.Document();
-    pdf.addPage(
-      pw.Page(
-        build: (pw.Context context) =>
-            pw.Center(child: pw.Image(pw.MemoryImage(img))),
-      ),
-    );
-    await Printing.layoutPdf(
-        onLayout: (PdfPageFormat format) async => pdf.save());
   }
 
   List<Widget> _genBoard(List<String> list, int dotSize) {
@@ -169,6 +163,18 @@ class BoardUtils extends ChangeNotifier {
       ));
     }
     return localBoard;
+  }
+
+  _getImageCallback(Uint8List img) async {
+    final pdf = pw.Document();
+    pdf.addPage(
+      pw.Page(
+        build: (pw.Context context) =>
+            pw.Center(child: pw.Image(pw.MemoryImage(img))),
+      ),
+    );
+    await Printing.layoutPdf(
+        onLayout: (PdfPageFormat format) async => pdf.save());
   }
 
   // Future<File> _widgetToImageFile(Uint8List capturedImage) async {

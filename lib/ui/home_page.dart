@@ -1,3 +1,4 @@
+import 'package:craft_dots/common/board_utils.dart';
 import 'package:craft_dots/ui/peg_board.dart';
 import 'package:craft_dots/ui/save_page.dart';
 import 'package:craft_dots/ui/settings.dart';

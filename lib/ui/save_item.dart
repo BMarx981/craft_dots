@@ -75,9 +75,11 @@ class SaveItem extends StatelessWidget {
                     ),
                     onTap: () {
                       Provider.of<BoardUtils>(context, listen: false)
-                          .printBoard(name);
-                      ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(content: Text("Printing $name.")));
+                          .printBoard(name)
+                          .then((item) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(content: Text("Printing $name.")));
+                      });
                       Navigator.pop(context);
                     }), // End load button
               ],
