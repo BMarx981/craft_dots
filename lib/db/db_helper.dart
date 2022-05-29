@@ -54,10 +54,6 @@ class DBHelper {
 
   static Future<List<Map<String, dynamic>>> queryAllRows() async {
     List<Map<String, Object?>> response = await _database.query(table);
-    print("Query all rows");
-    for (var element in response) {
-      print(element['name']);
-    }
     return response;
   }
 

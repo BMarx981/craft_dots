@@ -1,12 +1,6 @@
-import 'dart:typed_data';
-
 import 'package:craft_dots/db/db_helper.dart';
-import 'package:craft_dots/ui/peg_board.dart';
 import 'package:flutter/material.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
-
-import 'dart:io';
 
 import '../common/board_utils.dart';
 import '../models/settings_model.dart';

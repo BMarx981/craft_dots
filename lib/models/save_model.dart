@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:craft_dots/common/board_utils.dart';
 import 'package:craft_dots/db/db_helper.dart';
 import 'package:flutter/material.dart';
@@ -21,7 +19,6 @@ class SaveModel {
       List<String> listOfColors = line.split(" ");
       List<Color> colors = [];
       for (String element in listOfColors) {
-        print(element.toString());
         colors.add(Color(int.parse(element.toString())));
       }
       mainList.add(colors);

@@ -1,6 +1,5 @@
 import 'dart:math';
 import 'dart:typed_data';
-import 'dart:io';
 
 import 'package:craft_dots/db/db_helper.dart';
 import 'package:craft_dots/ui/dot.dart';

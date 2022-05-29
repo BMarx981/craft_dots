@@ -52,7 +52,7 @@ class PegBoard extends StatelessWidget {
                   ),
                 ],
               ),
-              ColorRow(),
+              const ColorRow(),
             ],
           )
         ],

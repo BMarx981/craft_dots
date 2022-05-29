@@ -5,7 +5,7 @@ import 'package:provider/provider.dart';
 import '../common/board_utils.dart';
 
 class ColorRow extends StatelessWidget {
-  ColorRow({Key? key}) : super(key: key);
+  const ColorRow({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
