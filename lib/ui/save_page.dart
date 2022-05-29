@@ -124,33 +124,48 @@ class _SavePageState extends State<SavePage> {
             const Divider(),
             list.isNotEmpty
                 ? Expanded(
-                    child: ListView.builder(
-                        itemCount: list.length,
-                        itemBuilder: (context, index) {
-                          return Dismissible(
-                            onDismissed: (di) async {
-                              await DBHelper.delete(list[index]['name']);
-                              list.removeAt(index);
-                              setState(() {});
-                            },
-                            key: UniqueKey(),
-                            background: Container(
-                              color: Colors.red,
-                              child: const Icon(
-                                Icons.delete_outline,
-                              ),
-                            ),
-                            child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: SaveItem(name: list[index]['name']),
-                            ),
-                          );
-                        }),
+                    child: GridView(
+                      // itemCount: list.length,
+                      children: _gridViewList(list),
+                      gridDelegate:
+                          const SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 2,
+                        crossAxisSpacing: 5.0,
+                        mainAxisSpacing: 5.0,
+                      ),
+                    ),
                   )
                 : const SaveItem(name: 'No Saved data'),
           ],
         ),
       ),
     );
+  }
+
+  List<Widget> _gridViewList(List<Map<String, dynamic>> list) {
+    List<Widget> returnList = [];
+    for (var item in list) {
+      returnList.add(
+        Dismissible(
+          onDismissed: (di) async {
+            await DBHelper.delete(item['name']);
+            list.remove(item);
+            setState(() {});
+          },
+          key: UniqueKey(),
+          background: Container(
+            color: Colors.red,
+            child: const Icon(
+              Icons.delete_outline,
+            ),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: SaveItem(name: item['name']),
+          ),
+        ),
+      );
+    }
+    return returnList;
   }
 }
