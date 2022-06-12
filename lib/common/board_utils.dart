@@ -1,9 +1,11 @@
+import 'dart:io';
 import 'dart:math';
 import 'dart:typed_data';
 
 import 'package:craft_dots/db/db_helper.dart';
 import 'package:craft_dots/ui/dot.dart';
 import 'package:flutter/material.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:pdf/pdf.dart';
 import 'package:printing/printing.dart';
 import 'package:screenshot/screenshot.dart';
@@ -120,7 +122,41 @@ class BoardUtils extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> printBoard(String name) async {
+  //************ Gets the image into the save item widget *******//
+  Future<File> displayBoardImage(String name) async {
+    Map data = await DBHelper.getData(name: name);
+    List<String> split = data['canvas'].split(" ");
+    split.removeLast();
+    int len = sqrt(split.length - 1).ceil();
+    return await _processBoardImage(split, len, data['dotsize']);
+  }
+
+  Future<File> _processBoardImage(
+      List<String> boardStrings, int boardSize, dotSize) {
+    ScreenshotController ssc = ScreenshotController();
+    Future<Uint8List> image = ssc.captureFromWidget(PegBoardWidget(
+      board: _genBoard(boardStrings, dotSize),
+      boardSize: boardSize,
+      dotSize: dotSize,
+    ));
+
+    Future<File> f = _widgetToImageFile(image);
+    return f;
+  }
+
+  Future<File> _widgetToImageFile(Future<Uint8List> capturedImage) async {
+    Uint8List cp = await capturedImage;
+    Directory tempDir = await getTemporaryDirectory();
+    String tempPath = tempDir.path;
+    final ts = DateTime.now().millisecondsSinceEpoch.toString();
+    String path = '$tempPath/$ts.png';
+    File completed = await File(path).writeAsBytes(cp);
+    return completed;
+  }
+  //****************** end save image image gen******************//
+
+  //*******Prints the board to a printer ************************//
+  Future printBoard(String name) async {
     Map data = await DBHelper.getData(name: name);
     List<String> split = data['canvas'].split(' ');
     split.removeLast();
@@ -128,9 +164,10 @@ class BoardUtils extends ChangeNotifier {
     _processImageOfBoard(split, len, data['dotsize']);
   }
 
-  void _processImageOfBoard(List<String> boardStrings, int boardSize, dotSize) {
+  Future _processImageOfBoard(
+      List<String> boardStrings, int boardSize, dotSize) async {
     ScreenshotController ssc = ScreenshotController();
-    ssc
+    return await ssc
         .captureFromWidget(
       PegBoardWidget(
           board: _genBoard(boardStrings, dotSize),
@@ -138,12 +175,25 @@ class BoardUtils extends ChangeNotifier {
           dotSize: dotSize),
     )
         .then((image) async {
-      await _getImageCallback(image);
+      await _getPDFImageCallback(image);
     });
   }
 
   List<Widget> _genBoard(List<String> list, int dotSize) {
     int allSize = sqrt(list.length).ceil();
+    List<List<Color>> localColors = [];
+    int index = 0;
+    for (int row = 0; row < allSize; row++) {
+      List<Color> colColors = [];
+      for (int col = 0; col < allSize; col++) {
+        colColors.add(
+          Color(
+            int.parse(list[index++]),
+          ),
+        );
+      }
+      localColors.add(colColors);
+    }
     List<Widget> localBoard = [];
     for (int row = 0; row < allSize; row++) {
       List<Widget> rows = [];
@@ -153,7 +203,7 @@ class BoardUtils extends ChangeNotifier {
             size: dotSize.toDouble(),
             row: row,
             col: col,
-            color: _colorLists[row][col],
+            color: localColors[row][col],
           ),
         );
       }
@@ -164,7 +214,7 @@ class BoardUtils extends ChangeNotifier {
     return localBoard;
   }
 
-  _getImageCallback(Uint8List img) async {
+  Future _getPDFImageCallback(Uint8List img) async {
     final pdf = pw.Document();
     pdf.addPage(
       pw.Page(
@@ -182,15 +232,7 @@ class BoardUtils extends ChangeNotifier {
         ),
       ),
     );
-    await Printing.layoutPdf(
+    return await Printing.layoutPdf(
         onLayout: (PdfPageFormat format) async => pdf.save());
   }
-
-  // Future<File> _widgetToImageFile(Uint8List capturedImage) async {
-  //   Directory tempDir = await getTemporaryDirectory();
-  //   String tempPath = tempDir.path;
-  //   final ts = DateTime.now().millisecondsSinceEpoch.toString();
-  //   String path = '$tempPath/$ts.png';
-  //   return await File(path).writeAsBytes(capturedImage);
-  // }
 }

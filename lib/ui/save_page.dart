@@ -127,15 +127,17 @@ class _SavePageState extends State<SavePage> {
                     child: GridView(
                       // itemCount: list.length,
                       children: _gridViewList(list),
+                      clipBehavior: Clip.none,
                       gridDelegate:
                           const SliverGridDelegateWithFixedCrossAxisCount(
+                        mainAxisExtent: 300,
                         crossAxisCount: 2,
                         crossAxisSpacing: 5.0,
-                        mainAxisSpacing: 5.0,
+                        mainAxisSpacing: 10.0,
                       ),
                     ),
                   )
-                : const SaveItem(name: 'No Saved data'),
+                : SaveItem(name: 'No Saved data'),
           ],
         ),
       ),
@@ -159,9 +161,14 @@ class _SavePageState extends State<SavePage> {
               Icons.delete_outline,
             ),
           ),
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: SaveItem(name: item['name']),
+          child: GestureDetector(
+            onTap: () {
+              print("Open dialog here");
+            },
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: SaveItem(name: item['name']),
+            ),
           ),
         ),
       );
