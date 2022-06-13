@@ -22,6 +22,7 @@ dependencies:
   pdf: ^3.8.1
   screenshot: ^1.2.3
   printing: ^5.9.1
+  camera:
 
 dev_dependencies:
   flutter_test:
