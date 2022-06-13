@@ -6,6 +6,7 @@ import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
 import '../models/settings_model.dart';
+import 'camera_page.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -22,6 +23,15 @@ class HomePage extends StatelessWidget {
           backgroundColor: Colors.green,
           title: const Text("Craft Dots"),
           actions: [
+            IconButton(
+              icon: const Icon(Icons.camera),
+              onPressed: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const CameraPage()));
+              },
+            ),
             IconButton(
               icon: const Icon(Icons.save),
               onPressed: () {
