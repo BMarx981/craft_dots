@@ -19,6 +19,7 @@ class SaveItem extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(8),
       child: Column(
+        mainAxisAlignment: MainAxisAlignment.end,
         children: [
           Padding(
             padding: const EdgeInsets.all(8.0),
