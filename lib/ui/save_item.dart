@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:craft_dots/db/db_helper.dart';
+import 'package:craft_dots/ui/spinner.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -91,7 +92,7 @@ class SaveItem extends StatelessWidget {
                     future: bu.displayBoardImage(name),
                     builder: (context, snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
-                        return const CircularProgressIndicator();
+                        return Spinner();
                       } else if (snapshot.connectionState ==
                           ConnectionState.done) {
                         if (snapshot.hasError) {

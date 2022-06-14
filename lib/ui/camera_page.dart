@@ -1,4 +1,5 @@
 import 'package:camera/camera.dart';
+import 'package:craft_dots/ui/spinner.dart';
 import 'package:flutter/material.dart';
 
 class CameraPage extends StatefulWidget {
@@ -31,7 +32,7 @@ class _CameraPageState extends State<CameraPage> {
         title: const Text("Take a picture."),
         backgroundColor: Colors.green,
       ),
-      body: const Text("body goes here"),
+      body: Spinner(),
     );
   }
 }
