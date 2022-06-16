@@ -20,12 +20,6 @@ class _SpinnerState extends State<Spinner> {
     Colors.deepOrange
   ];
 
-  @override
-  void initState() {
-    _chooseANewColor();
-    super.initState();
-  }
-
   Color chosenColor1 = Colors.blue;
   Color chosenColor2 = Colors.blue;
   Color chosenColor3 = Colors.blue;
@@ -33,31 +27,36 @@ class _SpinnerState extends State<Spinner> {
 
   @override
   Widget build(BuildContext context) {
+    _chooseANewColor();
     return Column(
       children: [
         Row(
           children: [
             AnimatedContainer(
-              child: const SizedBox(height: 75, width: 75),
+              child: const SizedBox(height: 35, width: 35),
               decoration: BoxDecoration(
                 color: chosenColor1,
                 borderRadius: BorderRadius.circular(35),
               ),
               onEnd: () {
-                _chooseANewColor();
+                setState(() {
+                  _chooseANewColor();
+                });
               },
               duration: const Duration(
                 milliseconds: 1500,
               ),
             ),
             AnimatedContainer(
-              child: const SizedBox(height: 75, width: 75),
+              child: const SizedBox(height: 35, width: 35),
               decoration: BoxDecoration(
                 color: chosenColor2,
                 borderRadius: BorderRadius.circular(35),
               ),
               onEnd: () {
-                _chooseANewColor();
+                setState(() {
+                  _chooseANewColor();
+                });
               },
               duration: const Duration(
                 milliseconds: 1500,
@@ -68,26 +67,30 @@ class _SpinnerState extends State<Spinner> {
         Row(
           children: [
             AnimatedContainer(
-              child: const SizedBox(height: 75, width: 75),
+              child: const SizedBox(height: 35, width: 35),
               decoration: BoxDecoration(
                 color: chosenColor3,
                 borderRadius: BorderRadius.circular(35),
               ),
               onEnd: () {
-                _chooseANewColor();
+                setState(() {
+                  _chooseANewColor();
+                });
               },
               duration: const Duration(
                 milliseconds: 1500,
               ),
             ),
             AnimatedContainer(
-              child: const SizedBox(height: 75, width: 75),
+              child: const SizedBox(height: 35, width: 35),
               decoration: BoxDecoration(
                 color: chosenColor4,
                 borderRadius: BorderRadius.circular(35),
               ),
               onEnd: () {
-                _chooseANewColor();
+                setState(() {
+                  _chooseANewColor();
+                });
               },
               duration: const Duration(
                 milliseconds: 1500,
@@ -101,11 +104,9 @@ class _SpinnerState extends State<Spinner> {
 
   _chooseANewColor() {
     final r = Random();
-    setState(() {
-      chosenColor1 = list[r.nextInt(list.length - 1)];
-      chosenColor2 = list[r.nextInt(list.length - 1)];
-      chosenColor3 = list[r.nextInt(list.length - 1)];
-      chosenColor4 = list[r.nextInt(list.length - 1)];
-    });
+    chosenColor1 = list[r.nextInt(list.length - 1)];
+    chosenColor2 = list[r.nextInt(list.length - 1)];
+    chosenColor3 = list[r.nextInt(list.length - 1)];
+    chosenColor4 = list[r.nextInt(list.length - 1)];
   }
 }
