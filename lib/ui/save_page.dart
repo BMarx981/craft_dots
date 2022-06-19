@@ -19,7 +19,6 @@ class _SavePageState extends State<SavePage> {
   void initState() {
     super.initState();
     list.clear();
-    // DBHelper.dropTable();
     DBHelper.createDB().then((_) {
       getAllTheData().then((_) {
         setState(() {});
@@ -72,51 +71,7 @@ class _SavePageState extends State<SavePage> {
                       showDialog(
                           context: context,
                           builder: (BuildContext context) {
-                            return AlertDialog(
-                              shape: const RoundedRectangleBorder(
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(30))),
-                              title: const Text("Save As"),
-                              content: TextField(
-                                controller: controller,
-                                decoration:
-                                    const InputDecoration(hintText: "Name"),
-                              ),
-                              actions: [
-                                TextButton(
-                                  onPressed: () {
-                                    Navigator.pop(context);
-                                  },
-                                  child: const Text('CANCEL'),
-                                ),
-                                TextButton(
-                                  onPressed: () {
-                                    int dotSize = Provider.of<SettingsModel>(
-                                            context,
-                                            listen: false)
-                                        .getDotSize;
-                                    DBHelper.saveAs(
-                                        controller.text, b, dotSize);
-                                    Provider.of<BoardUtils>(context,
-                                            listen: false)
-                                        .loadBoard(b, dotSize);
-                                    Navigator.pop(context);
-                                    ScaffoldMessenger.of(context).showSnackBar(
-                                      SnackBar(
-                                        content:
-                                            Text("${controller.text} Saved."),
-                                      ),
-                                    );
-                                    setState(() {
-                                      list.add({
-                                        'name': controller.text,
-                                      });
-                                    });
-                                  },
-                                  child: const Text('SAVE'),
-                                ),
-                              ],
-                            );
+                            return _buildAlertDialog(controller, context, b);
                           });
                     }),
               ],
@@ -127,7 +82,6 @@ class _SavePageState extends State<SavePage> {
                     child: GridView(
                       // itemCount: list.length,
                       children: _gridViewList(list),
-                      clipBehavior: Clip.none,
                       gridDelegate:
                           const SliverGridDelegateWithFixedCrossAxisCount(
                         mainAxisExtent: 300,
@@ -141,6 +95,48 @@ class _SavePageState extends State<SavePage> {
           ],
         ),
       ),
+    );
+  }
+
+  AlertDialog _buildAlertDialog(
+      TextEditingController controller, BuildContext context, String b) {
+    return AlertDialog(
+      shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(30))),
+      title: const Text("Save As"),
+      content: TextField(
+        controller: controller,
+        decoration: const InputDecoration(hintText: "Name"),
+      ),
+      actions: [
+        TextButton(
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          child: const Text('CANCEL'),
+        ),
+        TextButton(
+          onPressed: () {
+            int dotSize =
+                Provider.of<SettingsModel>(context, listen: false).getDotSize;
+            DBHelper.saveAs(controller.text, b, dotSize);
+            Provider.of<BoardUtils>(context, listen: false)
+                .loadBoard(b, dotSize);
+            Navigator.pop(context);
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text("${controller.text} Saved."),
+              ),
+            );
+            setState(() {
+              list.add({
+                'name': controller.text,
+              });
+            });
+          },
+          child: const Text('SAVE'),
+        ),
+      ],
     );
   }
 

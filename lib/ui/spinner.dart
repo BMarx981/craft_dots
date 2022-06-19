@@ -3,7 +3,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 
 class Spinner extends StatefulWidget {
-  Spinner({Key? key}) : super(key: key);
+  const Spinner({Key? key}) : super(key: key);
 
   @override
   State<Spinner> createState() => _SpinnerState();
@@ -14,7 +14,7 @@ class _SpinnerState extends State<Spinner> {
     Colors.blue,
     Colors.yellow,
     Colors.green,
-    Colors.white,
+    Colors.pink,
     Colors.black,
     Colors.purple,
     Colors.deepOrange
@@ -24,6 +24,12 @@ class _SpinnerState extends State<Spinner> {
   Color chosenColor2 = Colors.blue;
   Color chosenColor3 = Colors.blue;
   Color chosenColor4 = Colors.blue;
+
+  @override
+  void initState() {
+    super.initState();
+    _chooseANewColor();
+  }
 
   @override
   Widget build(BuildContext context) {

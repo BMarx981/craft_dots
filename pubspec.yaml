@@ -18,11 +18,13 @@ dependencies:
   provider: ^6.0.1
   flutter_colorpicker: ^1.0.1
   sqflite: ^2.0.2+1
+  path:
+  esys_flutter_share_plus:
   path_provider: ^2.0.9
   pdf: ^3.8.1
   screenshot: ^1.2.3
   printing: ^5.9.1
-  camera:
+  camera: 0.9.4+9
 
 dev_dependencies:
   flutter_test:
