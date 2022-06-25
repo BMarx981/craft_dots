@@ -26,9 +26,15 @@ class SaveItem extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Text(name, style: const TextStyle(fontSize: 25)),
+            GestureDetector(
+              onLongPress: () {
+                //TODO
+                print("Do something with editing the name");
+              },
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Text(name, style: const TextStyle(fontSize: 25)),
+              ),
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -98,8 +104,19 @@ class SaveItem extends StatelessWidget {
                     if (snapshot.hasError) {
                       return const Text('An Error happened');
                     } else if (snapshot.hasData) {
-                      return Image.file(
-                        snapshot.data as File,
+                      return GestureDetector(
+                        onTap: () async {
+                          Map boardMap = await DBHelper.getData(name: name);
+                          Provider.of<BoardUtils>(context, listen: false)
+                              .loadBoard(boardMap[DBHelper.columnCanvas],
+                                  boardMap[DBHelper.columnDotSize]);
+                          ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(content: Text("$name Loaded.")));
+                          Navigator.pop(context);
+                        },
+                        child: Image.file(
+                          snapshot.data as File,
+                        ),
                       );
                     }
                   }
@@ -111,12 +128,4 @@ class SaveItem extends StatelessWidget {
       ),
     );
   }
-
-  // Future<Image> convertFileToImage(File picture) async {
-  //   List<int> imageBase64 = picture.readAsBytesSync();
-  //   String imageAsString = base64Encode(imageBase64);
-  //   Uint8List uint8list = base64.decode(imageAsString);
-  //   Image image = Image.memory(uint8list);
-  //   return image;
-  // }
 }
