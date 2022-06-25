@@ -6,6 +6,7 @@ import 'common/board_utils.dart';
 import 'models/settings_model.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
   runApp(const CraftDots());
 }
 

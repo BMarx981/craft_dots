@@ -6,7 +6,8 @@ import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 
 class CameraPage extends StatefulWidget {
-  const CameraPage({Key? key}) : super(key: key);
+  const CameraPage({Key? key, required this.cameras}) : super(key: key);
+  final List<CameraDescription> cameras;
 
   @override
   State<CameraPage> createState() => _CameraPageState();
@@ -14,7 +15,7 @@ class CameraPage extends StatefulWidget {
 
 class _CameraPageState extends State<CameraPage>
     with WidgetsBindingObserver, TickerProviderStateMixin {
-  CameraController? controller;
+  late CameraController? controller;
   List cameras = [];
   int selectedCameraIndex = 0;
   String imagePath = "";

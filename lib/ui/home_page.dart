@@ -9,7 +9,15 @@ import 'package:provider/provider.dart';
 import '../models/settings_model.dart';
 
 class HomePage extends StatelessWidget {
-  HomePage({Key? key}) : super(key: key);
+  HomePage({Key? key}) : super(key: key) {
+    getCameras();
+  }
+
+  late List<CameraDescription> cameras;
+
+  void getCameras() async {
+    cameras = await availableCameras();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -21,8 +29,12 @@ class HomePage extends StatelessWidget {
           IconButton(
             icon: const Icon(Icons.camera),
             onPressed: () {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => CameraPage()));
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => CameraPage(
+                            cameras: cameras,
+                          )));
             },
           ),
           IconButton(
