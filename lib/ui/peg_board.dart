@@ -14,7 +14,6 @@ class PegBoard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    SizeConfig().init(context);
     Provider.of<BoardUtils>(context, listen: false).initColorList(boardSize);
     Provider.of<BoardUtils>(context, listen: false)
         .generateBoard(boardSize, dotSize);
@@ -24,11 +23,17 @@ class PegBoard extends StatelessWidget {
         children: [
           Expanded(
             child: InteractiveViewer(
+              boundaryMargin: const EdgeInsets.all(8.0),
+              minScale: 0.1,
+              maxScale: 2.6,
               clipBehavior: Clip.none,
-              child: PegBoardWidget(
-                  board: Provider.of<BoardUtils>(context, listen: false).board,
-                  boardSize: boardSize,
-                  dotSize: dotSize),
+              child: Center(
+                child: PegBoardWidget(
+                    board:
+                        Provider.of<BoardUtils>(context, listen: false).board,
+                    boardSize: boardSize,
+                    dotSize: dotSize),
+              ),
             ),
           ),
           const Divider(thickness: 2),
