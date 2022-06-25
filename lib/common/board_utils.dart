@@ -124,7 +124,8 @@ class BoardUtils extends ChangeNotifier {
 
   //************ Gets the image into the save item widget *******//
   Future<File> displayBoardImage(String name) async {
-    Map data = await DBHelper.getData(name: name);
+    final db = DBHelper.instance;
+    Map data = await db.getData(name: name);
     List<String> split = data['canvas'].split(" ");
     split.removeLast();
     int len = sqrt(split.length - 1).ceil();
@@ -157,7 +158,8 @@ class BoardUtils extends ChangeNotifier {
 
   //*******Prints the board to a printer ************************//
   Future printBoard(String name) async {
-    Map data = await DBHelper.getData(name: name);
+    final db = DBHelper.instance;
+    Map data = await db.getData(name: name);
     List<String> split = data['canvas'].split(' ');
     split.removeLast();
     int len = sqrt(split.length - 1).ceil();

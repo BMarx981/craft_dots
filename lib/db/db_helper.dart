@@ -21,22 +21,6 @@ class DBHelper {
   DBHelper._privateConstructor();
   static final DBHelper instance = DBHelper._privateConstructor();
 
-  static Future<void> createDB() async {
-    Directory docDir = await getApplicationDocumentsDirectory();
-    String path = docDir.path + _databaseName;
-    _database = await openDatabase(path);
-    await createTable();
-  }
-
-  static Future createTable() async {
-    Database? db = await instance.database;
-    await _database?.execute('''CREATE TABLE IF NOT EXISTS $table 
-        ($columnId INTEGER PRIMARY KEY, 
-        $columnName TEXT, 
-        $columnCanvas TEXT, 
-        $columnDotSize INT)''');
-  }
-
   Future<Database?> get database async {
     if (_database != null) return _database;
     // lazily instantiate the db the first time it is accessed
@@ -53,11 +37,11 @@ class DBHelper {
 
   Future _onCreate(Database db, int version) async {
     await db.execute('''
-          'CREATE TABLE IF NOT EXISTS $table '
-        '($columnId INTEGER PRIMARY KEY, '
-        '$columnName TEXT, '
-        '$columnCanvas TEXT, '
-        '$columnDotSize INT)'
+          CREATE TABLE IF NOT EXISTS $table 
+        ($columnId INTEGER PRIMARY KEY,
+        $columnName TEXT,
+        $columnCanvas TEXT, 
+        $columnDotSize INT)
           ''');
   }
 
@@ -95,13 +79,13 @@ class DBHelper {
     return response;
   }
 
-  static Future<List<Map<String, dynamic>>> getAllData() async {
+  Future<List<Map<String, dynamic>>> getAllData() async {
     Database? db = await instance.database;
     var li = await db!.rawQuery('SELECT * FROM $table');
     return li;
   }
 
-  static Future<Map> getData({required String name}) async {
+  Future<Map> getData({required String name}) async {
     final db = await instance.database;
     final list =
         await db?.rawQuery('SELECT * FROM $table WHERE $columnName = "$name"');
@@ -117,7 +101,7 @@ class DBHelper {
 
   // All of the methods (insert, query, update, delete) can also be done using
   // raw SQL commands. This method uses a raw query to give the row count.
-  static Future<int?> queryRowCount() async {
+  Future<int?> queryRowCount() async {
     final db = await instance.database;
     return Sqflite.firstIntValue(
         await db!.rawQuery('SELECT COUNT(*) FROM $table'));
@@ -125,7 +109,7 @@ class DBHelper {
 
   //Save resources and avoid memory leaks by closing the database when finished
   // using it.
-  static Future<void> closeDB() async {
+  Future<void> closeDB() async {
     final db = await instance.database;
     await db!.close();
   }
@@ -137,7 +121,7 @@ class DBHelper {
 
   // We are assuming here that the id column in the map is set. The other
   // column values will be used to update the row.
-  static Future<int> update(String name, String data, int dotSize) async {
+  Future<int> update(String name, String data, int dotSize) async {
     final db = await instance.database;
     Map<String, dynamic> row = {
       columnName: name,
@@ -150,7 +134,7 @@ class DBHelper {
 
   // Deletes the row specified by the id. The number of affected rows is
   // returned. This should be 1 as long as the row exists.
-  static Future<void> delete(String name) async {
+  Future<void> delete(String name) async {
     final db = await instance.database;
     await db!.delete(table, where: '$columnName = ?', whereArgs: [name]);
   }

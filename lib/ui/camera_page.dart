@@ -158,7 +158,7 @@ class _CameraPageState extends State<CameraPage>
             onPressed: _onSwitchCamera,
             icon: Icon(_getCameraLensIcon(lensDirection)),
             label: Text(
-                "${lensDirection.toString().substring(lensDirection.toString().indexOf('.') + 1)}")),
+                "$lensDirection.toString().substring(lensDirection.toString().indexOf('.') + 1)}")),
       ),
     );
   }
