@@ -61,6 +61,7 @@ class _CameraPageState extends State<CameraPage>
 
   @override
   void initState() {
+    print(cameras.length);
     onNewCameraSelected(cameras[0]);
     super.initState();
   }
@@ -96,41 +97,12 @@ class _CameraPageState extends State<CameraPage>
         title: const Text("Take a picture."),
         backgroundColor: Colors.green,
       ),
-      body: !controller!.value.isInitialized
-          ? const Center(child: Spinner())
-          : Column(
-              children: [
-                Expanded(child: _cameraPreviewWidget()),
-                Row(
-                  children: [
-                    _captureControlRowWidget(context),
-                    _cameraPreviewWidget(),
-                  ],
-                ),
-              ],
-            ),
-    );
-  }
-
-  Widget _cameraPreviewWidget() {
-    print("Preview widget");
-    if (controller == null || !controller!.value.isInitialized) {
-      return Center(
-          child: Column(
-        children: const [
-          Text("Loading",
-              style: TextStyle(
-                color: Colors.blue,
-                fontSize: 20,
-                fontWeight: FontWeight.w900,
-              )),
-          Spinner(),
-        ],
-      ));
-    }
-    return AspectRatio(
-      aspectRatio: controller!.value.aspectRatio,
-      child: CameraPreview(controller!),
+      body: _isCameraInitialized
+          ? AspectRatio(
+              aspectRatio: 1 / controller!.value.aspectRatio,
+              child: controller!.buildPreview(),
+            )
+          : Container(),
     );
   }
 

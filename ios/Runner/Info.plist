@@ -8,7 +8,8 @@
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>NSCameraUsageDescription</key>
     <string>Craft Dots uses the camera to capture images you can create boards out of.</string>
-
+    <key>NSMicrophoneUsageDescription</key>
+    <string>Craft Dots uses the micrphone while capturing images you can create boards out of.</string>
 	<key>CFBundleIdentifier</key>
 	<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
 	<key>CFBundleInfoDictionaryVersion</key>
