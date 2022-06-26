@@ -1,5 +1,4 @@
 import 'package:craft_dots/common/board_utils.dart';
-import 'package:craft_dots/models/size_config.dart';
 import 'package:craft_dots/ui/color_row.dart';
 import 'package:craft_dots/ui/peg_board_widget.dart';
 import 'package:flutter/material.dart';

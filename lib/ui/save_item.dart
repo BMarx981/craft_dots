@@ -89,7 +89,7 @@ class SaveItem extends StatelessWidget {
                           .printBoard(name)
                           .then((item) {
                         ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(content: Text("Printing ${name}.")));
+                            SnackBar(content: Text("Printing $name.")));
                       });
                       Navigator.pop(context);
                     }), // End load button

@@ -6,7 +6,7 @@ class Dot extends StatefulWidget {
   Dot({
     Key? key,
     this.size = 0,
-    this.color = Colors.white,
+    required this.color,
     this.row = 0,
     this.col = 0,
   }) : super(key: key);

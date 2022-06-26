@@ -4,6 +4,7 @@ import 'package:craft_dots/ui/spinner.dart';
 import 'package:flutter/material.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
+import '../main.dart';
 
 class CameraPage extends StatefulWidget {
   const CameraPage({Key? key, required this.cameras}) : super(key: key);
@@ -15,52 +16,70 @@ class CameraPage extends StatefulWidget {
 
 class _CameraPageState extends State<CameraPage>
     with WidgetsBindingObserver, TickerProviderStateMixin {
-  late CameraController? controller;
-  List cameras = [];
-  int selectedCameraIndex = 0;
+  CameraController? controller;
+  bool _isCameraInitialized = false;
   String imagePath = "";
+
+  void onNewCameraSelected(CameraDescription cameraDescription) async {
+    final previousCameraController = controller;
+    // Instantiating the camera controller
+    final CameraController cameraController = CameraController(
+      cameraDescription,
+      ResolutionPreset.high,
+      imageFormatGroup: ImageFormatGroup.jpeg,
+    );
+
+    // Dispose the previous controller
+    await previousCameraController?.dispose();
+
+    // Replace with the new controller
+    if (mounted) {
+      setState(() {
+        controller = cameraController;
+      });
+    }
+
+    // Update UI if controller updated
+    cameraController.addListener(() {
+      if (mounted) setState(() {});
+    });
+
+    // Initialize controller
+    try {
+      await cameraController.initialize();
+    } on CameraException catch (e) {
+      print('Error initializing camera: $e');
+    }
+
+    // Update the Boolean
+    if (mounted) {
+      setState(() {
+        _isCameraInitialized = controller!.value.isInitialized;
+      });
+    }
+  }
 
   @override
   void initState() {
+    onNewCameraSelected(cameras[0]);
     super.initState();
-    availableCameras().then((availableCameras) {
-      cameras = availableCameras;
-      if (cameras.isNotEmpty) {
-        setState(() {
-          selectedCameraIndex = 0;
-        });
-        _initCameraController(cameras[selectedCameraIndex]);
-      } else {
-        print("No camera available");
-      }
-    }).catchError((err) {
-      print("There was an error $err");
-    });
   }
 
-  Future _initCameraController(CameraDescription camera) async {
-    if (controller != null) {
-      await controller!.dispose();
-    }
-    controller = CameraController(camera, ResolutionPreset.high);
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    final CameraController? cameraController = controller;
 
-    controller!.addListener(() {
-      if (mounted) {
-        setState(() {});
-      }
-
-      if (controller!.value.hasError) {
-        print("Camera has error ${controller!.value.errorDescription}");
-      }
-    });
-    try {
-      await controller!.initialize();
-    } on CameraException catch (e) {
-      _showCameraException(e);
+    // App state changed before we got the chance to initialize.
+    if (cameraController == null || !cameraController.value.isInitialized) {
+      return;
     }
 
-    if (mounted) {
-      setState(() {});
+    if (state == AppLifecycleState.inactive) {
+      // Free up memory when camera not active
+      cameraController.dispose();
+    } else if (state == AppLifecycleState.resumed) {
+      // Reinitialize the camera with same properties
+      onNewCameraSelected(cameraController.description);
     }
   }
 
@@ -144,26 +163,6 @@ class _CameraPageState extends State<CameraPage>
     }
   }
 
-  Widget _cameraTogglesRowWidget() {
-    if (cameras.isEmpty) {
-      return const Spacer();
-    }
-
-    CameraDescription selectedCamera = cameras[selectedCameraIndex];
-    CameraLensDirection lensDirection = selectedCamera.lensDirection;
-
-    return Expanded(
-      child: Align(
-        alignment: Alignment.centerLeft,
-        child: TextButton.icon(
-            onPressed: _onSwitchCamera,
-            icon: Icon(_getCameraLensIcon(lensDirection)),
-            label: Text(
-                "$lensDirection.toString().substring(lensDirection.toString().indexOf('.') + 1)}")),
-      ),
-    );
-  }
-
   IconData _getCameraLensIcon(CameraLensDirection direction) {
     switch (direction) {
       case CameraLensDirection.back:
@@ -175,20 +174,6 @@ class _CameraPageState extends State<CameraPage>
       default:
         return Icons.device_unknown;
     }
-  }
-
-  void _onSwitchCamera() {
-    selectedCameraIndex =
-        selectedCameraIndex < cameras.length - 1 ? selectedCameraIndex + 1 : 0;
-    CameraDescription selectedCamera = cameras[selectedCameraIndex];
-    _initCameraController(selectedCamera);
-  }
-
-  void _showCameraException(CameraException e) {
-    String errorText = 'Error: ${e.code}\nError Message: ${e.description}';
-    print(errorText);
-
-    print('Error: ${e.code}\n${e.description}');
   }
 
   /// Display the control bar with buttons to take pictures
