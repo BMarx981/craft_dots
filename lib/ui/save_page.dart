@@ -19,16 +19,13 @@ class _SavePageState extends State<SavePage> {
   void initState() {
     super.initState();
     list.clear();
-    DBHelper.createDB().then((_) {
-      getAllTheData().then((_) {
-        setState(() {});
-      });
-    });
+    getAllTheData();
   }
 
   Future<void> getAllTheData() async {
+    final db = DBHelper.instance;
     List<Map<String, dynamic>> temp = [];
-    temp = await DBHelper.getAllData();
+    temp = await db.getAllData();
     for (Map<String, dynamic> element in temp) {
       setState(() {
         list.add({
@@ -146,7 +143,8 @@ class _SavePageState extends State<SavePage> {
       returnList.add(
         Dismissible(
           onDismissed: (di) async {
-            await DBHelper.delete(item['name']);
+            final db = DBHelper.instance;
+            await db.delete(item['name']);
             list.remove(item);
             setState(() {});
           },

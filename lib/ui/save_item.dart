@@ -26,9 +26,15 @@ class SaveItem extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Text(name, style: const TextStyle(fontSize: 25)),
+            GestureDetector(
+              onLongPress: () {
+                //TODO
+                print("Do something with editing the name");
+              },
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Text(name, style: const TextStyle(fontSize: 25)),
+              ),
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -41,16 +47,17 @@ class SaveItem extends StatelessWidget {
                       size: 30,
                     ),
                     onTap: () {
+                      final db = DBHelper.instance;
                       String board =
                           Provider.of<BoardUtils>(context, listen: false)
                               .boardToString();
-                      DBHelper.update(
+                      db.update(
                           name,
                           board,
                           Provider.of<SettingsModel>(context, listen: false)
                               .getDotSize);
                       ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(content: Text("${name} Saved.")));
+                          SnackBar(content: Text("$name Saved.")));
                       Navigator.pop(context);
                     }), // End save button
                 //Load button starts here!!!!!!
@@ -61,12 +68,13 @@ class SaveItem extends StatelessWidget {
                       size: 30,
                     ),
                     onTap: () async {
-                      Map boardMap = await DBHelper.getData(name: name);
+                      final db = DBHelper.instance;
+                      Map boardMap = await db.getData(name: name);
                       Provider.of<BoardUtils>(context, listen: false).loadBoard(
                           boardMap[DBHelper.columnCanvas],
                           boardMap[DBHelper.columnDotSize]);
                       ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(content: Text("${name} Loaded.")));
+                          SnackBar(content: Text("$name Loaded.")));
                       Navigator.pop(context);
                     }),
                 //Print button start here!!!!!!!!
@@ -98,8 +106,20 @@ class SaveItem extends StatelessWidget {
                     if (snapshot.hasError) {
                       return const Text('An Error happened');
                     } else if (snapshot.hasData) {
-                      return Image.file(
-                        snapshot.data as File,
+                      return GestureDetector(
+                        onTap: () async {
+                          final db = DBHelper.instance;
+                          Map boardMap = await db.getData(name: name);
+                          Provider.of<BoardUtils>(context, listen: false)
+                              .loadBoard(boardMap[DBHelper.columnCanvas],
+                                  boardMap[DBHelper.columnDotSize]);
+                          ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(content: Text("$name Loaded.")));
+                          Navigator.pop(context);
+                        },
+                        child: Image.file(
+                          snapshot.data as File,
+                        ),
                       );
                     }
                   }
@@ -111,12 +131,4 @@ class SaveItem extends StatelessWidget {
       ),
     );
   }
-
-  // Future<Image> convertFileToImage(File picture) async {
-  //   List<int> imageBase64 = picture.readAsBytesSync();
-  //   String imageAsString = base64Encode(imageBase64);
-  //   Uint8List uint8list = base64.decode(imageAsString);
-  //   Image image = Image.memory(uint8list);
-  //   return image;
-  // }
 }
