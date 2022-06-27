@@ -1,8 +1,8 @@
+import 'dart:io';
+
 import 'package:camera/camera.dart';
-import 'package:craft_dots/ui/preview_screen.dart';
 import 'package:craft_dots/ui/spinner.dart';
 import 'package:flutter/material.dart';
-import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 import '../main.dart';
 
@@ -20,6 +20,9 @@ class _CameraPageState extends State<CameraPage>
   bool _isCameraInitialized = false;
   int selectedDirection = 0;
   String imagePath = "";
+  double _minAvailableZoom = 1.0;
+  final double _maxAvailableZoom = 14.0;
+  double _currentZoomLevel = 1.0;
 
   void onNewCameraSelected(CameraDescription cameraDescription) async {
     final previousCameraController = controller;
@@ -57,6 +60,10 @@ class _CameraPageState extends State<CameraPage>
       setState(() {
         _isCameraInitialized = controller!.value.isInitialized;
       });
+
+      cameraController
+          .getMinZoomLevel()
+          .then((value) => _minAvailableZoom = value);
     }
   }
 
@@ -106,6 +113,39 @@ class _CameraPageState extends State<CameraPage>
                       aspectRatio: 1 / controller!.value.aspectRatio,
                       child: controller!.buildPreview(),
                     ),
+                  ),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: Slider(
+                          value: _currentZoomLevel,
+                          min: _minAvailableZoom,
+                          max: _maxAvailableZoom,
+                          activeColor: Colors.grey,
+                          inactiveColor: Colors.black38,
+                          thumbColor: Colors.lightBlue,
+                          onChanged: (value) async {
+                            setState(() {
+                              _currentZoomLevel = value;
+                            });
+                            await controller!.setZoomLevel(value);
+                          },
+                        ),
+                      ),
+                      Container(
+                        decoration: BoxDecoration(
+                          color: Colors.black87,
+                          borderRadius: BorderRadius.circular(10.0),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text(
+                            _currentZoomLevel.toStringAsFixed(1) + 'x',
+                            style: const TextStyle(color: Colors.white),
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                   controlRow(context),
                 ],
@@ -165,43 +205,37 @@ class _CameraPageState extends State<CameraPage>
 
   Widget captureButton(BuildContext context) {
     return GestureDetector(
-      child: Container(
-        child: const SizedBox(height: 25, width: 25),
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(25),
-        ),
+      onTap: () {
+        processTakingPicture();
+        print("Picture taken");
+      },
+      child: Stack(
+        alignment: AlignmentDirectional.center,
+        children: [
+          Container(
+            child: const SizedBox(height: 45, width: 45),
+            decoration: BoxDecoration(
+              color: Colors.white.withOpacity(.2),
+              borderRadius: BorderRadius.circular(25),
+            ),
+          ),
+          Container(
+            child: const SizedBox(height: 35, width: 35),
+            decoration: BoxDecoration(
+              color: Colors.white.withOpacity(.5),
+              borderRadius: BorderRadius.circular(25),
+            ),
+          ),
+          Container(
+            child: const SizedBox(height: 25, width: 25),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(25),
+            ),
+          ),
+        ],
       ),
     );
-  }
-
-  void _onCapturePressed(context) async {
-    try {
-      final path = join(
-        (await getTemporaryDirectory()).path,
-        '${DateTime.now()}.png',
-      );
-      await controller?.takePicture().then((XFile? file) {
-        if (mounted) {
-          setState(() {});
-          if (file != null) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text('Picture saved to ${file.path}'),
-              ),
-            );
-          }
-        }
-      });
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => PreviewImageScreen(imagePath: path),
-        ),
-      );
-    } catch (e) {
-      print(e);
-    }
   }
 
   IconData _getCameraLensIcon(CameraLensDirection direction) {
@@ -217,24 +251,32 @@ class _CameraPageState extends State<CameraPage>
     }
   }
 
-  /// Display the control bar with buttons to take pictures
-  Widget _captureControlRowWidget(context) {
-    return Expanded(
-      child: Align(
-        alignment: Alignment.center,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          mainAxisSize: MainAxisSize.max,
-          children: [
-            FloatingActionButton(
-                child: const Icon(Icons.camera),
-                backgroundColor: Colors.blueGrey,
-                onPressed: () {
-                  _onCapturePressed(context);
-                })
-          ],
-        ),
-      ),
+  Future<XFile?> takePicture() async {
+    final CameraController? cameraController = controller;
+    if (cameraController!.value.isTakingPicture) {
+      // A capture is already pending, do nothing.
+      return null;
+    }
+    try {
+      XFile file = await cameraController.takePicture();
+      print(file.path);
+      return file;
+    } on CameraException catch (e) {
+      print('Error occured while taking picture: $e');
+      return null;
+    }
+  }
+
+  void processTakingPicture() async {
+    XFile? rawImage = await takePicture();
+    File imageFile = File(rawImage!.path);
+
+    int currentUnix = DateTime.now().millisecondsSinceEpoch;
+    final directory = await getApplicationDocumentsDirectory();
+    String fileFormat = imageFile.path.split('.').last;
+
+    await imageFile.copy(
+      '${directory.path}/$currentUnix.$fileFormat',
     );
   }
 }
