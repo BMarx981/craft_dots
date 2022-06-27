@@ -18,6 +18,7 @@ class _CameraPageState extends State<CameraPage>
     with WidgetsBindingObserver, TickerProviderStateMixin {
   CameraController? controller;
   bool _isCameraInitialized = false;
+  int selectedDirection = 0;
   String imagePath = "";
 
   void onNewCameraSelected(CameraDescription cameraDescription) async {
@@ -61,8 +62,7 @@ class _CameraPageState extends State<CameraPage>
 
   @override
   void initState() {
-    print(cameras.length);
-    onNewCameraSelected(cameras[0]);
+    onNewCameraSelected(cameras[selectedDirection]);
     super.initState();
   }
 
@@ -92,17 +92,86 @@ class _CameraPageState extends State<CameraPage>
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text("Take a picture."),
-        backgroundColor: Colors.green,
+    return SafeArea(
+      child: Scaffold(
+        appBar: AppBar(
+          title: const Text("Take a picture."),
+          backgroundColor: Colors.green,
+        ),
+        body: _isCameraInitialized
+            ? Column(
+                children: [
+                  Expanded(
+                    child: AspectRatio(
+                      aspectRatio: 1 / controller!.value.aspectRatio,
+                      child: controller!.buildPreview(),
+                    ),
+                  ),
+                  controlRow(context),
+                ],
+              )
+            : Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: const [
+                  Center(
+                    child: Spinner(),
+                  ),
+                ],
+              ),
       ),
-      body: _isCameraInitialized
-          ? AspectRatio(
-              aspectRatio: 1 / controller!.value.aspectRatio,
-              child: controller!.buildPreview(),
-            )
-          : Container(),
+    );
+  }
+
+  Widget controlRow(BuildContext context) {
+    return Container(
+      color: Colors.grey,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: IconButton(
+              onPressed: () {
+                if (selectedDirection == 0) {
+                  selectedDirection++;
+                } else {
+                  selectedDirection = 0;
+                }
+                _isCameraInitialized = false;
+                onNewCameraSelected(cameras[selectedDirection]);
+                setState(() {});
+              },
+              icon: Icon(
+                  _getCameraLensIcon(cameras[selectedDirection].lensDirection)),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: captureButton(context),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: IconButton(
+              icon: const Icon(Icons.filter_alt_outlined),
+              onPressed: () {
+                // TODO Add filter to preview screen here
+              },
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget captureButton(BuildContext context) {
+    return GestureDetector(
+      child: Container(
+        child: const SizedBox(height: 25, width: 25),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(25),
+        ),
+      ),
     );
   }
 
@@ -138,7 +207,7 @@ class _CameraPageState extends State<CameraPage>
   IconData _getCameraLensIcon(CameraLensDirection direction) {
     switch (direction) {
       case CameraLensDirection.back:
-        return Icons.camera_rear;
+        return Icons.photo_camera_back;
       case CameraLensDirection.front:
         return Icons.camera_front;
       case CameraLensDirection.external:
