@@ -3,10 +3,12 @@ import 'package:craft_dots/ui/peg_board.dart';
 import 'package:craft_dots/ui/save_page.dart';
 import 'package:craft_dots/ui/settings.dart';
 import 'package:craft_dots/ui/camera_page.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../models/settings_model.dart';
+import 'image_picker.dart';
 
 class HomePage extends StatelessWidget {
   HomePage({Key? key}) : super(key: key) {
@@ -23,18 +25,15 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.green,
         title: const Text("Craft Dots"),
         actions: [
           IconButton(
-            icon: const Icon(Icons.camera),
+            icon: const Icon(CupertinoIcons.photo_fill),
             onPressed: () {
               Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => CameraPage(
-                            cameras: cameras,
-                          )));
+                      builder: (context) => const ImagePickerPage()));
             },
           ),
           IconButton(

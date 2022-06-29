@@ -42,7 +42,7 @@ class _SavePageState extends State<SavePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.green,
+        title: const Text("Save your work here"),
       ),
       body: Container(
         padding: const EdgeInsets.all(8.0),

@@ -33,7 +33,8 @@ class CraftDots extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         title: 'Craft Dots',
         theme: ThemeData(
-          primarySwatch: Colors.green,
+          useMaterial3: true,
+          colorSchemeSeed: Colors.green,
         ),
         home: HomePage(),
       ),

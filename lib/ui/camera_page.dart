@@ -1,9 +1,13 @@
 import 'dart:io';
 
 import 'package:camera/camera.dart';
+import 'package:craft_dots/ui/preview_screen.dart';
 import 'package:craft_dots/ui/spinner.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:image_picker/image_picker.dart';
+
 import '../main.dart';
 
 class CameraPage extends StatefulWidget {
@@ -23,6 +27,7 @@ class _CameraPageState extends State<CameraPage>
   double _minAvailableZoom = 1.0;
   final double _maxAvailableZoom = 14.0;
   double _currentZoomLevel = 1.0;
+  String imageFilePath = '';
 
   void onNewCameraSelected(CameraDescription cameraDescription) async {
     final previousCameraController = controller;
@@ -104,6 +109,19 @@ class _CameraPageState extends State<CameraPage>
         appBar: AppBar(
           title: const Text("Take a picture."),
           backgroundColor: Colors.green,
+          actions: [
+            IconButton(
+              icon: const Icon(Icons.image_rounded),
+              onPressed: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => PreviewImageScreen(
+                              imagePath: imageFilePath,
+                            )));
+              },
+            )
+          ],
         ),
         body: _isCameraInitialized
             ? Column(
@@ -241,9 +259,9 @@ class _CameraPageState extends State<CameraPage>
   IconData _getCameraLensIcon(CameraLensDirection direction) {
     switch (direction) {
       case CameraLensDirection.back:
-        return Icons.photo_camera_back;
+        return CupertinoIcons.arrow_2_circlepath;
       case CameraLensDirection.front:
-        return Icons.camera_front;
+        return Icons.change_circle_outlined;
       case CameraLensDirection.external:
         return Icons.camera;
       default:
@@ -275,8 +293,10 @@ class _CameraPageState extends State<CameraPage>
     final directory = await getApplicationDocumentsDirectory();
     String fileFormat = imageFile.path.split('.').last;
 
-    await imageFile.copy(
-      '${directory.path}/$currentUnix.$fileFormat',
-    );
+    imageFilePath = imageFile
+        .copy(
+          '${directory.path}/$currentUnix.$fileFormat',
+        )
+        .toString();
   }
 }
