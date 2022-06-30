@@ -20,12 +20,41 @@ class PegBoard extends StatelessWidget {
       padding: const EdgeInsets.all(1.0),
       child: Column(
         children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              IconButton(
+                icon: const Icon(Icons.format_paint_outlined),
+                onPressed: () {
+                  print("Fill pressed");
+                },
+              ),
+              IconButton(
+                icon: const Icon(Icons.check_box_outline_blank_rounded),
+                onPressed: () {
+                  print("Clear pressed");
+                },
+              ),
+              IconButton(
+                icon: const Icon(Icons.swap_horizontal_circle_outlined),
+                onPressed: () {
+                  print("Change colors");
+                },
+              ),
+              IconButton(
+                icon: const Icon(Icons.undo),
+                onPressed: () {
+                  print("Undo");
+                },
+              ),
+            ],
+          ),
           Expanded(
             child: InteractiveViewer(
               boundaryMargin: const EdgeInsets.all(8.0),
               minScale: 0.1,
               maxScale: 2.6,
-              clipBehavior: Clip.none,
+              clipBehavior: Clip.hardEdge,
               child: Center(
                 child: PegBoardWidget(
                     board:

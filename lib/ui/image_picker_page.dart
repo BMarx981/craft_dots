@@ -43,9 +43,10 @@ class _ImagePickerPageState extends State<ImagePickerPage> {
                 if (snapshot.connectionState == ConnectionState.done &&
                     snapshot.hasData) {
                   File f = File(snapshot.data!.path);
+                  print(f.path);
                   return Image.file(f);
                 }
-                return const Spinner();
+                return Spinner();
               },
               future: _picker.pickImage(source: ImageSource.gallery)),
         ));

@@ -99,7 +99,7 @@ class SaveItem extends StatelessWidget {
                 future: bu.displayBoardImage(name),
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
-                    return const Center(
+                    return Center(
                       child: Spinner(),
                     );
                   } else if (snapshot.connectionState == ConnectionState.done) {
