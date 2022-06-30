@@ -14,7 +14,7 @@ import 'package:pdf/widgets.dart' as pw;
 import '../ui/peg_board_widget.dart';
 
 class BoardUtils extends ChangeNotifier {
-  List<List<Color>> _colorLists = [];
+  final List<List<Color>> _colorLists = [];
   List<Widget> board = [];
   Color mainBoardColor = Colors.white;
   static Color standardColor = Colors.grey.withOpacity(.3);
@@ -38,6 +38,7 @@ class BoardUtils extends ChangeNotifier {
 
   int get getBoardSize => _boardSize;
   int get getDotSize => _dotSize;
+  List<List<Color>> get getColorList => _colorLists;
 
   void setMainColor(Color color) {
     mainBoardColor = color;

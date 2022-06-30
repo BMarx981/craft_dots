@@ -4,6 +4,8 @@ import 'package:craft_dots/ui/peg_board_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../common/edit_utils.dart';
+
 class PegBoard extends StatelessWidget {
   const PegBoard({Key? key, required this.boardSize, required this.dotSize})
       : super(key: key);
@@ -26,6 +28,7 @@ class PegBoard extends StatelessWidget {
               IconButton(
                 icon: const Icon(Icons.format_paint_outlined),
                 onPressed: () {
+                  EditUtils.fillFunc();
                   print("Fill pressed");
                 },
               ),
