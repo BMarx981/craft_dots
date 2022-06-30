@@ -2,13 +2,12 @@ import 'package:camera/camera.dart';
 import 'package:craft_dots/ui/peg_board.dart';
 import 'package:craft_dots/ui/save_page.dart';
 import 'package:craft_dots/ui/settings.dart';
-import 'package:craft_dots/ui/camera_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../models/settings_model.dart';
-import 'image_picker.dart';
+import 'image_picker_page.dart';
 
 class HomePage extends StatelessWidget {
   HomePage({Key? key}) : super(key: key) {

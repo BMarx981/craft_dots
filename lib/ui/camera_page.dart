@@ -11,8 +11,7 @@ import 'package:image_picker/image_picker.dart';
 import '../main.dart';
 
 class CameraPage extends StatefulWidget {
-  const CameraPage({Key? key, required this.cameras}) : super(key: key);
-  final List<CameraDescription> cameras;
+  const CameraPage({Key? key}) : super(key: key);
 
   @override
   State<CameraPage> createState() => _CameraPageState();
