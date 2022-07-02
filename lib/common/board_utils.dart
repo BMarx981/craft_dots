@@ -38,7 +38,7 @@ class BoardUtils extends ChangeNotifier {
 
   int get getBoardSize => _boardSize;
   int get getDotSize => _dotSize;
-  List<List<Color>> get getColorList => _colorLists;
+  List<List<Color>> get getColorLists => _colorLists;
 
   void setMainColor(Color color) {
     mainBoardColor = color;
@@ -50,7 +50,12 @@ class BoardUtils extends ChangeNotifier {
     notifyListeners();
   }
 
-  List<List<Color>> get getColorLists => _colorLists;
+  void clearBoard(int boardSize) {
+    _colorLists.clear();
+    initColorList(boardSize);
+    loadBoard(boardToString(), _dotSize);
+    notifyListeners();
+  }
 
   void generateBoard(int allSize, int dotSize) {
     _boardSize = allSize;
@@ -79,6 +84,7 @@ class BoardUtils extends ChangeNotifier {
 
   void initColorList(int boardSize, {previousColors}) {
     colorListsSize = boardSize;
+    // _colorLists.clear();
     if (_colorLists.length == boardSize) {
       return;
     } else {
@@ -89,8 +95,8 @@ class BoardUtils extends ChangeNotifier {
         }
         _colorLists.add(colors);
       }
-      mainBoardColor = Colors.blue;
     }
+    mainBoardColor = Colors.blue;
   }
 
   String boardToString() {

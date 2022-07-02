@@ -28,14 +28,13 @@ class PegBoard extends StatelessWidget {
               IconButton(
                 icon: const Icon(Icons.format_paint_outlined),
                 onPressed: () {
-                  EditUtils.fillFunc();
                   print("Fill pressed");
                 },
               ),
               IconButton(
                 icon: const Icon(Icons.check_box_outline_blank_rounded),
                 onPressed: () {
-                  print("Clear pressed");
+                  EditUtils.clearBoard(context);
                 },
               ),
               IconButton(

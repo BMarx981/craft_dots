@@ -61,14 +61,16 @@ class _SavePageState extends State<SavePage> {
                       ),
                     ),
                     onTap: () {
-                      String b = Provider.of<BoardUtils>(context, listen: false)
-                          .boardToString();
+                      String board =
+                          Provider.of<BoardUtils>(context, listen: false)
+                              .boardToString();
                       TextEditingController controller =
                           TextEditingController();
                       showDialog(
                           context: context,
                           builder: (BuildContext context) {
-                            return _buildAlertDialog(controller, context, b);
+                            return _buildAlertDialog(
+                                controller, context, board);
                           });
                     }),
               ],
@@ -96,7 +98,7 @@ class _SavePageState extends State<SavePage> {
   }
 
   AlertDialog _buildAlertDialog(
-      TextEditingController controller, BuildContext context, String b) {
+      TextEditingController controller, BuildContext context, String board) {
     return AlertDialog(
       shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.all(Radius.circular(30))),
@@ -116,9 +118,9 @@ class _SavePageState extends State<SavePage> {
           onPressed: () {
             int dotSize =
                 Provider.of<SettingsModel>(context, listen: false).getDotSize;
-            DBHelper.saveAs(controller.text, b, dotSize);
+            DBHelper.saveAs(controller.text, board, dotSize);
             Provider.of<BoardUtils>(context, listen: false)
-                .loadBoard(b, dotSize);
+                .loadBoard(board, dotSize);
             Navigator.pop(context);
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(

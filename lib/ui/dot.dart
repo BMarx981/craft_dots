@@ -20,7 +20,6 @@ class Dot extends StatefulWidget {
 }
 
 class _DotState extends State<Dot> {
-  BoardUtils bu = BoardUtils();
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
