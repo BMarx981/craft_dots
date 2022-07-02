@@ -6,7 +6,7 @@ import '../models/settings_model.dart';
 
 class EditUtils {
   static void fillFunc(int row, int col, Color color, BuildContext context) {
-    print(Provider.of<BoardUtils>(context).getColorLists);
+    print("Row $row Col $col");
   }
 
   static void clearBoard(BuildContext context) {

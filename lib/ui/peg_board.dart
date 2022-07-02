@@ -18,6 +18,8 @@ class PegBoard extends StatelessWidget {
     Provider.of<BoardUtils>(context, listen: false).initColorList(boardSize);
     Provider.of<BoardUtils>(context, listen: false)
         .generateBoard(boardSize, dotSize);
+    bool fill = Provider.of<BoardUtils>(context).getFillEnabled;
+    print("Getfillenaabled $fill");
     return Padding(
       padding: const EdgeInsets.all(1.0),
       child: Column(
@@ -25,11 +27,22 @@ class PegBoard extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              IconButton(
-                icon: const Icon(Icons.format_paint_outlined),
-                onPressed: () {
-                  print("Fill pressed");
-                },
+              Stack(
+                alignment: Alignment.center,
+                children: [
+                  Container(
+                    decoration: BoxDecoration(
+                        color: fill ? Colors.purpleAccent : Colors.blue),
+                  ),
+                  IconButton(
+                    icon: const Icon(Icons.format_paint_outlined),
+                    onPressed: () {
+                      Provider.of<BoardUtils>(context, listen: false)
+                          .toggleFillEnabled();
+                      print("Fill pressed");
+                    },
+                  ),
+                ],
               ),
               IconButton(
                 icon: const Icon(Icons.check_box_outline_blank_rounded),

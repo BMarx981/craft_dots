@@ -2,6 +2,8 @@ import 'package:craft_dots/common/board_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../common/edit_utils.dart';
+
 class Dot extends StatefulWidget {
   Dot({
     Key? key,
@@ -24,6 +26,9 @@ class _DotState extends State<Dot> {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
+        if (Provider.of<BoardUtils>(context, listen: false).getFillEnabled) {
+          EditUtils.fillFunc(widget.row, widget.col, widget.color, context);
+        }
         if (widget.color ==
             Provider.of<BoardUtils>(context, listen: false).mainBoardColor) {
           setState(() => widget.color = BoardUtils.standardColor);

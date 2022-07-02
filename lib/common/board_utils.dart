@@ -21,6 +21,7 @@ class BoardUtils extends ChangeNotifier {
   int colorListsSize = 0;
   int _boardSize = 0;
   int _dotSize = 0;
+  bool isFillEnabled = false;
 
   List<Color> colors = [
     Colors.white,
@@ -39,6 +40,11 @@ class BoardUtils extends ChangeNotifier {
   int get getBoardSize => _boardSize;
   int get getDotSize => _dotSize;
   List<List<Color>> get getColorLists => _colorLists;
+  bool get getFillEnabled => isFillEnabled;
+  void toggleFillEnabled() {
+    isFillEnabled = !isFillEnabled;
+    notifyListeners();
+  }
 
   void setMainColor(Color color) {
     mainBoardColor = color;
@@ -84,7 +90,6 @@ class BoardUtils extends ChangeNotifier {
 
   void initColorList(int boardSize, {previousColors}) {
     colorListsSize = boardSize;
-    // _colorLists.clear();
     if (_colorLists.length == boardSize) {
       return;
     } else {
