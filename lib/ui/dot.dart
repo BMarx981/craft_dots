@@ -27,7 +27,13 @@ class _DotState extends State<Dot> {
     return GestureDetector(
       onTap: () {
         if (Provider.of<BoardUtils>(context, listen: false).getFillEnabled) {
-          EditUtils.fillFunc(widget.row, widget.col, widget.color, context);
+          EditUtils.fillFunc(
+              widget.row,
+              widget.col,
+              Provider.of<BoardUtils>(context, listen: false).mainBoardColor,
+              context);
+          setState(() {});
+          return;
         }
         if (widget.color ==
             Provider.of<BoardUtils>(context, listen: false).mainBoardColor) {

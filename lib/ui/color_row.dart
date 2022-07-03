@@ -22,14 +22,14 @@ class ColorRow extends StatelessWidget {
   }
 
   void _changeColor(Color color, BuildContext context) {
-    Provider.of<BoardUtils>(context, listen: false).colors.add(color);
+    Provider.of<BoardUtils>(context, listen: false).palette.add(color);
     Provider.of<BoardUtils>(context, listen: false).setMainColor(color);
   }
 
   List<Widget> _buildColorRow(BuildContext context) {
     List<Widget> list = [];
     for (int i = 0;
-        i < Provider.of<BoardUtils>(context, listen: false).colors.length;
+        i < Provider.of<BoardUtils>(context, listen: false).palette.length;
         i++) {
       list.add(
         Padding(
@@ -43,15 +43,15 @@ class ColorRow extends StatelessWidget {
             },
             onTap: () {
               Provider.of<BoardUtils>(context, listen: false).setMainColor(
-                  Provider.of<BoardUtils>(context, listen: false).colors[i]);
-              Provider.of<BoardUtils>(context, listen: false).colors[i];
+                  Provider.of<BoardUtils>(context, listen: false).palette[i]);
+              Provider.of<BoardUtils>(context, listen: false).palette[i];
             },
             child: Container(
               height: 30,
               width: 30,
               decoration: BoxDecoration(
                   color: Provider.of<BoardUtils>(context, listen: false)
-                      .colors[i]),
+                      .palette[i]),
             ),
           ),
         ),
@@ -80,7 +80,8 @@ class ColorRow extends StatelessWidget {
     );
 
     changeTempColor(Color colorTemp) {
-      Provider.of<BoardUtils>(context, listen: false).addColorToList(colorTemp);
+      Provider.of<BoardUtils>(context, listen: false)
+          .addColorToPalette(colorTemp);
     }
 
     // set up the AlertDialog

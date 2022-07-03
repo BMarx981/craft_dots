@@ -6,7 +6,7 @@ import 'package:provider/provider.dart';
 
 import '../common/edit_utils.dart';
 
-class PegBoard extends StatelessWidget {
+class PegBoard extends StatefulWidget {
   const PegBoard({Key? key, required this.boardSize, required this.dotSize})
       : super(key: key);
 
@@ -14,12 +14,17 @@ class PegBoard extends StatelessWidget {
   final int dotSize;
 
   @override
+  State<PegBoard> createState() => _PegBoardState();
+}
+
+class _PegBoardState extends State<PegBoard> {
+  @override
   Widget build(BuildContext context) {
-    Provider.of<BoardUtils>(context, listen: false).initColorList(boardSize);
     Provider.of<BoardUtils>(context, listen: false)
-        .generateBoard(boardSize, dotSize);
+        .initColorList(widget.boardSize);
+    Provider.of<BoardUtils>(context, listen: false)
+        .generateBoard(widget.boardSize, widget.dotSize);
     bool fill = Provider.of<BoardUtils>(context).getFillEnabled;
-    print("Getfillenaabled $fill");
     return Padding(
       padding: const EdgeInsets.all(1.0),
       child: Column(
@@ -30,15 +35,22 @@ class PegBoard extends StatelessWidget {
               Stack(
                 alignment: Alignment.center,
                 children: [
-                  Container(
-                    decoration: BoxDecoration(
-                        color: fill ? Colors.purpleAccent : Colors.blue),
-                  ),
-                  IconButton(
-                    icon: const Icon(Icons.format_paint_outlined),
-                    onPressed: () {
+                  GestureDetector(
+                    child: Container(
+                      child: const Padding(
+                        padding: EdgeInsets.all(8.0),
+                        child: Icon(Icons.format_paint_outlined),
+                      ),
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(25),
+                          color: fill ? Colors.lightBlue : Colors.transparent),
+                    ),
+                    onTap: () {
                       Provider.of<BoardUtils>(context, listen: false)
                           .toggleFillEnabled();
+                      setState(() {
+                        fill = !fill;
+                      });
                       print("Fill pressed");
                     },
                   ),
@@ -74,8 +86,8 @@ class PegBoard extends StatelessWidget {
                 child: PegBoardWidget(
                     board:
                         Provider.of<BoardUtils>(context, listen: false).board,
-                    boardSize: boardSize,
-                    dotSize: dotSize),
+                    boardSize: widget.boardSize,
+                    dotSize: widget.dotSize),
               ),
             ),
           ),
