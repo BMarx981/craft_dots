@@ -31,4 +31,33 @@ class EditUtils {
     Provider.of<BoardUtils>(context, listen: false)
         .clearBoard(Provider.of<SettingsModel>(context, listen: false).getSize);
   }
+
+  static void changeColorFill(
+      int row, int col, Color current, BuildContext context) {
+    Color selected =
+        Provider.of<BoardUtils>(context, listen: false).mainBoardColor;
+    changeColorHelper(
+      row,
+      col,
+      current,
+      selected,
+      Provider.of<BoardUtils>(context, listen: false).getColorLists,
+    );
+    Provider.of<BoardUtils>(context, listen: false).rebuildBoard();
+  }
+
+  static void changeColorHelper(int row, int col, Color current, Color selected,
+      List<List<Color>> board) {
+    if (row < 0 || col < 0 || row >= board.length || col >= board[row].length) {
+      return;
+    }
+    if (board[row][col] != current) {
+      return;
+    }
+    board[row][col] = selected;
+    changeColorHelper(row + 1, col, current, selected, board);
+    changeColorHelper(row - 1, col, current, selected, board);
+    changeColorHelper(row, col + 1, current, selected, board);
+    changeColorHelper(row, col - 1, current, selected, board);
+  }
 }

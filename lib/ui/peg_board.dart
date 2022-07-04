@@ -6,7 +6,7 @@ import 'package:provider/provider.dart';
 
 import '../common/edit_utils.dart';
 
-class PegBoard extends StatefulWidget {
+class PegBoard extends StatelessWidget {
   const PegBoard({Key? key, required this.boardSize, required this.dotSize})
       : super(key: key);
 
@@ -14,17 +14,10 @@ class PegBoard extends StatefulWidget {
   final int dotSize;
 
   @override
-  State<PegBoard> createState() => _PegBoardState();
-}
-
-class _PegBoardState extends State<PegBoard> {
-  @override
   Widget build(BuildContext context) {
+    Provider.of<BoardUtils>(context, listen: false).initColorList(boardSize);
     Provider.of<BoardUtils>(context, listen: false)
-        .initColorList(widget.boardSize);
-    Provider.of<BoardUtils>(context, listen: false)
-        .generateBoard(widget.boardSize, widget.dotSize);
-    bool fill = Provider.of<BoardUtils>(context).getFillEnabled;
+        .generateBoard(boardSize, dotSize);
     return Padding(
       padding: const EdgeInsets.all(1.0),
       child: Column(
@@ -43,15 +36,36 @@ class _PegBoardState extends State<PegBoard> {
                       ),
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(25),
-                          color: fill ? Colors.lightBlue : Colors.transparent),
+                          color: Provider.of<BoardUtils>(context).getFillEnabled
+                              ? Colors.lightBlue
+                              : Colors.transparent),
                     ),
                     onTap: () {
                       Provider.of<BoardUtils>(context, listen: false)
                           .toggleFillEnabled();
-                      setState(() {
-                        fill = !fill;
-                      });
-                      print("Fill pressed");
+                    },
+                  ),
+                ],
+              ),
+              Stack(
+                alignment: Alignment.center,
+                children: [
+                  GestureDetector(
+                    child: Container(
+                      child: const Padding(
+                        padding: EdgeInsets.all(8.0),
+                        child: Icon(Icons.swap_horizontal_circle_outlined),
+                      ),
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(25),
+                          color: Provider.of<BoardUtils>(context)
+                                  .getChangeColorEnabled
+                              ? Colors.lightBlue
+                              : Colors.transparent),
+                    ),
+                    onTap: () {
+                      Provider.of<BoardUtils>(context, listen: false)
+                          .toggleChangeColorEnabled();
                     },
                   ),
                 ],
@@ -60,12 +74,6 @@ class _PegBoardState extends State<PegBoard> {
                 icon: const Icon(Icons.check_box_outline_blank_rounded),
                 onPressed: () {
                   EditUtils.clearBoard(context);
-                },
-              ),
-              IconButton(
-                icon: const Icon(Icons.swap_horizontal_circle_outlined),
-                onPressed: () {
-                  print("Change colors");
                 },
               ),
               IconButton(
@@ -86,8 +94,8 @@ class _PegBoardState extends State<PegBoard> {
                 child: PegBoardWidget(
                     board:
                         Provider.of<BoardUtils>(context, listen: false).board,
-                    boardSize: widget.boardSize,
-                    dotSize: widget.dotSize),
+                    boardSize: boardSize,
+                    dotSize: dotSize),
               ),
             ),
           ),

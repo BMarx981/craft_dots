@@ -16,12 +16,13 @@ import '../ui/peg_board_widget.dart';
 class BoardUtils extends ChangeNotifier {
   final List<List<Color>> _colorLists = [];
   List<Widget> board = [];
-  Color mainBoardColor = Colors.white;
+  Color mainBoardColor = Colors.blue;
   static Color standardColor = Colors.grey.withOpacity(.3);
   int colorListsSize = 0;
   int _boardSize = 0;
   int _dotSize = 0;
-  bool isFillEnabled = false;
+  bool _isFillEnabled = false;
+  bool _isChangeColorEnabled = false;
 
   List<Color> palette = [
     Colors.white,
@@ -45,9 +46,21 @@ class BoardUtils extends ChangeNotifier {
     _colorLists.addAll(list);
   }
 
-  bool get getFillEnabled => isFillEnabled;
+  bool get getFillEnabled => _isFillEnabled;
   void toggleFillEnabled() {
-    isFillEnabled = !isFillEnabled;
+    _isFillEnabled = !_isFillEnabled;
+    if (_isChangeColorEnabled) {
+      _isChangeColorEnabled = !_isChangeColorEnabled;
+    }
+    notifyListeners();
+  }
+
+  bool get getChangeColorEnabled => _isChangeColorEnabled;
+  void toggleChangeColorEnabled() {
+    _isChangeColorEnabled = !_isChangeColorEnabled;
+    if (_isFillEnabled) {
+      _isFillEnabled = !_isFillEnabled;
+    }
     notifyListeners();
   }
 
@@ -111,7 +124,6 @@ class BoardUtils extends ChangeNotifier {
         _colorLists.add(colors);
       }
     }
-    mainBoardColor = Colors.blue;
   }
 
   String boardToString() {

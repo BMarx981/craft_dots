@@ -35,6 +35,12 @@ class _DotState extends State<Dot> {
           setState(() {});
           return;
         }
+        if (Provider.of<BoardUtils>(context, listen: false)
+            .getChangeColorEnabled) {
+          EditUtils.changeColorFill(
+              widget.row, widget.col, widget.color, context);
+          setState(() {});
+        }
         if (widget.color ==
             Provider.of<BoardUtils>(context, listen: false).mainBoardColor) {
           setState(() => widget.color = BoardUtils.standardColor);
