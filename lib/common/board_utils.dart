@@ -46,6 +46,8 @@ class BoardUtils extends ChangeNotifier {
     _colorLists.addAll(list);
   }
 
+  setColorList(List<Color> list) {}
+
   bool get getFillEnabled => _isFillEnabled;
   void toggleFillEnabled() {
     _isFillEnabled = !_isFillEnabled;
@@ -134,6 +136,19 @@ class BoardUtils extends ChangeNotifier {
       }
     }
     return mainString;
+  }
+
+  void loadBoardFromPic(List<Color> cList) {
+    print("Load board called");
+    int rowLength = sqrt(cList.length).ceil();
+    int k = 0;
+    for (int row = 0; row < rowLength; row++) {
+      for (int col = 0; col < rowLength; col++) {
+        _colorLists[row][col] = cList[k++];
+      }
+    }
+    generateBoard(rowLength, _dotSize);
+    notifyListeners();
   }
 
   void loadBoard(String data, int dotSize) {
