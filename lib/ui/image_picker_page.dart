@@ -1,5 +1,6 @@
 import 'package:craft_dots/ui/camera_page.dart';
 import 'package:craft_dots/ui/peg_board_widget.dart';
+import 'package:craft_dots/ui/spinner.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:image/image.dart' as img;
@@ -23,6 +24,11 @@ class _ImagePickerPageState extends State<ImagePickerPage> {
   @override
   initState() {
     super.initState();
+    getImage().then((e) {
+      setState(() {
+        _isBoardLoaded = !_isBoardLoaded;
+      });
+    });
   }
 
   Future getImage() async {
@@ -71,25 +77,8 @@ class _ImagePickerPageState extends State<ImagePickerPage> {
                     dotSize: Provider.of<BoardUtils>(context, listen: false)
                         .getDotSize,
                   )
-                : Center(
-                    child: GestureDetector(
-                      onTap: () {
-                        getImage().then((e) {
-                          setState(() {
-                            _isBoardLoaded = !_isBoardLoaded;
-                          });
-                        });
-                      },
-                      child: Container(
-                        width: 150,
-                        height: 125,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(12),
-                          color: Colors.lightBlue,
-                        ),
-                        child: const Center(child: Text("Open image picker")),
-                      ),
-                    ),
+                : const Center(
+                    child: Spinner(),
                   ),
           ),
         ));
