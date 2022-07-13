@@ -7,7 +7,10 @@ import 'package:path/path.dart';
 class PreviewImageScreen extends StatefulWidget {
   final String imagePath;
 
-  PreviewImageScreen({required this.imagePath, Key? key});
+  const PreviewImageScreen({
+    Key? key,
+    required this.imagePath,
+  }) : super(key: key);
 
   @override
   _PreviewImageScreenState createState() => _PreviewImageScreenState();

@@ -159,7 +159,7 @@ class _SavePageState extends State<SavePage> {
           ),
           child: GestureDetector(
             onTap: () {
-              print("Open dialog here");
+              // TODO Open dialog here
             },
             child: Padding(
               padding: const EdgeInsets.all(8.0),

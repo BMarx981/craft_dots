@@ -139,7 +139,6 @@ class BoardUtils extends ChangeNotifier {
   }
 
   void loadBoardFromPic(List<Color> cList) {
-    print("Load board called");
     int rowLength = sqrt(cList.length).ceil();
     int k = 0;
     for (int row = 0; row < rowLength; row++) {

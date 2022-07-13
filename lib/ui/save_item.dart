@@ -28,8 +28,7 @@ class SaveItem extends StatelessWidget {
           children: [
             GestureDetector(
               onLongPress: () {
-                //TODO
-                print("Do something with editing the name");
+                //TODO Do something with editing the name
               },
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
@@ -99,7 +98,7 @@ class SaveItem extends StatelessWidget {
                 future: bu.displayBoardImage(name),
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
-                    return Center(
+                    return const Center(
                       child: Spinner(),
                     );
                   } else if (snapshot.connectionState == ConnectionState.done) {

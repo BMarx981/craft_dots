@@ -19,16 +19,12 @@ class ImagePickerPage extends StatefulWidget {
 }
 
 class _ImagePickerPageState extends State<ImagePickerPage> {
-  bool _isBoardLoaded = false;
+  bool isBoardLoaded = false;
 
   @override
   initState() {
     super.initState();
-    getImage().then((e) {
-      setState(() {
-        _isBoardLoaded = !_isBoardLoaded;
-      });
-    });
+    getImage();
   }
 
   Future getImage() async {
@@ -43,7 +39,7 @@ class _ImagePickerPageState extends State<ImagePickerPage> {
       List<Color> list = extractPixelsColors(bytes);
       Provider.of<BoardUtils>(context, listen: false).loadBoardFromPic(list);
     } catch (e) {
-      print(e);
+      // e.toString()
     }
     Navigator.pop(context);
   }
@@ -68,7 +64,7 @@ class _ImagePickerPageState extends State<ImagePickerPage> {
         body: Padding(
           padding: const EdgeInsets.all(8.0),
           child: Center(
-            child: _isBoardLoaded
+            child: isBoardLoaded
                 ? PegBoardWidget(
                     board:
                         Provider.of<BoardUtils>(context, listen: false).board,

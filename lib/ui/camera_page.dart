@@ -6,7 +6,6 @@ import 'package:craft_dots/ui/spinner.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:image_picker/image_picker.dart';
 
 import '../main.dart';
 
@@ -276,7 +275,6 @@ class _CameraPageState extends State<CameraPage>
     }
     try {
       XFile file = await cameraController.takePicture();
-      print(file.path);
       return file;
     } on CameraException catch (e) {
       print('Error occured while taking picture: $e');
