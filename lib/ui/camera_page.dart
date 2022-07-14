@@ -1,12 +1,15 @@
 import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:camera/camera.dart';
 import 'package:craft_dots/ui/preview_screen.dart';
 import 'package:craft_dots/ui/spinner.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:path_provider/path_provider.dart';
+import 'package:image/image.dart' as img;
+import 'package:provider/provider.dart';
 
+import '../common/board_utils.dart';
 import '../main.dart';
 
 class CameraPage extends StatefulWidget {
@@ -55,7 +58,7 @@ class _CameraPageState extends State<CameraPage>
     try {
       await cameraController.initialize();
     } on CameraException catch (e) {
-      print('Error initializing camera: $e');
+      //The camera threw and exception
     }
 
     // Update the Boolean
@@ -106,20 +109,6 @@ class _CameraPageState extends State<CameraPage>
       child: Scaffold(
         appBar: AppBar(
           title: const Text("Take a picture."),
-          backgroundColor: Colors.green,
-          actions: [
-            IconButton(
-              icon: const Icon(Icons.image_rounded),
-              onPressed: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => PreviewImageScreen(
-                              imagePath: imageFilePath,
-                            )));
-              },
-            )
-          ],
         ),
         body: _isCameraInitialized
             ? Column(
@@ -223,7 +212,8 @@ class _CameraPageState extends State<CameraPage>
     return GestureDetector(
       onTap: () {
         processTakingPicture();
-        print("Picture taken");
+        Navigator.pop(context);
+        Navigator.pop(context);
       },
       child: Stack(
         alignment: AlignmentDirectional.center,
@@ -277,23 +267,48 @@ class _CameraPageState extends State<CameraPage>
       XFile file = await cameraController.takePicture();
       return file;
     } on CameraException catch (e) {
-      print('Error occured while taking picture: $e');
       return null;
     }
   }
 
   void processTakingPicture() async {
     XFile? rawImage = await takePicture();
-    File imageFile = File(rawImage!.path);
+    if (rawImage == null) return;
+    Uint8List bytes = File(rawImage.path).readAsBytesSync();
+    List<Color> list = extractPixelsColors(bytes);
+    Provider.of<BoardUtils>(context, listen: false).loadBoardFromPic(list);
+  }
 
-    int currentUnix = DateTime.now().millisecondsSinceEpoch;
-    final directory = await getApplicationDocumentsDirectory();
-    String fileFormat = imageFile.path.split('.').last;
+  List<Color> extractPixelsColors(Uint8List? bytes) {
+    int noOfPixelsPerAxis = 29;
+    List<Color> colors = [];
 
-    imageFilePath = imageFile
-        .copy(
-          '${directory.path}/$currentUnix.$fileFormat',
-        )
-        .toString();
+    List<int> values = bytes!.buffer.asUint8List();
+    img.Image? image = img.decodeImage(values);
+
+    int? width = image?.width;
+    int? height = image?.height;
+
+    List<int?> pixels = [];
+
+    int xChunk = width! ~/ (noOfPixelsPerAxis + 1);
+    int yChunk = height! ~/ (noOfPixelsPerAxis + 1);
+
+    for (int j = 1; j < noOfPixelsPerAxis + 1; j++) {
+      for (int i = 1; i < noOfPixelsPerAxis + 1; i++) {
+        int? pixel = image?.getPixel(xChunk * i, yChunk * j);
+        pixels.add(pixel);
+        colors.add(abgrToColor(pixel!));
+      }
+    }
+
+    return colors;
+  }
+
+  Color abgrToColor(int argbColor) {
+    int r = (argbColor >> 16) & 0xFF;
+    int b = argbColor & 0xFF;
+    int hex = (argbColor & 0xFF00FF00) | (b << 16) | r;
+    return Color(hex);
   }
 }

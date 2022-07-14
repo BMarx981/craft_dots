@@ -1,6 +1,7 @@
 import 'package:craft_dots/common/board_utils.dart';
 import 'package:craft_dots/ui/color_row.dart';
 import 'package:craft_dots/ui/peg_board_widget.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -71,7 +72,7 @@ class PegBoard extends StatelessWidget {
                 ],
               ),
               IconButton(
-                icon: const Icon(Icons.check_box_outline_blank_rounded),
+                icon: const Icon(CupertinoIcons.trash),
                 onPressed: () {
                   EditUtils.clearBoard(context);
                 },

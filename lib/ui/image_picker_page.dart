@@ -1,6 +1,7 @@
 import 'package:craft_dots/ui/camera_page.dart';
 import 'package:craft_dots/ui/peg_board_widget.dart';
 import 'package:craft_dots/ui/spinner.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:image/image.dart' as img;
@@ -58,7 +59,13 @@ class _ImagePickerPageState extends State<ImagePickerPage> {
                     MaterialPageRoute(
                         builder: (context) => const CameraPage()));
               },
-            )
+            ),
+            IconButton(
+              icon: const Icon(CupertinoIcons.photo_fill),
+              onPressed: () {
+                getImage();
+              },
+            ),
           ],
         ),
         body: Padding(
@@ -73,8 +80,18 @@ class _ImagePickerPageState extends State<ImagePickerPage> {
                     dotSize: Provider.of<BoardUtils>(context, listen: false)
                         .getDotSize,
                   )
-                : const Center(
-                    child: Spinner(),
+                : Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Spinner(),
+                          ],
+                        ),
+                      ],
+                    ),
                   ),
           ),
         ));
