@@ -14,7 +14,11 @@ class EditUtils {
 
   static void fillHelper(
       int row, int col, Color color, List<List<Color>> board, Color sc) {
-    if (row < 0 || col < 0 || row >= board.length || col >= board[row].length) {
+    if (row < 0 ||
+        col < 0 ||
+        row > board.length - 1 ||
+        col > board[row].length - 1) {
+      print("$row, $col");
       return;
     }
     if (board[row][col] != sc) {
@@ -48,7 +52,10 @@ class EditUtils {
 
   static void changeColorHelper(int row, int col, Color current, Color selected,
       List<List<Color>> board) {
-    if (row < 0 || col < 0 || row >= board.length || col >= board[row].length) {
+    if (row < 0 ||
+        col < 0 ||
+        row > board.length - 1 ||
+        col > board[row].length - 1) {
       return;
     }
     if (board[row][col] != current) {
