@@ -15,6 +15,7 @@ import '../ui/peg_board_widget.dart';
 
 class BoardUtils extends ChangeNotifier {
   final List<List<Color>> _colorLists = [];
+  Map<Color, int> _colorMap = {};
   List<Widget> board = [];
   Color mainBoardColor = Colors.blue;
   static Color standardColor = Colors.grey.withOpacity(.3);
@@ -74,6 +75,29 @@ class BoardUtils extends ChangeNotifier {
   void addColorToPalette(Color color) {
     palette.add(color);
     notifyListeners();
+  }
+
+  void updateColorMap(Color color) {
+    if (!_colorMap.containsKey(color) || _colorMap[color] == null) {
+      _colorMap[color] = 1;
+    } else {
+      _colorMap[color] = _colorMap[color]! + 1;
+    }
+    notifyListeners();
+  }
+
+  void getColorCount() {
+    Map map = {};
+    for (int i = 0; i < _colorLists.length; i++) {
+      for (int j = 0; j < _colorLists[i].length; j++) {
+        if (!map.containsKey(_colorLists[i][j])) {
+          map[_colorLists[i][j]] = 1;
+        } else {
+          map[_colorLists[i][j]] = map[_colorLists[i][j]]! + 1;
+        }
+      }
+    }
+    print(map);
   }
 
   void clearBoard(int boardSize) {

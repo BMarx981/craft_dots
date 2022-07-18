@@ -18,7 +18,6 @@ class EditUtils {
         col < 0 ||
         row > board.length - 1 ||
         col > board[row].length - 1) {
-      print("$row, $col");
       return;
     }
     if (board[row][col] != sc) {

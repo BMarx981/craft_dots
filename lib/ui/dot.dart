@@ -26,12 +26,10 @@ class _DotState extends State<Dot> {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
+        Color main =
+            Provider.of<BoardUtils>(context, listen: false).mainBoardColor;
         if (Provider.of<BoardUtils>(context, listen: false).getFillEnabled) {
-          EditUtils.fillFunc(
-              widget.row,
-              widget.col,
-              Provider.of<BoardUtils>(context, listen: false).mainBoardColor,
-              context);
+          EditUtils.fillFunc(widget.row, widget.col, main, context);
           setState(() {});
           return;
         }
@@ -41,18 +39,15 @@ class _DotState extends State<Dot> {
               widget.row, widget.col, widget.color, context);
           setState(() {});
         }
-        if (widget.color ==
-            Provider.of<BoardUtils>(context, listen: false).mainBoardColor) {
+        if (widget.color == main) {
           setState(() => widget.color = BoardUtils.standardColor);
           Provider.of<BoardUtils>(context, listen: false)
               .getColorLists[widget.row][widget.col] = BoardUtils.standardColor;
           return;
         }
-        setState(() => widget.color =
-            Provider.of<BoardUtils>(context, listen: false).mainBoardColor);
+        setState(() => widget.color = main);
         Provider.of<BoardUtils>(context, listen: false)
-                .getColorLists[widget.row][widget.col] =
-            Provider.of<BoardUtils>(context, listen: false).mainBoardColor;
+            .getColorLists[widget.row][widget.col] = main;
       },
       child: Container(
         height: widget.size,
