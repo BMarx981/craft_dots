@@ -42,6 +42,8 @@ class BoardUtils extends ChangeNotifier {
   int get getBoardSize => _boardSize;
   int get getDotSize => _dotSize;
   List<List<Color>> get getColorLists => _colorLists;
+  Map<Color, int> get getColorMap => _colorMap;
+
   setColorLists(List<List<Color>> list) {
     _colorLists.clear();
     _colorLists.addAll(list);
@@ -86,8 +88,8 @@ class BoardUtils extends ChangeNotifier {
     notifyListeners();
   }
 
-  void getColorCount() {
-    Map map = {};
+  Map<Color, int> getColorCount() {
+    Map<Color, int> map = {};
     for (int i = 0; i < _colorLists.length; i++) {
       for (int j = 0; j < _colorLists[i].length; j++) {
         if (!map.containsKey(_colorLists[i][j])) {
@@ -97,7 +99,7 @@ class BoardUtils extends ChangeNotifier {
         }
       }
     }
-    print(map);
+    return map;
   }
 
   void clearBoard(int boardSize) {
