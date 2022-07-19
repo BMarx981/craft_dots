@@ -121,7 +121,7 @@ class _SettingsPageState extends State<SettingsPage> {
                                       listen: false)
                                   .getDotSize
                                   .toString()),
-                          textAlign: TextAlign.center,
+                          textAlign: TextAlign.left,
                           onSubmitted: (str) {
                             Provider.of<SettingsModel>(context, listen: false)
                                 .updateDotSize(int.parse(_currentDotSize));
@@ -184,9 +184,16 @@ class _SettingsPageState extends State<SettingsPage> {
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text(
-                      "Stats:",
-                      style: TextStyle(fontSize: 18),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: const [
+                        Text(
+                          "Stats:",
+                          style: TextStyle(fontSize: 18),
+                        ),
+                        Text("Color"),
+                        Text("Count"),
+                      ],
                     ),
                     ListView.builder(
                       shrinkWrap: true,
