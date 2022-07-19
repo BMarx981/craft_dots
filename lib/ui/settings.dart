@@ -190,6 +190,7 @@ class _SettingsPageState extends State<SettingsPage> {
                     ),
                     ListView.builder(
                       shrinkWrap: true,
+                      physics: const ClampingScrollPhysics(),
                       itemCount: keys.length,
                       itemBuilder: (context, index) {
                         return ListTile(
