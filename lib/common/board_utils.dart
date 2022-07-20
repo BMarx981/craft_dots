@@ -50,22 +50,28 @@ class BoardUtils extends ChangeNotifier {
         _colorLists[row][col],
         () {
           _colorLists[row][col] = color;
-          print("Color $color");
+          print("Color ${color.value}");
+          notifyListeners();
         },
-        (Color old) => _colorLists[row][col] = old,
+        (Color old) {
+          print("Old ${old.value}");
+          _colorLists[row][col] = old;
+          notifyListeners();
+        },
       ),
     );
   }
 
   void undo() {
     _undo.undo();
+    generateBoard(_boardSize, _dotSize);
     print(boardToString());
-    rebuildBoard();
   }
 
   void redo() {
     _undo.redo();
-    rebuildBoard();
+    generateBoard(_boardSize, _dotSize);
+    print(boardToString());
   }
 
   setColorLists(List<List<Color>> list) {
