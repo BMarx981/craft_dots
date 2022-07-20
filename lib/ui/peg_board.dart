@@ -80,13 +80,13 @@ class PegBoard extends StatelessWidget {
               IconButton(
                 icon: const Icon(Icons.undo),
                 onPressed: () {
-                  print("Undo");
+                  Provider.of<BoardUtils>(context, listen: false).undo();
                 },
               ),
               IconButton(
                 icon: const Icon(Icons.redo),
                 onPressed: () {
-                  print("Redo");
+                  Provider.of<BoardUtils>(context, listen: false).redo();
                 },
               ),
             ],

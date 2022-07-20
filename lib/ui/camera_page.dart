@@ -2,7 +2,6 @@ import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:camera/camera.dart';
-import 'package:craft_dots/ui/preview_screen.dart';
 import 'package:craft_dots/ui/spinner.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';

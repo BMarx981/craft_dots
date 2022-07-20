@@ -43,11 +43,15 @@ class _DotState extends State<Dot> {
           setState(() => widget.color = BoardUtils.standardColor);
           Provider.of<BoardUtils>(context, listen: false)
               .getColorLists[widget.row][widget.col] = BoardUtils.standardColor;
+          Provider.of<BoardUtils>(context, listen: false)
+              .addToUndo(widget.row, widget.col, main);
           return;
         }
         setState(() => widget.color = main);
         Provider.of<BoardUtils>(context, listen: false)
             .getColorLists[widget.row][widget.col] = main;
+        Provider.of<BoardUtils>(context, listen: false)
+            .addToUndo(widget.row, widget.col, BoardUtils.standardColor);
       },
       child: Container(
         height: widget.size,

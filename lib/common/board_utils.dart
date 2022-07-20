@@ -10,12 +10,12 @@ import 'package:pdf/pdf.dart';
 import 'package:printing/printing.dart';
 import 'package:screenshot/screenshot.dart';
 import 'package:pdf/widgets.dart' as pw;
+import 'package:undo/undo.dart';
 
 import '../ui/peg_board_widget.dart';
 
 class BoardUtils extends ChangeNotifier {
   final List<List<Color>> _colorLists = [];
-  Map<Color, int> _colorMap = {};
   List<Widget> board = [];
   Color mainBoardColor = Colors.blue;
   static Color standardColor = Colors.grey.withOpacity(.3);
@@ -24,6 +24,7 @@ class BoardUtils extends ChangeNotifier {
   int _dotSize = 0;
   bool _isFillEnabled = false;
   bool _isChangeColorEnabled = false;
+  final ChangeStack _undo = ChangeStack(limit: 20);
 
   List<Color> palette = [
     Colors.white,
@@ -42,7 +43,30 @@ class BoardUtils extends ChangeNotifier {
   int get getBoardSize => _boardSize;
   int get getDotSize => _dotSize;
   List<List<Color>> get getColorLists => _colorLists;
-  Map<Color, int> get getColorMap => _colorMap;
+
+  void addToUndo(int row, int col, Color color) {
+    _undo.add(
+      Change(
+        _colorLists[row][col],
+        () {
+          _colorLists[row][col] = color;
+          print("Color $color");
+        },
+        (Color old) => _colorLists[row][col] = old,
+      ),
+    );
+  }
+
+  void undo() {
+    _undo.undo();
+    print(boardToString());
+    rebuildBoard();
+  }
+
+  void redo() {
+    _undo.redo();
+    rebuildBoard();
+  }
 
   setColorLists(List<List<Color>> list) {
     _colorLists.clear();
@@ -76,15 +100,6 @@ class BoardUtils extends ChangeNotifier {
 
   void addColorToPalette(Color color) {
     palette.add(color);
-    notifyListeners();
-  }
-
-  void updateColorMap(Color color) {
-    if (!_colorMap.containsKey(color) || _colorMap[color] == null) {
-      _colorMap[color] = 1;
-    } else {
-      _colorMap[color] = _colorMap[color]! + 1;
-    }
     notifyListeners();
   }
 
