@@ -42,6 +42,8 @@ class BoardUtils extends ChangeNotifier {
 
   int get getBoardSize => _boardSize;
   int get getDotSize => _dotSize;
+  bool get canUndo => _undo.canUndo;
+  bool get canRedo => _undo.canRedo;
   List<List<Color>> get getColorLists => _colorLists;
 
   void addToUndo(int row, int col, Color color) {
@@ -50,11 +52,9 @@ class BoardUtils extends ChangeNotifier {
         _colorLists[row][col],
         () {
           _colorLists[row][col] = color;
-          print("Color ${color.value}");
           notifyListeners();
         },
         (Color old) {
-          print("Old ${old.value}");
           _colorLists[row][col] = old;
           notifyListeners();
         },
@@ -65,13 +65,11 @@ class BoardUtils extends ChangeNotifier {
   void undo() {
     _undo.undo();
     generateBoard(_boardSize, _dotSize);
-    print(boardToString());
   }
 
   void redo() {
     _undo.redo();
     generateBoard(_boardSize, _dotSize);
-    print(boardToString());
   }
 
   setColorLists(List<List<Color>> list) {

@@ -78,15 +78,31 @@ class PegBoard extends StatelessWidget {
                 },
               ),
               IconButton(
-                icon: const Icon(Icons.undo),
+                disabledColor: Colors.grey.withOpacity(.2),
+                icon: Provider.of<BoardUtils>(context, listen: false).canUndo
+                    ? const Icon(Icons.undo)
+                    : Icon(
+                        Icons.undo,
+                        color: Colors.grey.withOpacity(.4),
+                      ),
                 onPressed: () {
-                  Provider.of<BoardUtils>(context, listen: false).undo();
+                  Provider.of<BoardUtils>(context, listen: false).canUndo
+                      ? Provider.of<BoardUtils>(context, listen: false).undo()
+                      : null;
                 },
               ),
               IconButton(
-                icon: const Icon(Icons.redo),
+                disabledColor: Colors.grey.shade300,
+                icon: Provider.of<BoardUtils>(context, listen: false).canRedo
+                    ? const Icon(Icons.redo)
+                    : Icon(
+                        Icons.redo,
+                        color: Colors.grey.withOpacity(.4),
+                      ),
                 onPressed: () {
-                  Provider.of<BoardUtils>(context, listen: false).redo();
+                  Provider.of<BoardUtils>(context, listen: false).canRedo
+                      ? Provider.of<BoardUtils>(context, listen: false).redo()
+                      : null;
                 },
               ),
             ],
