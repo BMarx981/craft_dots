@@ -24,7 +24,8 @@ class BoardUtils extends ChangeNotifier {
   int _dotSize = 0;
   bool _isFillEnabled = false;
   bool _isChangeColorEnabled = false;
-  final ChangeStack _undo = ChangeStack(limit: 20);
+  final ChangeStack _undo = ChangeStack(limit: 200);
+  final List<Change> _changeList = [];
 
   List<Color> palette = [
     Colors.white,
@@ -42,9 +43,17 @@ class BoardUtils extends ChangeNotifier {
 
   int get getBoardSize => _boardSize;
   int get getDotSize => _dotSize;
+
   bool get canUndo => _undo.canUndo;
   bool get canRedo => _undo.canRedo;
+  List<Change> get getChangeList => _changeList;
+
   List<List<Color>> get getColorLists => _colorLists;
+
+  setColorLists(List<List<Color>> list) {
+    _colorLists.clear();
+    _colorLists.addAll(list);
+  }
 
   void addToUndo(int row, int col, Color color) {
     _undo.add(
@@ -62,6 +71,10 @@ class BoardUtils extends ChangeNotifier {
     );
   }
 
+  void addGroupToUndo() {
+    _undo.addGroup(_changeList);
+  }
+
   void undo() {
     _undo.undo();
     generateBoard(_boardSize, _dotSize);
@@ -72,12 +85,13 @@ class BoardUtils extends ChangeNotifier {
     generateBoard(_boardSize, _dotSize);
   }
 
-  setColorLists(List<List<Color>> list) {
-    _colorLists.clear();
-    _colorLists.addAll(list);
+  void clearUndoHistory() {
+    _undo.clearHistory();
   }
 
-  setColorList(List<Color> list) {}
+  void addAllToUndo() {
+    _undo.addGroup(_changeList);
+  }
 
   bool get getFillEnabled => _isFillEnabled;
   void toggleFillEnabled() {
