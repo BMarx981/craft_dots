@@ -71,8 +71,13 @@ class BoardUtils extends ChangeNotifier {
     );
   }
 
-  void addGroupToUndo() {
-    _undo.addGroup(_changeList);
+  void addGroupToUndo(List<Change> changeList) {
+    _undo.addGroup(changeList);
+    _changeList.clear();
+  }
+
+  void undoNotify() {
+    notifyListeners();
   }
 
   void undo() {
