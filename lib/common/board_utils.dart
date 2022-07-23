@@ -15,7 +15,7 @@ import 'package:undo/undo.dart';
 import '../ui/peg_board_widget.dart';
 
 class BoardUtils extends ChangeNotifier {
-  final List<List<Color>> _colorLists = [];
+  List<List<Color>> _colorLists = [];
   List<Widget> board = [];
   Color mainBoardColor = Colors.blue;
   static Color standardColor = Colors.grey.withOpacity(.3);
@@ -25,7 +25,6 @@ class BoardUtils extends ChangeNotifier {
   bool _isFillEnabled = false;
   bool _isChangeColorEnabled = false;
   final ChangeStack _undo = ChangeStack(limit: 200);
-  final List<Change> _changeList = [];
 
   List<Color> palette = [
     Colors.white,
@@ -46,7 +45,6 @@ class BoardUtils extends ChangeNotifier {
 
   bool get canUndo => _undo.canUndo;
   bool get canRedo => _undo.canRedo;
-  List<Change> get getChangeList => _changeList;
 
   List<List<Color>> get getColorLists => _colorLists;
 
@@ -73,7 +71,6 @@ class BoardUtils extends ChangeNotifier {
 
   void addGroupToUndo(List<Change> changeList) {
     _undo.addGroup(changeList);
-    _changeList.clear();
   }
 
   void undoNotify() {
@@ -92,10 +89,6 @@ class BoardUtils extends ChangeNotifier {
 
   void clearUndoHistory() {
     _undo.clearHistory();
-  }
-
-  void addAllToUndo() {
-    _undo.addGroup(_changeList);
   }
 
   bool get getFillEnabled => _isFillEnabled;
@@ -141,6 +134,26 @@ class BoardUtils extends ChangeNotifier {
   }
 
   void clearBoard(int boardSize) {
+    final List<List<Color>> temp = [];
+    for (List<Color> ele in _colorLists) {
+      temp.add(ele);
+    }
+    _undo.add(
+      Change(temp, () {
+        _colorLists.clear();
+        initColorList(boardSize);
+        loadBoard(boardToString(), _dotSize);
+        notifyListeners();
+      }, (List<List<Color>> oldList) {
+        for (int i = 0; i < oldList.length; i++) {
+          for (int j = 0; j < oldList[i].length; j++) {
+            _colorLists[i][j] = oldList[i][j];
+          }
+        }
+        loadBoard(boardToString(), _dotSize);
+        notifyListeners();
+      }),
+    );
     _colorLists.clear();
     initColorList(boardSize);
     loadBoard(boardToString(), _dotSize);
