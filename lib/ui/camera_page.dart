@@ -209,8 +209,8 @@ class _CameraPageState extends State<CameraPage>
 
   Widget captureButton(BuildContext context) {
     return GestureDetector(
-      onTap: () {
-        processTakingPicture();
+      onTap: () async {
+        await processTakingPicture();
         Navigator.pop(context);
         Navigator.pop(context);
       },
@@ -257,25 +257,23 @@ class _CameraPageState extends State<CameraPage>
   }
 
   Future<XFile?> takePicture() async {
-    final CameraController? cameraController = controller;
-    if (cameraController!.value.isTakingPicture) {
+    if (controller!.value.isTakingPicture) {
       // A capture is already pending, do nothing.
       return null;
     }
     try {
-      XFile file = await cameraController.takePicture();
+      XFile file = await controller!.takePicture();
       return file;
     } on CameraException catch (e) {
       return null;
     }
   }
 
-  void processTakingPicture() async {
+  Future processTakingPicture() async {
     XFile? rawImage = await takePicture();
     if (rawImage == null) return;
     Uint8List bytes = File(rawImage.path).readAsBytesSync();
     List<Color> list = extractPixelsColors(bytes);
-    print(list);
     Provider.of<BoardUtils>(context, listen: false).loadBoardFromPic(list);
   }
 
