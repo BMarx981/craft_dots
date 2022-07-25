@@ -275,11 +275,13 @@ class _CameraPageState extends State<CameraPage>
     if (rawImage == null) return;
     Uint8List bytes = File(rawImage.path).readAsBytesSync();
     List<Color> list = extractPixelsColors(bytes);
+    print(list);
     Provider.of<BoardUtils>(context, listen: false).loadBoardFromPic(list);
   }
 
   List<Color> extractPixelsColors(Uint8List? bytes) {
-    int noOfPixelsPerAxis = 29;
+    int noOfPixelsPerAxis =
+        Provider.of<BoardUtils>(context, listen: false).getBoardSize;
     List<Color> colors = [];
 
     List<int> values = bytes!.buffer.asUint8List();

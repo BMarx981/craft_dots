@@ -1,6 +1,8 @@
 import 'package:craft_dots/ui/camera_page.dart';
 import 'package:craft_dots/ui/peg_board_widget.dart';
 import 'package:craft_dots/ui/spinner.dart';
+import 'package:craft_dots/common/board_utils.dart';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -9,8 +11,6 @@ import 'package:provider/provider.dart';
 
 import 'dart:io';
 import 'dart:typed_data';
-
-import '../common/board_utils.dart';
 
 class ImagePickerPage extends StatefulWidget {
   const ImagePickerPage({Key? key}) : super(key: key);
@@ -86,7 +86,7 @@ class _ImagePickerPageState extends State<ImagePickerPage> {
                       children: [
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
+                          children: const [
                             Spinner(),
                           ],
                         ),
@@ -98,7 +98,8 @@ class _ImagePickerPageState extends State<ImagePickerPage> {
   }
 
   List<Color> extractPixelsColors(Uint8List? bytes) {
-    int noOfPixelsPerAxis = 29;
+    int noOfPixelsPerAxis =
+        Provider.of<BoardUtils>(context, listen: false).getBoardSize;
     List<Color> colors = [];
 
     List<int> values = bytes!.buffer.asUint8List();
