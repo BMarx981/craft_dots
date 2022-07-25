@@ -24,7 +24,7 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Dotr"),
+        title: const Text("Dot Pic"),
         actions: [
           IconButton(
             icon: const Icon(CupertinoIcons.photo_fill),

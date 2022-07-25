@@ -1,8 +1,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.craft_dots">
    <application
-        android:label="Dotr"
-        android:icon="@mipmap/dotricon">
+        android:label="Dot Pic"
+        android:icon="@mipmap/ic_launcher.png">
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTop"
