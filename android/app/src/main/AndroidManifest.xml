@@ -1,8 +1,10 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.craft_dots">
+    package="com.example.dotpic">
    <application
         android:label="Dot Pic"
-        android:icon="@mipmap/ic_launcher.png">
+        android:icon="@mipmap/ic_launcher"
+        android:roundIcon="@mipmap/roundIcon">
+
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTop"

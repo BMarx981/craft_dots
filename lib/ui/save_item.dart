@@ -103,7 +103,7 @@ class SaveItem extends StatelessWidget {
                     );
                   } else if (snapshot.connectionState == ConnectionState.done) {
                     if (snapshot.hasError) {
-                      return const Text('An Error happened');
+                      return const Text('');
                     } else if (snapshot.hasData) {
                       return GestureDetector(
                         onTap: () async {
