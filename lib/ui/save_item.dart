@@ -59,23 +59,7 @@ class SaveItem extends StatelessWidget {
                           SnackBar(content: Text("$name Saved.")));
                       Navigator.pop(context);
                     }), // End save button
-                //Load button starts here!!!!!!
-                GestureDetector(
-                    child: const Icon(
-                      Icons.edit,
-                      color: Colors.blue,
-                      size: 30,
-                    ),
-                    onTap: () async {
-                      final db = DBHelper.instance;
-                      Map boardMap = await db.getData(name: name);
-                      Provider.of<BoardUtils>(context, listen: false).loadBoard(
-                          boardMap[DBHelper.columnCanvas],
-                          boardMap[DBHelper.columnDotSize]);
-                      ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(content: Text("$name Loaded.")));
-                      Navigator.pop(context);
-                    }),
+
                 //Print button start here!!!!!!!!
                 GestureDetector(
                     child: const Icon(
@@ -124,7 +108,6 @@ class SaveItem extends StatelessWidget {
                   }
                   return const Text("Nothing to see here");
                 }),
-            //Image of the boad goes here.
           ],
         ),
       ),

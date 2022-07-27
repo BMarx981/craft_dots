@@ -28,7 +28,10 @@ class _SpinnerState extends State<Spinner> {
   @override
   void initState() {
     super.initState();
-    _chooseANewColor();
+    Future.delayed(const Duration(milliseconds: 3))
+        .then((value) => setState(() {
+              _chooseANewColor();
+            }));
   }
 
   @override
@@ -109,7 +112,7 @@ class _SpinnerState extends State<Spinner> {
   }
 
   _chooseANewColor() {
-    final r = Random();
+    Random r = Random();
     chosenColor1 = list[r.nextInt(list.length - 1)];
     chosenColor2 = list[r.nextInt(list.length - 1)];
     chosenColor3 = list[r.nextInt(list.length - 1)];
