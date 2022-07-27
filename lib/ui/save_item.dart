@@ -3,17 +3,29 @@ import 'dart:io';
 import 'package:craft_dots/db/db_helper.dart';
 import 'package:craft_dots/ui/spinner.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/painting.dart';
 import 'package:provider/provider.dart';
 
 import '../common/board_utils.dart';
-import '../models/settings_model.dart';
 
-class SaveItem extends StatelessWidget {
-  final String name;
+class SaveItem extends StatefulWidget {
+  String name = "";
 
   SaveItem({Key? key, required this.name}) : super(key: key);
 
-  final BoardUtils bu = BoardUtils();
+  @override
+  State<SaveItem> createState() => _SaveItemState();
+}
+
+class _SaveItemState extends State<SaveItem> {
+  final TextEditingController _controller = TextEditingController();
+
+  @override
+  void dispose() {
+    super.dispose();
+    _controller.dispose();
+    imageCache?.clear();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -28,11 +40,20 @@ class SaveItem extends StatelessWidget {
           children: [
             GestureDetector(
               onLongPress: () {
-                //TODO Do something with editing the name
+                _controller.text = widget.name;
+                showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return _buildAlertDialog(
+                          _controller,
+                          context,
+                          Provider.of<BoardUtils>(context, listen: false)
+                              .boardToString());
+                    });
               },
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: Text(name, style: const TextStyle(fontSize: 25)),
+                child: Text(widget.name, style: const TextStyle(fontSize: 25)),
               ),
             ),
             Row(
@@ -51,12 +72,12 @@ class SaveItem extends StatelessWidget {
                           Provider.of<BoardUtils>(context, listen: false)
                               .boardToString();
                       db.update(
-                          name,
+                          widget.name,
                           board,
-                          Provider.of<SettingsModel>(context, listen: false)
+                          Provider.of<BoardUtils>(context, listen: false)
                               .getDotSize);
                       ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(content: Text("$name Saved.")));
+                          SnackBar(content: Text("${widget.name} Saved.")));
                       Navigator.pop(context);
                     }), // End save button
 
@@ -69,17 +90,18 @@ class SaveItem extends StatelessWidget {
                     ),
                     onTap: () {
                       Provider.of<BoardUtils>(context, listen: false)
-                          .printBoard(name)
+                          .printBoard(widget.name)
                           .then((item) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(content: Text("Printing $name.")));
+                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                            content: Text("Printing ${widget.name}.")));
                       });
                       Navigator.pop(context);
                     }), // End load button
               ],
             ),
             FutureBuilder(
-                future: bu.displayBoardImage(name),
+                future: Provider.of<BoardUtils>(context, listen: false)
+                    .displayBoardImage(widget.name),
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return const Center(
@@ -92,12 +114,12 @@ class SaveItem extends StatelessWidget {
                       return GestureDetector(
                         onTap: () async {
                           final db = DBHelper.instance;
-                          Map boardMap = await db.getData(name: name);
+                          Map boardMap = await db.getData(name: widget.name);
                           Provider.of<BoardUtils>(context, listen: false)
                               .loadBoard(boardMap[DBHelper.columnCanvas],
                                   boardMap[DBHelper.columnDotSize]);
-                          ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(content: Text("$name Loaded.")));
+                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                              content: Text("${widget.name} Loaded.")));
                           Navigator.pop(context);
                         },
                         child: Image.file(
@@ -111,6 +133,44 @@ class SaveItem extends StatelessWidget {
           ],
         ),
       ),
+    );
+  }
+
+  AlertDialog _buildAlertDialog(
+      TextEditingController controller, BuildContext context, String board) {
+    return AlertDialog(
+      shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(30))),
+      title: const Text("Rename"),
+      content: TextField(
+        controller: controller,
+        decoration: InputDecoration(hintText: widget.name),
+      ),
+      actions: [
+        TextButton(
+          onPressed: () {
+            widget.name = controller.text;
+            Navigator.pop(context);
+          },
+          child: const Text('CANCEL'),
+        ),
+        TextButton(
+          onPressed: () {
+            int dotSize =
+                Provider.of<BoardUtils>(context, listen: false).getDotSize;
+            DBHelper.saveAs(controller.text, board, dotSize);
+            Provider.of<BoardUtils>(context, listen: false)
+                .loadBoard(board, dotSize);
+            Navigator.pop(context);
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text("${controller.text} Saved."),
+              ),
+            );
+          },
+          child: const Text('SAVE'),
+        ),
+      ],
     );
   }
 }
