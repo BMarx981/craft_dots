@@ -18,6 +18,7 @@ class BoardUtils extends ChangeNotifier {
   List<List<Color>> _colorLists = [];
   List<Widget> board = [];
   Color mainBoardColor = Colors.blue;
+  Color _colorPickerTempColor = Colors.blue;
   static Color standardColor = Colors.grey.withOpacity(.3);
   int colorListsSize = 0;
   int _boardSize = 0;

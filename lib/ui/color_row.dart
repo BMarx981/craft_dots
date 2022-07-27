@@ -21,22 +21,15 @@ class ColorRow extends StatelessWidget {
     );
   }
 
-  void _changeColor(Color color, BuildContext context) {
-    Provider.of<BoardUtils>(context, listen: false).palette.add(color);
-    Provider.of<BoardUtils>(context, listen: false).setMainColor(color);
-  }
-
   List<Widget> _buildColorRow(BuildContext context) {
     List<Widget> list = [];
-    for (int i = 0;
-        i < Provider.of<BoardUtils>(context, listen: false).palette.length;
-        i++) {
+    for (int i = 0; i < Provider.of<BoardUtils>(context).palette.length; i++) {
       list.add(
         Padding(
           padding: const EdgeInsets.only(right: 2.0),
           child: GestureDetector(
             onLongPress: () {
-              showAlert(
+              _showAlert(
                   context,
                   Provider.of<BoardUtils>(context, listen: false)
                       .mainBoardColor);
@@ -60,9 +53,8 @@ class ColorRow extends StatelessWidget {
     return list;
   }
 
-  void showAlert(BuildContext context, Color original) {
-    Color tempColor =
-        Provider.of<BoardUtils>(context, listen: false).mainBoardColor;
+  void _showAlert(BuildContext context, Color original) {
+    Color tempColor = original;
     Widget okButton = TextButton(
       child: const Text("OK"),
       onPressed: () {
@@ -80,16 +72,15 @@ class ColorRow extends StatelessWidget {
     );
 
     changeTempColor(Color colorTemp) {
-      Provider.of<BoardUtils>(context, listen: false)
-          .addColorToPalette(colorTemp);
+      tempColor = colorTemp;
     }
 
     // set up the AlertDialog
     AlertDialog alert = AlertDialog(
       title: const Text("Color Picker"),
       content: ColorPicker(
-          pickerColor:
-              Provider.of<BoardUtils>(context, listen: false).mainBoardColor,
+          pickerAreaBorderRadius: BorderRadius.circular(25),
+          pickerColor: original,
           onColorChanged: changeTempColor),
       actions: [
         okButton,
@@ -104,5 +95,10 @@ class ColorRow extends StatelessWidget {
         return alert;
       },
     );
+  }
+
+  void _changeColor(Color color, BuildContext context) {
+    Provider.of<BoardUtils>(context, listen: false).addColorToPalette(color);
+    Provider.of<BoardUtils>(context, listen: false).setMainColor(color);
   }
 }
