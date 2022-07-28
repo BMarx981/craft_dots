@@ -45,6 +45,7 @@ class _SavePageState extends State<SavePage> {
         title: const Text("Save your work here"),
       ),
       body: Container(
+        color: Colors.grey.shade200,
         padding: const EdgeInsets.all(8.0),
         child: Column(
           children: [
@@ -52,12 +53,40 @@ class _SavePageState extends State<SavePage> {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 GestureDetector(
-                    child: const Text(
-                      "Save As",
-                      style: TextStyle(
-                        color: Colors.blue,
-                        fontSize: 30,
-                        fontWeight: FontWeight.bold,
+                    child: Container(
+                      decoration: BoxDecoration(
+                          color: Colors.grey[300],
+                          borderRadius: BorderRadius.circular(50),
+                          boxShadow: const [
+                            // Shadow for top-left corner
+                            BoxShadow(
+                              color: Colors.grey,
+                              offset: Offset(5, 5),
+                              blurRadius: 3,
+                              spreadRadius: 1,
+                            ),
+                            // Shadow for bottom-right corner
+                            BoxShadow(
+                              color: Colors.white,
+                              offset: const Offset(-5, -5),
+                              blurRadius: 3,
+                              spreadRadius: 1,
+                            ),
+                          ],
+                          border: Border.all(
+                            width: 0.5,
+                            color: Colors.white,
+                          )),
+                      child: const Padding(
+                        padding: EdgeInsets.all(8.0),
+                        child: Text(
+                          "Save As",
+                          style: TextStyle(
+                            color: Colors.blue,
+                            fontSize: 30,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
                       ),
                     ),
                     onTap: () {
@@ -83,7 +112,7 @@ class _SavePageState extends State<SavePage> {
                       children: _gridViewList(list),
                       gridDelegate:
                           const SliverGridDelegateWithFixedCrossAxisCount(
-                        mainAxisExtent: 300,
+                        // mainAxisExtent: 300,
                         crossAxisCount: 2,
                         crossAxisSpacing: 5.0,
                         mainAxisSpacing: 10.0,

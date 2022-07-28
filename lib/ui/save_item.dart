@@ -99,37 +99,40 @@ class _SaveItemState extends State<SaveItem> {
                     }), // End load button
               ],
             ),
-            FutureBuilder(
-                future: Provider.of<BoardUtils>(context, listen: false)
-                    .displayBoardImage(widget.name),
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return const Center(
-                      child: Spinner(),
-                    );
-                  } else if (snapshot.connectionState == ConnectionState.done) {
-                    if (snapshot.hasError) {
-                      return const Text('');
-                    } else if (snapshot.hasData) {
-                      return GestureDetector(
-                        onTap: () async {
-                          final db = DBHelper.instance;
-                          Map boardMap = await db.getData(name: widget.name);
-                          Provider.of<BoardUtils>(context, listen: false)
-                              .loadBoard(boardMap[DBHelper.columnCanvas],
-                                  boardMap[DBHelper.columnDotSize]);
-                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                              content: Text("${widget.name} Loaded.")));
-                          Navigator.pop(context);
-                        },
-                        child: Image.file(
-                          snapshot.data as File,
-                        ),
+            Expanded(
+              child: FutureBuilder(
+                  future: Provider.of<BoardUtils>(context, listen: false)
+                      .displayBoardImage(widget.name),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return const Center(
+                        child: Spinner(),
                       );
+                    } else if (snapshot.connectionState ==
+                        ConnectionState.done) {
+                      if (snapshot.hasError) {
+                        return const Text('');
+                      } else if (snapshot.hasData) {
+                        return GestureDetector(
+                          onTap: () async {
+                            final db = DBHelper.instance;
+                            Map boardMap = await db.getData(name: widget.name);
+                            Provider.of<BoardUtils>(context, listen: false)
+                                .loadBoard(boardMap[DBHelper.columnCanvas],
+                                    boardMap[DBHelper.columnDotSize]);
+                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                                content: Text("${widget.name} Loaded.")));
+                            Navigator.pop(context);
+                          },
+                          child: Image.file(
+                            snapshot.data as File,
+                          ),
+                        );
+                      }
                     }
-                  }
-                  return const Text("Nothing to see here");
-                }),
+                    return const Text("Nothing to see here");
+                  }),
+            ),
           ],
         ),
       ),
