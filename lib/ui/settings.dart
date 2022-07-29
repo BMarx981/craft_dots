@@ -1,5 +1,4 @@
 import 'package:craft_dots/common/board_utils.dart';
-import 'package:craft_dots/models/settings_model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -45,13 +44,13 @@ class _SettingsPageState extends State<SettingsPage> {
                       width: 50,
                       child: TextField(
                           decoration: InputDecoration(
-                              hintText: Provider.of<SettingsModel>(context,
+                              hintText: Provider.of<BoardUtils>(context,
                                       listen: false)
-                                  .getSize
+                                  .getBoardSize
                                   .toString()),
                           textAlign: TextAlign.left,
                           onSubmitted: (str) {
-                            Provider.of<SettingsModel>(context, listen: false)
+                            Provider.of<BoardUtils>(context, listen: false)
                                 .updateSize(int.parse(_currentSize));
                           },
                           onChanged: (str) {
@@ -76,7 +75,7 @@ class _SettingsPageState extends State<SettingsPage> {
                       padding: const EdgeInsets.all(8.0),
                       child: GestureDetector(
                         onTap: () {
-                          Provider.of<SettingsModel>(context, listen: false)
+                          Provider.of<BoardUtils>(context, listen: false)
                               .updateSize(int.parse(_currentSize));
                           FocusScope.of(context).unfocus();
                         },
@@ -117,13 +116,13 @@ class _SettingsPageState extends State<SettingsPage> {
                       width: 50,
                       child: TextField(
                           decoration: InputDecoration(
-                              hintText: Provider.of<SettingsModel>(context,
+                              hintText: Provider.of<BoardUtils>(context,
                                       listen: false)
                                   .getDotSize
                                   .toString()),
                           textAlign: TextAlign.left,
                           onSubmitted: (str) {
-                            Provider.of<SettingsModel>(context, listen: false)
+                            Provider.of<BoardUtils>(context, listen: false)
                                 .updateDotSize(int.parse(_currentDotSize));
                           },
                           onChanged: (str) {
@@ -148,7 +147,7 @@ class _SettingsPageState extends State<SettingsPage> {
                       padding: const EdgeInsets.all(8.0),
                       child: GestureDetector(
                         onTap: () {
-                          Provider.of<SettingsModel>(context, listen: false)
+                          Provider.of<BoardUtils>(context, listen: false)
                               .updateDotSize(int.parse(_currentDotSize));
                           FocusScope.of(context).unfocus();
                         },
@@ -184,6 +183,15 @@ class _SettingsPageState extends State<SettingsPage> {
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text("Total Colors: ${keys.length}",
+                            style: const TextStyle(
+                              fontSize: 18,
+                            )),
+                      ],
+                    ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: const [

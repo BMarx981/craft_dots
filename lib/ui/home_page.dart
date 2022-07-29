@@ -1,4 +1,5 @@
 import 'package:camera/camera.dart';
+import 'package:craft_dots/common/board_utils.dart';
 import 'package:craft_dots/ui/peg_board.dart';
 import 'package:craft_dots/ui/save_page.dart';
 import 'package:craft_dots/ui/settings.dart';
@@ -6,7 +7,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../models/settings_model.dart';
 import 'image_picker_page.dart';
 
 class HomePage extends StatelessWidget {
@@ -61,9 +61,9 @@ class HomePage extends StatelessWidget {
               decoration: BoxDecoration(color: Colors.grey.withOpacity(0.3)),
               child: Center(
                 child: PegBoard(
-                  boardSize: Provider.of<SettingsModel>(context, listen: false)
-                      .getSize,
-                  dotSize: Provider.of<SettingsModel>(context, listen: false)
+                  boardSize: Provider.of<BoardUtils>(context, listen: false)
+                      .getBoardSize,
+                  dotSize: Provider.of<BoardUtils>(context, listen: false)
                       .getDotSize,
                 ),
               ),

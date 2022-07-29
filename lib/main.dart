@@ -25,10 +25,7 @@ class CraftDots extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
-      providers: [
-        ChangeNotifierProvider(create: (context) => SettingsModel()),
-        ChangeNotifierProvider(create: (context) => BoardUtils())
-      ],
+      providers: [ChangeNotifierProvider(create: (context) => BoardUtils())],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'Craft Dots',

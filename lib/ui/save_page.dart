@@ -1,6 +1,5 @@
 import 'package:craft_dots/common/board_utils.dart';
 import 'package:craft_dots/db/db_helper.dart';
-import 'package:craft_dots/models/settings_model.dart';
 import 'package:craft_dots/ui/save_item.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -68,7 +67,7 @@ class _SavePageState extends State<SavePage> {
                             // Shadow for bottom-right corner
                             BoxShadow(
                               color: Colors.white,
-                              offset: const Offset(-5, -5),
+                              offset: Offset(-3, -3),
                               blurRadius: 3,
                               spreadRadius: 1,
                             ),
@@ -146,7 +145,7 @@ class _SavePageState extends State<SavePage> {
         TextButton(
           onPressed: () {
             int dotSize =
-                Provider.of<SettingsModel>(context, listen: false).getDotSize;
+                Provider.of<BoardUtils>(context, listen: false).getDotSize;
             DBHelper.saveAs(controller.text, board, dotSize);
             Provider.of<BoardUtils>(context, listen: false)
                 .loadBoard(board, dotSize);

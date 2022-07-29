@@ -3,8 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:undo/undo.dart';
 
-import '../models/settings_model.dart';
-
 class EditUtils {
   static void fillFunc(int row, int col, Color color, BuildContext context) {
     final ob = Provider.of<BoardUtils>(context, listen: false).getColorLists;
@@ -42,8 +40,8 @@ class EditUtils {
   }
 
   static void clearBoard(BuildContext context) {
-    Provider.of<BoardUtils>(context, listen: false)
-        .clearBoard(Provider.of<SettingsModel>(context, listen: false).getSize);
+    Provider.of<BoardUtils>(context, listen: false).clearBoard(
+        Provider.of<BoardUtils>(context, listen: false).getBoardSize);
   }
 
   static void changeColorFill(

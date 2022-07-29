@@ -35,7 +35,6 @@ class _SaveItemState extends State<SaveItem> {
       child: Container(
         padding: const EdgeInsets.all(8),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             GestureDetector(
@@ -99,14 +98,22 @@ class _SaveItemState extends State<SaveItem> {
                     }), // End load button
               ],
             ),
-            Expanded(
+            Flexible(
               child: FutureBuilder(
                   future: Provider.of<BoardUtils>(context, listen: false)
                       .displayBoardImage(widget.name),
                   builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) {
-                      return const Center(
-                        child: Spinner(),
+                      return Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: const [
+                              Spinner(),
+                            ],
+                          ),
+                        ],
                       );
                     } else if (snapshot.connectionState ==
                         ConnectionState.done) {

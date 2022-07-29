@@ -15,14 +15,13 @@ import 'package:undo/undo.dart';
 import '../ui/peg_board_widget.dart';
 
 class BoardUtils extends ChangeNotifier {
-  List<List<Color>> _colorLists = [];
+  final List<List<Color>> _colorLists = [];
   List<Widget> board = [];
   Color mainBoardColor = Colors.blue;
-  Color _colorPickerTempColor = Colors.blue;
   static Color standardColor = Colors.grey.withOpacity(.3);
   int colorListsSize = 0;
-  int _boardSize = 0;
-  int _dotSize = 0;
+  int _boardSize = 29;
+  int _dotSize = 11;
   bool _isFillEnabled = false;
   bool _isChangeColorEnabled = false;
   final ChangeStack _undo = ChangeStack(limit: 200);
@@ -52,6 +51,16 @@ class BoardUtils extends ChangeNotifier {
   setColorLists(List<List<Color>> list) {
     _colorLists.clear();
     _colorLists.addAll(list);
+  }
+
+  void updateSize(int inputSize) {
+    _boardSize = inputSize;
+    notifyListeners();
+  }
+
+  void updateDotSize(int size) {
+    _dotSize = size;
+    notifyListeners();
   }
 
   void addToUndo(int row, int col, Color color) {
