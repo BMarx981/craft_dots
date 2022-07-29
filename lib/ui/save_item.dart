@@ -3,7 +3,6 @@ import 'dart:io';
 import 'package:craft_dots/db/db_helper.dart';
 import 'package:craft_dots/ui/spinner.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/painting.dart';
 import 'package:provider/provider.dart';
 
 import '../common/board_utils.dart';
@@ -29,90 +28,90 @@ class _SaveItemState extends State<SaveItem> {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      elevation: 8,
-      shadowColor: Colors.grey,
-      child: Container(
-        padding: const EdgeInsets.all(8),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            GestureDetector(
-              onLongPress: () {
-                _controller.text = widget.name;
-                showDialog(
-                    context: context,
-                    builder: (BuildContext context) {
-                      return _buildAlertDialog(
-                          _controller,
-                          context,
-                          Provider.of<BoardUtils>(context, listen: false)
-                              .boardToString());
-                    });
-              },
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Text(widget.name, style: const TextStyle(fontSize: 25)),
-              ),
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                // Save button starts here !!!!!
-                GestureDetector(
-                    child: const Icon(
-                      Icons.save_outlined,
-                      color: Colors.blue,
-                      size: 30,
-                    ),
-                    onTap: () {
-                      final db = DBHelper.instance;
-                      String board =
-                          Provider.of<BoardUtils>(context, listen: false)
-                              .boardToString();
-                      db.update(
-                          widget.name,
-                          board,
-                          Provider.of<BoardUtils>(context, listen: false)
-                              .getDotSize);
-                      ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(content: Text("${widget.name} Saved.")));
-                      Navigator.pop(context);
-                    }), // End save button
-
-                //Print button start here!!!!!!!!
-                GestureDetector(
-                    child: const Icon(
-                      Icons.print_outlined,
-                      color: Colors.blue,
-                      size: 30,
-                    ),
-                    onTap: () {
-                      Provider.of<BoardUtils>(context, listen: false)
-                          .printBoard(widget.name)
-                          .then((item) {
-                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                            content: Text("Printing ${widget.name}.")));
+    return IntrinsicHeight(
+      child: Card(
+        elevation: 8,
+        shadowColor: Colors.grey,
+        child: Container(
+          padding: const EdgeInsets.all(8),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              GestureDetector(
+                onLongPress: () {
+                  _controller.text = widget.name;
+                  showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return _buildAlertDialog(
+                            _controller,
+                            context,
+                            Provider.of<BoardUtils>(context, listen: false)
+                                .boardToString());
                       });
-                      Navigator.pop(context);
-                    }), // End load button
-              ],
-            ),
-            Flexible(
-              child: FutureBuilder(
+                },
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child:
+                      Text(widget.name, style: const TextStyle(fontSize: 25)),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    // Save button starts here !!!!!
+                    GestureDetector(
+                        child: const Icon(
+                          Icons.save_outlined,
+                          color: Colors.blue,
+                          size: 30,
+                        ),
+                        onTap: () {
+                          final db = DBHelper.instance;
+                          String board =
+                              Provider.of<BoardUtils>(context, listen: false)
+                                  .boardToString();
+                          db.update(
+                              widget.name,
+                              board,
+                              Provider.of<BoardUtils>(context, listen: false)
+                                  .getDotSize);
+                          ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(content: Text("${widget.name} Saved.")));
+                          Navigator.pop(context);
+                        }), // End save button
+
+                    //Print button start here!!!!!!!!
+                    GestureDetector(
+                        child: const Icon(
+                          Icons.print_outlined,
+                          color: Colors.blue,
+                          size: 30,
+                        ),
+                        onTap: () {
+                          Provider.of<BoardUtils>(context, listen: false)
+                              .printBoard(widget.name)
+                              .then((item) {
+                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                                content: Text("Printing ${widget.name}.")));
+                          });
+                          Navigator.pop(context);
+                        }), // End load button
+                  ],
+                ),
+              ),
+              FutureBuilder(
                   future: Provider.of<BoardUtils>(context, listen: false)
                       .displayBoardImage(widget.name),
                   builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) {
-                      return Column(
+                      return Row(
                         mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: const [
-                              Spinner(),
-                            ],
-                          ),
+                        children: const [
+                          Spinner(),
                         ],
                       );
                     } else if (snapshot.connectionState ==
@@ -139,8 +138,8 @@ class _SaveItemState extends State<SaveItem> {
                     }
                     return const Text("Nothing to see here");
                   }),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

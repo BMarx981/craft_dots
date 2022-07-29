@@ -56,14 +56,24 @@ class _SavePageState extends State<SavePage> {
                       decoration: BoxDecoration(
                           color: Colors.grey[300],
                           borderRadius: BorderRadius.circular(50),
+                          gradient: LinearGradient(
+                              begin: Alignment.topLeft,
+                              end: Alignment.bottomRight,
+                              colors: [
+                                Color?.lerp(Colors.grey[300], Colors.white, .1)
+                                    as Color,
+                                Color?.lerp(Colors.white, Colors.grey[100], .2)
+                                    as Color,
+                              ]),
                           boxShadow: const [
                             // Shadow for top-left corner
                             BoxShadow(
                               color: Colors.grey,
                               offset: Offset(5, 5),
                               blurRadius: 3,
-                              spreadRadius: 1,
+                              spreadRadius: 1.7,
                             ),
+
                             // Shadow for bottom-right corner
                             BoxShadow(
                               color: Colors.white,
@@ -111,7 +121,7 @@ class _SavePageState extends State<SavePage> {
                       children: _gridViewList(list),
                       gridDelegate:
                           const SliverGridDelegateWithFixedCrossAxisCount(
-                        // mainAxisExtent: 300,
+                        mainAxisExtent: 300,
                         crossAxisCount: 2,
                         crossAxisSpacing: 5.0,
                         mainAxisSpacing: 10.0,
@@ -185,14 +195,9 @@ class _SavePageState extends State<SavePage> {
               Icons.delete_outline,
             ),
           ),
-          child: GestureDetector(
-            onTap: () {
-              // TODO Open dialog here
-            },
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: SaveItem(name: item['name']),
-            ),
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: SaveItem(name: item['name']),
           ),
         ),
       );

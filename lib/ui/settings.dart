@@ -34,6 +34,14 @@ class _SettingsPageState extends State<SettingsPage> {
               decoration: BoxDecoration(
                 color: Colors.green.shade100,
                 borderRadius: BorderRadius.circular(35),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.green.shade300,
+                    offset: const Offset(5, 5),
+                    blurRadius: 3,
+                    spreadRadius: 1,
+                  ),
+                ],
               ),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -69,8 +77,37 @@ class _SettingsPageState extends State<SettingsPage> {
                   ),
                   Container(
                     decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(35),
-                        border: Border.all(width: 2)),
+                      borderRadius: BorderRadius.circular(35),
+                      gradient: LinearGradient(
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                          colors: [
+                            Color?.lerp(Colors.green[400], Colors.white, .1)
+                                as Color,
+                            Color?.lerp(Colors.white, Colors.green[100], .2)
+                                as Color,
+                          ]),
+                      boxShadow: [
+                        // Shadow for top-left corner
+                        BoxShadow(
+                          color: Colors.green.shade300,
+                          offset: const Offset(5, 5),
+                          blurRadius: 3,
+                          spreadRadius: 1,
+                        ),
+                        // Shadow for bottom-right corner
+                        const BoxShadow(
+                          color: Colors.white54,
+                          offset: Offset(-4, -4),
+                          blurRadius: 3,
+                          spreadRadius: 1,
+                        ),
+                      ],
+                      border: Border.all(
+                        width: 0.6,
+                        color: Colors.white.withOpacity(.5),
+                      ),
+                    ),
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: GestureDetector(
@@ -106,6 +143,14 @@ class _SettingsPageState extends State<SettingsPage> {
               decoration: BoxDecoration(
                 color: Colors.green.shade100,
                 borderRadius: BorderRadius.circular(35),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.green.shade300,
+                    offset: const Offset(5, 5),
+                    blurRadius: 3,
+                    spreadRadius: 1,
+                  ),
+                ],
               ),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -141,8 +186,37 @@ class _SettingsPageState extends State<SettingsPage> {
                   ),
                   Container(
                     decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(35),
-                        border: Border.all(width: 2)),
+                      borderRadius: BorderRadius.circular(35),
+                      gradient: LinearGradient(
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                          colors: [
+                            Color?.lerp(Colors.green[400], Colors.white, .1)
+                                as Color,
+                            Color?.lerp(Colors.white, Colors.green[100], .2)
+                                as Color,
+                          ]),
+                      boxShadow: [
+                        // Shadow for top-left corner
+                        BoxShadow(
+                          color: Colors.green.shade300,
+                          offset: const Offset(5, 5),
+                          blurRadius: 3,
+                          spreadRadius: 1,
+                        ),
+                        // Shadow for bottom-right corner
+                        const BoxShadow(
+                          color: Colors.white54,
+                          offset: Offset(-4, -4),
+                          blurRadius: 3,
+                          spreadRadius: 1,
+                        ),
+                      ],
+                      border: Border.all(
+                        width: 0.6,
+                        color: Colors.white.withOpacity(.5),
+                      ),
+                    ),
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: GestureDetector(
@@ -175,8 +249,17 @@ class _SettingsPageState extends State<SettingsPage> {
             padding: const EdgeInsets.all(18.0),
             child: Container(
               decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(35),
-                  color: Colors.green.shade100),
+                borderRadius: BorderRadius.circular(35),
+                color: Colors.green.shade100,
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.green.shade300,
+                    offset: const Offset(5, 5),
+                    blurRadius: 3,
+                    spreadRadius: 1,
+                  ),
+                ],
+              ),
               child: Padding(
                 padding: const EdgeInsets.all(18.0),
                 child: Column(
