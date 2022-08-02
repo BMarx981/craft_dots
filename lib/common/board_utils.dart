@@ -55,11 +55,21 @@ class BoardUtils extends ChangeNotifier {
 
   void updateSize(int inputSize) {
     _boardSize = inputSize;
+    board = [];
+    _colorLists.clear();
+
+    initColorList(_boardSize);
+    generateBoard(_boardSize, _dotSize);
     notifyListeners();
   }
 
   void updateDotSize(int size) {
     _dotSize = size;
+    board = [];
+    _colorLists.clear();
+
+    initColorList(_boardSize);
+    generateBoard(_boardSize, _dotSize);
     notifyListeners();
   }
 
@@ -200,8 +210,7 @@ class BoardUtils extends ChangeNotifier {
     }
   }
 
-  void initColorList(int boardSize, {previousColors}) {
-    colorListsSize = boardSize;
+  void initColorList(int boardSize) {
     if (_colorLists.length == boardSize) {
       return;
     } else {

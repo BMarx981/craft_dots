@@ -8,14 +8,12 @@ import 'package:provider/provider.dart';
 import '../common/edit_utils.dart';
 
 class PegBoard extends StatelessWidget {
-  const PegBoard({Key? key, required this.boardSize, required this.dotSize})
-      : super(key: key);
-
-  final int boardSize;
-  final int dotSize;
+  const PegBoard({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    int boardSize = Provider.of<BoardUtils>(context).getBoardSize;
+    int dotSize = Provider.of<BoardUtils>(context).getDotSize;
     Provider.of<BoardUtils>(context, listen: false).initColorList(boardSize);
     Provider.of<BoardUtils>(context, listen: false)
         .generateBoard(boardSize, dotSize);
@@ -109,14 +107,14 @@ class PegBoard extends StatelessWidget {
           ),
           Expanded(
             child: InteractiveViewer(
-              boundaryMargin: const EdgeInsets.all(8.0),
+              boundaryMargin: const EdgeInsets.all(double.infinity),
               minScale: 0.1,
-              maxScale: 2.6,
+              maxScale: 8.6,
               clipBehavior: Clip.hardEdge,
+              // constrained: false,
               child: Center(
                 child: PegBoardWidget(
-                    board:
-                        Provider.of<BoardUtils>(context, listen: false).board,
+                    board: Provider.of<BoardUtils>(context).board,
                     boardSize: boardSize,
                     dotSize: dotSize),
               ),

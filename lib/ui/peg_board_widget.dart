@@ -15,15 +15,11 @@ class PegBoardWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: (boardSize * dotSize).toDouble(),
-      height: (boardSize * dotSize).toDouble(),
-      child: ListView.builder(
+      width: double.infinity,
+      height: double.infinity,
+      child: ListView(
         physics: const NeverScrollableScrollPhysics(),
-        shrinkWrap: true,
-        itemBuilder: (context, index) {
-          return board[index];
-        },
-        itemCount: board.length,
+        children: board,
       ),
     );
   }

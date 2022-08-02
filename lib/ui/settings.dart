@@ -49,14 +49,13 @@ class _SettingsPageState extends State<SettingsPage> {
                   Padding(
                     padding: const EdgeInsets.all(18.0),
                     child: SizedBox(
-                      width: 50,
+                      width: 30,
                       child: TextField(
                           decoration: InputDecoration(
-                              hintText: Provider.of<BoardUtils>(context,
-                                      listen: false)
+                              hintText: Provider.of<BoardUtils>(context)
                                   .getBoardSize
                                   .toString()),
-                          textAlign: TextAlign.left,
+                          textAlign: TextAlign.center,
                           onSubmitted: (str) {
                             Provider.of<BoardUtils>(context, listen: false)
                                 .updateSize(int.parse(_currentSize));
@@ -158,30 +157,29 @@ class _SettingsPageState extends State<SettingsPage> {
                   Padding(
                     padding: const EdgeInsets.all(18.0),
                     child: SizedBox(
-                      width: 50,
+                      width: 30,
                       child: TextField(
-                          decoration: InputDecoration(
-                              hintText: Provider.of<BoardUtils>(context,
-                                      listen: false)
-                                  .getDotSize
-                                  .toString()),
-                          textAlign: TextAlign.left,
-                          onSubmitted: (str) {
-                            Provider.of<BoardUtils>(context, listen: false)
-                                .updateDotSize(int.parse(_currentDotSize));
-                          },
-                          onChanged: (str) {
-                            if (int.parse(str).isNaN) {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                  const SnackBar(
-                                      content: Text("Must be a number.")));
-                            }
-                            _currentDotSize = str;
-                          },
-                          controller: dotSizeController,
-                          maxLength: 3,
-                          keyboardType: TextInputType.number,
-                          textInputAction: TextInputAction.go),
+                        decoration: InputDecoration(
+                            hintText: Provider.of<BoardUtils>(context)
+                                .getDotSize
+                                .toString()),
+                        textAlign: TextAlign.left,
+                        onSubmitted: (str) {
+                          Provider.of<BoardUtils>(context, listen: false)
+                              .updateDotSize(int.parse(_currentDotSize));
+                        },
+                        onChanged: (str) {
+                          if (int.parse(str).isNaN) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                    content: Text("Must be a number.")));
+                          }
+                          _currentDotSize = str;
+                        },
+                        controller: dotSizeController,
+                        maxLength: 3,
+                        keyboardType: TextInputType.number,
+                      ),
                     ),
                   ),
                   Container(

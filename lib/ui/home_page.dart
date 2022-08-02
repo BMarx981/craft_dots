@@ -1,11 +1,9 @@
 import 'package:camera/camera.dart';
-import 'package:craft_dots/common/board_utils.dart';
 import 'package:craft_dots/ui/peg_board.dart';
 import 'package:craft_dots/ui/save_page.dart';
 import 'package:craft_dots/ui/settings.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 import 'image_picker_page.dart';
 
@@ -58,14 +56,28 @@ class HomePage extends StatelessWidget {
           padding: const EdgeInsets.all(8.0),
           child: Center(
             child: Container(
-              decoration: BoxDecoration(color: Colors.grey.withOpacity(0.3)),
-              child: Center(
-                child: PegBoard(
-                  boardSize: Provider.of<BoardUtils>(context, listen: false)
-                      .getBoardSize,
-                  dotSize: Provider.of<BoardUtils>(context, listen: false)
-                      .getDotSize,
-                ),
+              decoration: BoxDecoration(
+                border: Border.all(color: Colors.grey.withOpacity(.4)),
+                color: Colors.grey.withOpacity(0.3),
+                boxShadow: const [
+                  BoxShadow(
+                    color: Colors.grey,
+                    offset: Offset(3, 3),
+                    blurRadius: 1,
+                    spreadRadius: 1.7,
+                  ),
+
+                  // Shadow for bottom-right corner
+                  BoxShadow(
+                    color: Colors.white,
+                    offset: Offset(-3, -3),
+                    blurRadius: 1,
+                    spreadRadius: 2,
+                  ),
+                ],
+              ),
+              child: const Center(
+                child: PegBoard(),
               ),
             ),
           ),
