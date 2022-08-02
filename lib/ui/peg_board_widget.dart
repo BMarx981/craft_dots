@@ -14,17 +14,25 @@ class PegBoardWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      width: (boardSize * dotSize).toDouble(),
-      height: (boardSize * dotSize).toDouble(),
-      child: ListView.builder(
-        physics: const NeverScrollableScrollPhysics(),
-        shrinkWrap: true,
-        itemBuilder: (context, index) {
-          return board[index];
-        },
-        itemCount: board.length,
-      ),
+    return LayoutBuilder(
+      builder: (BuildContext context, BoxConstraints constraints) {
+        return SizedBox(
+          width: (boardSize * dotSize) < constraints.maxWidth
+              ? (boardSize * dotSize * 1.0)
+              : (constraints.maxWidth),
+          height: (boardSize * dotSize) < constraints.maxHeight
+              ? (boardSize * dotSize * 1.0)
+              : (constraints.maxHeight),
+          child: ListView.builder(
+            physics: const NeverScrollableScrollPhysics(),
+            shrinkWrap: true,
+            itemBuilder: (context, index) {
+              return board[index];
+            },
+            itemCount: board.length,
+          ),
+        );
+      },
     );
   }
 }
