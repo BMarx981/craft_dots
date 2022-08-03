@@ -1,6 +1,5 @@
 import 'package:craft_dots/common/board_utils.dart';
 import 'package:craft_dots/ui/color_row.dart';
-import 'package:craft_dots/ui/peg_board_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -111,12 +110,14 @@ class PegBoard extends StatelessWidget {
               minScale: 0.1,
               maxScale: 8.6,
               clipBehavior: Clip.hardEdge,
-              // constrained: false,
               child: Center(
-                child: PegBoardWidget(
-                    board: Provider.of<BoardUtils>(context).board,
-                    boardSize: boardSize,
-                    dotSize: dotSize),
+                child: FittedBox(
+                  fit: BoxFit.contain,
+                  child: Column(
+                    children:
+                        Provider.of<BoardUtils>(context, listen: false).board,
+                  ),
+                ),
               ),
             ),
           ),
