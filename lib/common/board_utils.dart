@@ -19,7 +19,6 @@ class BoardUtils extends ChangeNotifier {
   List<Widget> board = [];
   Color mainBoardColor = Colors.blue;
   static Color standardColor = Colors.grey.withOpacity(.3);
-  int colorListsSize = 0;
   int _boardSize = 29;
   int _dotSize = 11;
   bool _isFillEnabled = false;
