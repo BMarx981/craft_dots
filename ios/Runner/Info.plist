@@ -16,6 +16,25 @@
 	<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
+	<key>CFBundleLocalizations</key>
+    <array>
+        <string>en</string>
+        <string>ar</string>
+        <string>de</string>
+        <string>fr</string>
+        <string>es</string>
+        <string>hi</string>
+        <string>iw</string>
+        <string>ja</string>
+        <string>ji</string>
+        <string>ko</string>
+        <string>nl</string>
+        <string>th</string>
+        <string>tr</string>
+        <string>uk</string>
+        <string>vi</string>
+        <string>zh</string>
+    </array>
 	<key>CFBundleName</key>
 	<string>Dot Pic</string>
 	<key>CFBundlePackageType</key>

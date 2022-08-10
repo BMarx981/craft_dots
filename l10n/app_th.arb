@@ -1,0 +1,12 @@
+{
+    "appTitle": "รูป dot",
+    "selectedColor": "สีที่เลือก",
+    "settings": "การตั้งค่า",
+    "totalColors": "สีทั้งหมด",
+    "stats": "สถิติ",
+    "count": "นับ",
+    "boardSize": "ขนาดบอร์ด",
+    "dotSize": "ขนาดจุด",
+    "saveWork": "บันทึกงานของคุณที่นี่",
+    "saveAs": "บันทึกเป็น"
+}

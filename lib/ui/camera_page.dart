@@ -195,11 +195,14 @@ class _CameraPageState extends State<CameraPage>
           ),
           Padding(
             padding: const EdgeInsets.all(8.0),
-            child: IconButton(
-              icon: const Icon(Icons.filter_alt_outlined),
-              onPressed: () {
-                // TODO Add filter to preview screen here
-              },
+            child: Visibility(
+              visible: false,
+              child: IconButton(
+                icon: const Icon(Icons.filter_alt_outlined),
+                onPressed: () {
+                  // TODO Add filter to preview screen here
+                },
+              ),
             ),
           ),
         ],
