@@ -11,12 +11,14 @@ class SettingsPage extends StatefulWidget {
 }
 
 class _SettingsPageState extends State<SettingsPage> {
-  TextEditingController sizeController = TextEditingController();
+  TextEditingController boardSizeController = TextEditingController();
   TextEditingController dotSizeController = TextEditingController();
   String _currentSize = "";
   String _currentDotSize = "";
   Map<Color, int> stats = {};
   List<Color> keys = [];
+  bool textEnteredBoardSize = false;
+  bool textEnteredDotSize = false;
 
   @override
   Widget build(BuildContext context) {
@@ -45,8 +47,9 @@ class _SettingsPageState extends State<SettingsPage> {
                   ),
                 ],
               ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              child: Wrap(
+                alignment: WrapAlignment.spaceEvenly,
+                crossAxisAlignment: WrapCrossAlignment.center,
                 children: [
                   Padding(
                     padding: const EdgeInsets.all(18.0),
@@ -63,13 +66,25 @@ class _SettingsPageState extends State<SettingsPage> {
                                 .updateSize(int.parse(_currentSize));
                           },
                           onChanged: (str) {
+                            if (str != "") {
+                              setState(() {
+                                textEnteredBoardSize = true;
+                              });
+                            }
+                            if (str == "") {
+                              setState(() {
+                                textEnteredBoardSize = false;
+                              });
+                              _currentSize = str;
+                              return;
+                            }
                             if (int.parse(str).isNaN) {
                               ScaffoldMessenger.of(context).showSnackBar(
                                   SnackBar(content: Text(text.mustBeNum)));
                             }
                             _currentSize = str;
                           },
-                          controller: sizeController,
+                          controller: boardSizeController,
                           // maxLength: 3,
                           keyboardType: TextInputType.number,
                           textInputAction: TextInputAction.go),
@@ -82,8 +97,12 @@ class _SettingsPageState extends State<SettingsPage> {
                           begin: Alignment.topLeft,
                           end: Alignment.bottomRight,
                           colors: [
-                            Color?.lerp(Colors.green[400], Colors.white, .1)
-                                as Color,
+                            Color?.lerp(
+                                textEnteredBoardSize
+                                    ? Colors.green[400]
+                                    : Colors.grey,
+                                Colors.white,
+                                .1) as Color,
                             Color?.lerp(Colors.white, Colors.green[100], .2)
                                 as Color,
                           ]),
@@ -112,23 +131,25 @@ class _SettingsPageState extends State<SettingsPage> {
                       padding: const EdgeInsets.all(8.0),
                       child: GestureDetector(
                         onTap: () {
+                          setState(() {
+                            textEnteredBoardSize = false;
+                            boardSizeController.text = "";
+                          });
                           Provider.of<BoardUtils>(context, listen: false)
                               .updateSize(int.parse(_currentSize));
                           FocusScope.of(context).unfocus();
                         },
                         child: Padding(
                           padding: const EdgeInsets.all(8.0),
-                          child: Wrap(
-                            children: [
-                              Text(
-                                text.boardSize,
-                                style: const TextStyle(
-                                  fontSize: 25,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.black,
-                                ),
-                              ),
-                            ],
+                          child: Text(
+                            text.boardSize,
+                            style: TextStyle(
+                              fontSize: 25,
+                              fontWeight: FontWeight.bold,
+                              color: textEnteredBoardSize
+                                  ? Colors.black
+                                  : Colors.grey[600],
+                            ),
                           ),
                         ),
                       ),
@@ -154,8 +175,9 @@ class _SettingsPageState extends State<SettingsPage> {
                   ),
                 ],
               ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              child: Wrap(
+                alignment: WrapAlignment.spaceEvenly,
+                crossAxisAlignment: WrapCrossAlignment.center,
                 children: [
                   Padding(
                     padding: const EdgeInsets.all(18.0),
@@ -172,6 +194,19 @@ class _SettingsPageState extends State<SettingsPage> {
                               .updateDotSize(int.parse(_currentDotSize));
                         },
                         onChanged: (str) {
+                          debugPrint(str);
+                          if (str != "") {
+                            setState(() {
+                              textEnteredDotSize = true;
+                            });
+                          }
+                          if (str == "") {
+                            setState(() {
+                              textEnteredDotSize = true;
+                            });
+                            _currentDotSize = str;
+                            return;
+                          }
                           if (int.parse(str).isNaN) {
                             ScaffoldMessenger.of(context).showSnackBar(
                                 SnackBar(content: Text(text.mustBeNum)));
@@ -191,8 +226,12 @@ class _SettingsPageState extends State<SettingsPage> {
                           begin: Alignment.topLeft,
                           end: Alignment.bottomRight,
                           colors: [
-                            Color?.lerp(Colors.green[400], Colors.white, .1)
-                                as Color,
+                            Color?.lerp(
+                                textEnteredDotSize
+                                    ? Colors.green[400]
+                                    : Colors.grey,
+                                Colors.white,
+                                .1) as Color,
                             Color?.lerp(Colors.white, Colors.green[100], .2)
                                 as Color,
                           ]),
@@ -221,6 +260,10 @@ class _SettingsPageState extends State<SettingsPage> {
                       padding: const EdgeInsets.all(8.0),
                       child: GestureDetector(
                         onTap: () {
+                          setState(() {
+                            textEnteredDotSize = false;
+                            dotSizeController.text = "";
+                          });
                           Provider.of<BoardUtils>(context, listen: false)
                               .updateDotSize(int.parse(_currentDotSize));
                           FocusScope.of(context).unfocus();
@@ -232,10 +275,12 @@ class _SettingsPageState extends State<SettingsPage> {
                               Text(
                                 text.dotSize,
                                 softWrap: true,
-                                style: const TextStyle(
+                                style: TextStyle(
                                   fontSize: 25,
                                   fontWeight: FontWeight.bold,
-                                  color: Colors.black,
+                                  color: textEnteredDotSize
+                                      ? Colors.black
+                                      : Colors.grey[600],
                                 ),
                               ),
                             ],
