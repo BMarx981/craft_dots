@@ -1,0 +1,51 @@
+{
+    "appTitle": "عکس",
+
+    "selectedColor": "رنگ انتخاب شده:",
+
+    "settings": "تنظیمات",
+
+    "totalColors": "رنگ کل",
+
+    "stats": "آمار",
+
+    "count": "شمردن",
+
+    "boardSize": "اندازه تخته",
+
+    "dotSize": "اندازه نقطه",
+
+    "saveWork": "کار خود را در اینجا ذخیره کنید",
+
+    "saveAs": "ذخیره به عنوان",
+
+    "noSavedData": "بدون داده ذخیره شده",
+
+    "name": "نام",
+
+    "takePic": "یک عکس بگیر",
+
+    "ok": "خوب",
+
+    "cancel": "لغو کردن",
+
+    "colorPicker": "انتخاب کننده رنگ",
+
+    "imageGallery": "گالری تصویر",
+
+    "saved": "ذخیره.",
+
+    "printing": "چاپ",
+
+    "loaded": "لود شده",
+
+    "nothingHere": "چیزی برای دیدن اینجا",
+
+    "rename": "نام بردن",
+
+    "save": "صرفه جویی",
+
+    "mustBeNum": "باید یک عدد باشد.",
+
+    "color": "رنگ"
+}

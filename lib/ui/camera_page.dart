@@ -7,6 +7,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image/image.dart' as img;
 import 'package:provider/provider.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../common/board_utils.dart';
 import '../main.dart';
@@ -56,7 +57,7 @@ class _CameraPageState extends State<CameraPage>
     // Initialize controller
     try {
       await cameraController.initialize();
-    } on CameraException catch (e) {
+    } on CameraException {
       //The camera threw and exception
     }
 
@@ -104,10 +105,11 @@ class _CameraPageState extends State<CameraPage>
 
   @override
   Widget build(BuildContext context) {
+    final text = AppLocalizations.of(context);
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
-          title: const Text("Take a picture."),
+          title: Text(text!.takePic),
         ),
         body: _isCameraInitialized
             ? Column(
@@ -267,7 +269,7 @@ class _CameraPageState extends State<CameraPage>
     try {
       XFile file = await controller!.takePicture();
       return file;
-    } on CameraException catch (e) {
+    } on CameraException {
       return null;
     }
   }

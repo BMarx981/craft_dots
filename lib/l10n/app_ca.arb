@@ -1,0 +1,51 @@
+{
+    "appTitle": "Foto de punt",
+
+    "selectedColor": "Color seleccionat:",
+
+    "settings": "Configuració",
+
+    "totalColors": "Colors totals",
+
+    "stats": "Stats",
+
+    "count": "Compte",
+
+    "boardSize": "Mida de la taula",
+
+    "dotSize": "Mida del punt",
+
+    "saveWork": "Deseu el vostre treball aquí",
+
+    "saveAs": "Guardar com",
+
+    "noSavedData": "No hi ha dades desades",
+
+    "name": "Nom",
+
+    "takePic": "Fer una foto",
+
+    "ok": "D'acord",
+
+    "cancel": "Cancel · lar",
+
+    "colorPicker": "Picker de colors",
+
+    "imageGallery": "Galeria d'imatges",
+
+    "saved": "Desat.",
+
+    "printing": "Tipografia",
+
+    "loaded": "Carregat",
+
+    "nothingHere": "Res a veure aquí",
+
+    "rename": "Rebatejar",
+
+    "save": "Estalviar",
+
+    "mustBeNum": "Ha de ser un número.",
+
+    "color": "Color"
+}

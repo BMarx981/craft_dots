@@ -269,6 +269,7 @@ class BoardUtils extends ChangeNotifier {
   Future<File> displayBoardImage(String name) async {
     final db = DBHelper.instance;
     Map data = await db.getData(name: name);
+    //TODO figure out why data is null here
     List<String> split = data['canvas'].split(" ");
     split.removeLast();
     int len = sqrt(split.length - 1).ceil();

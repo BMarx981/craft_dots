@@ -1,0 +1,51 @@
+{
+    "appTitle": "Dot pic",
+
+    "selectedColor": "Napiling Kulay:",
+
+    "settings": "Mga setting",
+
+    "totalColors": "Kabuuang mga kulay",
+
+    "stats": "Stats",
+
+    "count": "Bilangin",
+
+    "boardSize": "Laki ng Lupon",
+
+    "dotSize": "Laki ng tuldok",
+
+    "saveWork": "I -save ang iyong trabaho dito",
+
+    "saveAs": "I-save bilang",
+
+    "noSavedData": "Walang nai -save na data",
+
+    "name": "Pangalan",
+
+    "takePic": "Kumuha ng litrato",
+
+    "ok": "OK",
+
+    "cancel": "Kanselahin",
+
+    "colorPicker": "Picker ng Kulay",
+
+    "imageGallery": "Gallery ng imahe",
+
+    "saved": "Nai -save.",
+
+    "printing": "Pagpi -print",
+
+    "loaded": "Puno",
+
+    "nothingHere": "Walang makikita dito",
+
+    "rename": "Palitan ang pangalan",
+
+    "save": "I -save",
+
+    "mustBeNum": "Dapat ay isang numero.",
+
+    "color": "Kulay"
+}

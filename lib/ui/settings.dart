@@ -1,6 +1,7 @@
 import 'package:craft_dots/common/board_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class SettingsPage extends StatefulWidget {
   const SettingsPage({Key? key}) : super(key: key);
@@ -19,11 +20,12 @@ class _SettingsPageState extends State<SettingsPage> {
 
   @override
   Widget build(BuildContext context) {
+    final text = AppLocalizations.of(context);
     stats = Provider.of<BoardUtils>(context, listen: false).getColorCount();
     keys = stats.keys.toList();
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Settings"),
+        title: Text(text!.settings),
       ),
       body: SafeArea(
         child: ListView(children: [
@@ -63,8 +65,7 @@ class _SettingsPageState extends State<SettingsPage> {
                           onChanged: (str) {
                             if (int.parse(str).isNaN) {
                               ScaffoldMessenger.of(context).showSnackBar(
-                                  const SnackBar(
-                                      content: Text("Must be a number.")));
+                                  SnackBar(content: Text(text.mustBeNum)));
                             }
                             _currentSize = str;
                           },
@@ -115,17 +116,19 @@ class _SettingsPageState extends State<SettingsPage> {
                               .updateSize(int.parse(_currentSize));
                           FocusScope.of(context).unfocus();
                         },
-                        child: const Padding(
-                          padding: EdgeInsets.all(8.0),
-                          child: SizedBox(
-                            child: Text(
-                              "Board Size",
-                              style: TextStyle(
-                                fontSize: 30,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.black,
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Wrap(
+                            children: [
+                              Text(
+                                text.boardSize,
+                                style: const TextStyle(
+                                  fontSize: 25,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.black,
+                                ),
                               ),
-                            ),
+                            ],
                           ),
                         ),
                       ),
@@ -171,8 +174,7 @@ class _SettingsPageState extends State<SettingsPage> {
                         onChanged: (str) {
                           if (int.parse(str).isNaN) {
                             ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(
-                                    content: Text("Must be a number.")));
+                                SnackBar(content: Text(text.mustBeNum)));
                           }
                           _currentDotSize = str;
                         },
@@ -223,17 +225,20 @@ class _SettingsPageState extends State<SettingsPage> {
                               .updateDotSize(int.parse(_currentDotSize));
                           FocusScope.of(context).unfocus();
                         },
-                        child: const Padding(
-                          padding: EdgeInsets.all(8.0),
-                          child: SizedBox(
-                            child: Text(
-                              "Dot Size",
-                              style: TextStyle(
-                                fontSize: 30,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.black,
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Wrap(
+                            children: [
+                              Text(
+                                text.dotSize,
+                                softWrap: true,
+                                style: const TextStyle(
+                                  fontSize: 25,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.black,
+                                ),
                               ),
-                            ),
+                            ],
                           ),
                         ),
                       ),
@@ -267,7 +272,7 @@ class _SettingsPageState extends State<SettingsPage> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Text("Total Colors: ${keys.length}",
+                        Text("${text.totalColors} ${keys.length}",
                             style: const TextStyle(
                               fontSize: 18,
                             )),
@@ -275,13 +280,13 @@ class _SettingsPageState extends State<SettingsPage> {
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: const [
-                        Text(
+                      children: [
+                        const Text(
                           "Stats:",
                           style: TextStyle(fontSize: 18),
                         ),
-                        Text("Color"),
-                        Text("Count"),
+                        Text(text.color),
+                        Text(text.count),
                       ],
                     ),
                     ListView.builder(

@@ -3,6 +3,7 @@ import 'package:craft_dots/db/db_helper.dart';
 import 'package:craft_dots/ui/save_item.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class SavePage extends StatefulWidget {
   const SavePage({Key? key}) : super(key: key);
@@ -39,9 +40,10 @@ class _SavePageState extends State<SavePage> {
 
   @override
   Widget build(BuildContext context) {
+    final text = AppLocalizations.of(context);
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Save your work here"),
+        title: Text(text!.saveWork),
       ),
       body: Container(
         color: Colors.grey.shade200,
@@ -86,11 +88,11 @@ class _SavePageState extends State<SavePage> {
                             width: 0.5,
                             color: Colors.white,
                           )),
-                      child: const Padding(
-                        padding: EdgeInsets.all(8.0),
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
                         child: Text(
-                          "Save As",
-                          style: TextStyle(
+                          text.saveAs,
+                          style: const TextStyle(
                             color: Colors.blue,
                             fontSize: 30,
                             fontWeight: FontWeight.bold,
@@ -137,20 +139,21 @@ class _SavePageState extends State<SavePage> {
 
   AlertDialog _buildAlertDialog(
       TextEditingController controller, BuildContext context, String board) {
+    final text = AppLocalizations.of(context);
     return AlertDialog(
       shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.all(Radius.circular(30))),
-      title: const Text("Save As"),
+      title: Text(text!.saveAs),
       content: TextField(
         controller: controller,
-        decoration: const InputDecoration(hintText: "Name"),
+        decoration: InputDecoration(hintText: text.name),
       ),
       actions: [
         TextButton(
           onPressed: () {
             Navigator.pop(context);
           },
-          child: const Text('CANCEL'),
+          child: Text(text.cancel),
         ),
         TextButton(
           onPressed: () {
@@ -162,7 +165,7 @@ class _SavePageState extends State<SavePage> {
             Navigator.pop(context);
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
-                content: Text("${controller.text} Saved."),
+                content: Text("${controller.text} ${text.saved}"),
               ),
             );
             setState(() {
@@ -171,7 +174,7 @@ class _SavePageState extends State<SavePage> {
               });
             });
           },
-          child: const Text('SAVE'),
+          child: Text(text.save),
         ),
       ],
     );

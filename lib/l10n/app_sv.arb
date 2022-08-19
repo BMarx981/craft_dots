@@ -1,0 +1,51 @@
+{
+    "appTitle": "Dot pic",
+
+    "selectedColor": "Valt färg:",
+
+    "settings": "inställningar",
+
+    "totalColors": "Totala färger",
+
+    "stats": "Statistik",
+
+    "count": "Räkna",
+
+    "boardSize": "Styrelsestorlek",
+
+    "dotSize": "Prickstorlek",
+
+    "saveWork": "Spara ditt arbete här",
+
+    "saveAs": "Spara som",
+
+    "noSavedData": "Inga sparade data",
+
+    "name": "namn",
+
+    "takePic": "Ta en bild",
+
+    "ok": "OK",
+
+    "cancel": "Avbryt",
+
+    "colorPicker": "Färgväljare",
+
+    "imageGallery": "Bildgalleri",
+
+    "saved": "Sparad.",
+
+    "printing": "Utskrift",
+
+    "loaded": "Lastad",
+
+    "nothingHere": "Inget att se här",
+
+    "rename": "Döp om",
+
+    "save": "Spara",
+
+    "mustBeNum": "Måste vara en siffra.",
+
+    "color": "Färg"
+}

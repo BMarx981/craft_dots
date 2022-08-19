@@ -1,0 +1,51 @@
+{
+    "appTitle": "Taško nuotrauka",
+
+    "selectedColor": "Pasirinkta spalva:",
+
+    "settings": "Nustatymai",
+
+    "totalColors": "Bendros spalvos",
+
+    "stats": "Statistika",
+
+    "count": "Skaičiavimas",
+
+    "boardSize": "Lentos dydis",
+
+    "dotSize": "Taško dydis",
+
+    "saveWork": "Išsaugokite savo darbą čia",
+
+    "saveAs": "Išsaugoti kaip",
+
+    "noSavedData": "Nėra išsaugotų duomenų",
+
+    "name": "vardas",
+
+    "takePic": "Nufotografuok",
+
+    "ok": "Gerai",
+
+    "cancel": "Atšaukti",
+
+    "colorPicker": "Spalvų rinkėjas",
+
+    "imageGallery": "Vaizdų galerija",
+
+    "saved": "Išsaugota.",
+
+    "printing": "Spausdinimas",
+
+    "loaded": "Pakrauti",
+
+    "nothingHere": "Čia nieko nematyti",
+
+    "rename": "Pervardyti",
+
+    "save": "Sutaupyti",
+
+    "mustBeNum": "Turi būti numeris.",
+
+    "color": "Spalva"
+}

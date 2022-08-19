@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:image/image.dart' as img;
 import 'package:provider/provider.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import 'dart:io';
 import 'dart:typed_data';
@@ -47,9 +48,10 @@ class _ImagePickerPageState extends State<ImagePickerPage> {
 
   @override
   Widget build(BuildContext context) {
+    final text = AppLocalizations.of(context);
     return Scaffold(
         appBar: AppBar(
-          title: const Text("Image Gallery"),
+          title: Text(text!.imageGallery),
           actions: [
             IconButton(
               icon: const Icon(Icons.camera),
