@@ -276,7 +276,7 @@ class BoardUtils extends ChangeNotifier {
     //TODO figure out why data is null here
     debugPrint(data.keys.toString());
     String? canvas = data['canvas'];
-    if (canvas == "" || canvas == null) throw (Exception());
+    if (canvas == null) throw (Exception());
     List<String> split = canvas.split(" ");
     split.removeLast();
     int len = sqrt(split.length - 1).ceil();

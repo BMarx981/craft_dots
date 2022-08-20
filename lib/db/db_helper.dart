@@ -95,8 +95,9 @@ class DBHelper {
         columnCanvas: list[0][columnCanvas],
         columnDotSize: list[0][columnDotSize]
       };
+      return map;
     }
-    return map;
+    return {columnCanvas: "", columnDotSize: ""};
   }
 
   // All of the methods (insert, query, update, delete) can also be done using

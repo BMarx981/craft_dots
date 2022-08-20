@@ -131,7 +131,7 @@ class _SavePageState extends State<SavePage> {
                       ),
                     ),
                   )
-                : SaveItem(name: text.noSavedData),
+                : Text(text.noSavedData),
           ],
         ),
       ),

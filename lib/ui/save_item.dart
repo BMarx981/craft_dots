@@ -1,17 +1,22 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:io';
+
+import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:provider/provider.dart';
 
 import 'package:craft_dots/db/db_helper.dart';
 import 'package:craft_dots/ui/spinner.dart';
-import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../common/board_utils.dart';
 
 class SaveItem extends StatefulWidget {
   String name = "";
 
-  SaveItem({Key? key, required this.name}) : super(key: key);
+  SaveItem({
+    Key? key,
+    required this.name,
+  }) : super(key: key);
 
   @override
   State<SaveItem> createState() => _SaveItemState();
