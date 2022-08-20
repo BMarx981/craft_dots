@@ -41,6 +41,7 @@ class _SaveItemState extends State<SaveItem> {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               GestureDetector(
+                //**************Long press to Rename Save Item *******/
                 onLongPress: () {
                   _controller.text = widget.name;
                   showDialog(
@@ -64,7 +65,7 @@ class _SaveItemState extends State<SaveItem> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
-                    // Save button starts here !!!!!
+                    // ******** Save button **************//
                     GestureDetector(
                         child: const Icon(
                           Icons.save_outlined,
@@ -86,7 +87,7 @@ class _SaveItemState extends State<SaveItem> {
                           Navigator.pop(context);
                         }), // End save button
 
-                    //Print button start here!!!!!!!!
+                    //**************** Print button *****************/
                     GestureDetector(
                         child: const Icon(
                           Icons.print_outlined,
@@ -120,7 +121,7 @@ class _SaveItemState extends State<SaveItem> {
                     } else if (snapshot.connectionState ==
                         ConnectionState.done) {
                       if (snapshot.hasError) {
-                        return const Text('');
+                        return Text(text!.nothingHere);
                       } else if (snapshot.hasData) {
                         return GestureDetector(
                           onTap: () async {
@@ -149,6 +150,7 @@ class _SaveItemState extends State<SaveItem> {
     );
   }
 
+  //****** Rename Alert Dialog *******/
   AlertDialog _buildAlertDialog(
       TextEditingController controller, BuildContext context, String board) {
     final text = AppLocalizations.of(context);
@@ -166,7 +168,7 @@ class _SaveItemState extends State<SaveItem> {
             widget.name = controller.text;
             Navigator.pop(context);
           },
-          child: const Text('CANCEL'),
+          child: Text(text.cancel),
         ),
         TextButton(
           onPressed: () {

@@ -15,7 +15,7 @@ import 'package:undo/undo.dart';
 import '../ui/peg_board_widget.dart';
 
 class BoardUtils extends ChangeNotifier {
-  final List<List<Color>> _colorLists = [];
+  List<List<Color>> colorLists = [];
   List<Widget> board = [];
   Color mainBoardColor = Colors.blue;
   static Color standardColor = Colors.grey.withOpacity(.3);
@@ -45,17 +45,17 @@ class BoardUtils extends ChangeNotifier {
   bool get canUndo => _undo.canUndo;
   bool get canRedo => _undo.canRedo;
 
-  List<List<Color>> get getColorLists => _colorLists;
+  List<List<Color>> get getColorLists => colorLists;
 
   setColorLists(List<List<Color>> list) {
-    _colorLists.clear();
-    _colorLists.addAll(list);
+    colorLists.clear();
+    colorLists.addAll(list);
   }
 
   void updateSize(int inputSize) {
     _boardSize = inputSize;
     board = [];
-    _colorLists.clear();
+    colorLists.clear();
 
     initColorList(_boardSize);
     generateBoard(_boardSize, _dotSize);
@@ -65,7 +65,7 @@ class BoardUtils extends ChangeNotifier {
   void updateDotSize(int size) {
     _dotSize = size;
     board = [];
-    _colorLists.clear();
+    colorLists.clear();
 
     initColorList(_boardSize);
     generateBoard(_boardSize, _dotSize);
@@ -75,13 +75,13 @@ class BoardUtils extends ChangeNotifier {
   void addToUndo(int row, int col, Color color) {
     _undo.add(
       Change(
-        _colorLists[row][col],
+        colorLists[row][col],
         () {
-          _colorLists[row][col] = color;
+          colorLists[row][col] = color;
           notifyListeners();
         },
         (Color old) {
-          _colorLists[row][col] = old;
+          colorLists[row][col] = old;
           notifyListeners();
         },
       ),
@@ -140,12 +140,12 @@ class BoardUtils extends ChangeNotifier {
 
   Map<Color, int> getColorCount() {
     Map<Color, int> map = {};
-    for (int i = 0; i < _colorLists.length; i++) {
-      for (int j = 0; j < _colorLists[i].length; j++) {
-        if (!map.containsKey(_colorLists[i][j])) {
-          map[_colorLists[i][j]] = 1;
+    for (int i = 0; i < colorLists.length; i++) {
+      for (int j = 0; j < colorLists[i].length; j++) {
+        if (!map.containsKey(colorLists[i][j])) {
+          map[colorLists[i][j]] = 1;
         } else {
-          map[_colorLists[i][j]] = map[_colorLists[i][j]]! + 1;
+          map[colorLists[i][j]] = map[colorLists[i][j]]! + 1;
         }
       }
     }
@@ -154,26 +154,26 @@ class BoardUtils extends ChangeNotifier {
 
   void clearBoard(int boardSize) {
     final List<List<Color>> temp = [];
-    for (List<Color> ele in _colorLists) {
+    for (List<Color> ele in colorLists) {
       temp.add(ele);
     }
     _undo.add(
       Change(temp, () {
-        _colorLists.clear();
+        colorLists.clear();
         initColorList(boardSize);
         loadBoard(boardToString(), _dotSize);
         notifyListeners();
       }, (List<List<Color>> oldList) {
         for (int i = 0; i < oldList.length; i++) {
           for (int j = 0; j < oldList[i].length; j++) {
-            _colorLists[i][j] = oldList[i][j];
+            colorLists[i][j] = oldList[i][j];
           }
         }
         loadBoard(boardToString(), _dotSize);
         notifyListeners();
       }),
     );
-    _colorLists.clear();
+    colorLists.clear();
     initColorList(boardSize);
     loadBoard(boardToString(), _dotSize);
     notifyListeners();
@@ -187,7 +187,7 @@ class BoardUtils extends ChangeNotifier {
   void generateBoard(int allSize, int dotSize) {
     _boardSize = allSize;
     _dotSize = dotSize;
-    if (_colorLists.isEmpty) {
+    if (colorLists.isEmpty) {
       return;
     }
     board.clear();
@@ -199,7 +199,7 @@ class BoardUtils extends ChangeNotifier {
             size: dotSize.toDouble(),
             row: row,
             col: col,
-            color: _colorLists[row][col],
+            color: colorLists[row][col],
           ),
         );
       }
@@ -210,7 +210,7 @@ class BoardUtils extends ChangeNotifier {
   }
 
   void initColorList(int boardSize) {
-    if (_colorLists.length == boardSize) {
+    if (colorLists.length == boardSize) {
       return;
     } else {
       for (int i = 0; i < boardSize; i++) {
@@ -218,14 +218,14 @@ class BoardUtils extends ChangeNotifier {
         for (int j = 0; j < boardSize; j++) {
           colors.add(standardColor);
         }
-        _colorLists.add(colors);
+        colorLists.add(colors);
       }
     }
   }
 
   String boardToString() {
     String mainString = "";
-    for (List<Color> colors in _colorLists) {
+    for (List<Color> colors in colorLists) {
       for (Color color in colors) {
         mainString += color.value.toString() + " ";
       }
@@ -238,7 +238,7 @@ class BoardUtils extends ChangeNotifier {
     int k = 0;
     for (int row = 0; row < rowLength; row++) {
       for (int col = 0; col < rowLength; col++) {
-        _colorLists[row][col] = cList[k++];
+        colorLists[row][col] = cList[k++];
       }
     }
     generateBoard(rowLength, _dotSize);
@@ -248,16 +248,20 @@ class BoardUtils extends ChangeNotifier {
   void loadBoard(String data, int dotSize) {
     List<String> split = data.split(" ");
     int rowLength = sqrt(split.length - 1).ceil();
+    List<List<Color>> tempRow = [];
     int k = 0;
     for (int i = 0; i < rowLength; i++) {
+      List<Color> tempCol = [];
       for (int j = 0; j < rowLength; j++) {
-        _colorLists[i][j] = Color(
+        tempCol.add(Color(
           int.parse(
             split[k++],
           ),
-        );
+        ));
       }
+      tempRow.add(tempCol);
     }
+    colorLists = tempRow;
     generateBoard(
       rowLength,
       dotSize,
@@ -270,7 +274,10 @@ class BoardUtils extends ChangeNotifier {
     final db = DBHelper.instance;
     Map data = await db.getData(name: name);
     //TODO figure out why data is null here
-    List<String> split = data['canvas'].split(" ");
+    debugPrint(data.keys.toString());
+    String? canvas = data['canvas'];
+    if (canvas == "" || canvas == null) throw (Exception());
+    List<String> split = canvas.split(" ");
     split.removeLast();
     int len = sqrt(split.length - 1).ceil();
     return await _processBoardImage(split, len, data['dotsize']);

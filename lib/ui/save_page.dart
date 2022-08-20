@@ -53,6 +53,7 @@ class _SavePageState extends State<SavePage> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
+                //**********Save As button*************
                 GestureDetector(
                     child: Container(
                       decoration: BoxDecoration(
@@ -62,7 +63,7 @@ class _SavePageState extends State<SavePage> {
                               begin: Alignment.topLeft,
                               end: Alignment.bottomRight,
                               colors: [
-                                Color?.lerp(Colors.grey[300], Colors.white, .1)
+                                Color?.lerp(Colors.grey[400], Colors.white, .1)
                                     as Color,
                                 Color?.lerp(Colors.white, Colors.grey[100], .2)
                                     as Color,
@@ -130,13 +131,14 @@ class _SavePageState extends State<SavePage> {
                       ),
                     ),
                   )
-                : SaveItem(name: 'No Saved data'),
+                : SaveItem(name: text.noSavedData),
           ],
         ),
       ),
     );
   }
 
+  //****************Save as Alert dialog****************** */
   AlertDialog _buildAlertDialog(
       TextEditingController controller, BuildContext context, String board) {
     final text = AppLocalizations.of(context);
@@ -180,6 +182,7 @@ class _SavePageState extends State<SavePage> {
     );
   }
 
+  //********************The list of Save Items ***************/
   List<Widget> _gridViewList(List<Map<String, dynamic>> list) {
     List<Widget> returnList = [];
     for (var item in list) {
