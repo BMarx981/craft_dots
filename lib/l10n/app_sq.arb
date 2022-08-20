@@ -1,0 +1,51 @@
+{
+    "appTitle": "Pikë pic",
+
+    "selectedColor": "Ngjyra e zgjedhur:",
+
+    "settings": "Cilësimet",
+
+    "totalColors": "Ngjyrat totale",
+
+    "stats": "Statistika",
+
+    "count": "Numër",
+
+    "boardSize": "Madhësia e bordit",
+
+    "dotSize": "Madhësia e pikës",
+
+    "saveWork": "Ruani punën tuaj këtu",
+
+    "saveAs": "Kursej",
+
+    "noSavedData": "Nuk ka të dhëna të ruajtura",
+
+    "name": "Emër",
+
+    "takePic": "Bëj një fotografi",
+
+    "ok": "Ne rregull",
+
+    "cancel": "Anuloj",
+
+    "colorPicker": "Mbledhës me ngjyra",
+
+    "imageGallery": "Galeri imazhesh",
+
+    "saved": "I ruajtur.",
+
+    "printing": "Shtypje",
+
+    "loaded": "I ngarkuar",
+
+    "nothingHere": "Asgjë për të parë këtu",
+
+    "rename": "Riemërtoj",
+
+    "save": "Ruaj",
+
+    "mustBeNum": "Duhet të jetë një numër.",
+
+    "color": "Ngjyrë"
+}

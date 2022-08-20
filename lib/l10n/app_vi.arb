@@ -1,0 +1,51 @@
+{
+    "appTitle": "Dot pic",
+
+    "selectedColor": "Màu sắc được chọn:",
+
+    "settings": "Cài đặt",
+
+    "totalColors": "Tổng số màu sắc",
+
+    "stats": "Số liệu thống kê",
+
+    "count": "Đếm",
+
+    "boardSize": "Kích thước bảng",
+
+    "dotSize": "Kích thước chấm",
+
+    "saveWork": "Lưu công việc của bạn ở đây",
+
+    "saveAs": "Lưu thành",
+
+    "noSavedData": "Không có dữ liệu lưu",
+
+    "name": "Tên",
+
+    "takePic": "Chụp ảnh",
+
+    "ok": "ĐƯỢC RỒI",
+
+    "cancel": "Hủy bỏ",
+
+    "colorPicker": "Người chọn màu",
+
+    "imageGallery": "thư viện hình ảnh",
+
+    "saved": "Đã lưu.",
+
+    "printing": "In",
+
+    "loaded": "Nạp vào",
+
+    "nothingHere": "Không có gì để thấy ở đây",
+
+    "rename": "Đổi tên",
+
+    "save": "Tiết kiệm",
+
+    "mustBeNum": "Phải là một số.",
+
+    "color": "Màu sắc"
+}

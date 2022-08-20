@@ -13,6 +13,9 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  flutter_localizations:
+    sdk: flutter
+  intl: ^0.17.0
 
   cupertino_icons: ^1.0.2
   provider: ^6.0.1
@@ -45,7 +48,7 @@ dev_dependencies:
 
 # The following section is specific to Flutter.
 flutter:
-
+  generate: true
   uses-material-design: true
 
   # To add assets to your application, add an assets section, like this:

@@ -1,0 +1,51 @@
+{
+    "appTitle": "Punkt Bild",
+
+    "selectedColor": "Ausgewählte Farbe:",
+
+    "settings": "Einstellungen",
+
+    "totalColors": "Gesamtfarben",
+
+    "stats": "Statistiken",
+
+    "count": "Zählen",
+
+    "boardSize": "Brettgröße",
+
+    "dotSize": "Punktgröße",
+
+    "saveWork": "Speichern Sie Ihre Arbeit hier",
+
+    "saveAs": "Speichern als",
+
+    "noSavedData": "Keine gespeicherten Daten",
+
+    "name": "Name",
+
+    "takePic": "Machen Sie ein Foto",
+
+    "ok": "OK",
+
+    "cancel": "Absagen",
+
+    "colorPicker": "Farbwähler",
+
+    "imageGallery": "Bildergalerie",
+
+    "saved": "Gerettet.",
+
+    "printing": "Drucken",
+
+    "loaded": "Geladen",
+
+    "nothingHere": "Es gibt hier nichts zu sehen",
+
+    "rename": "Umbenennen",
+
+    "save": "Speichern",
+
+    "mustBeNum": "Muss eine Nummer sein.",
+
+    "color": "Farbe"
+}

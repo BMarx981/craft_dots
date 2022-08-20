@@ -1,0 +1,51 @@
+{
+    "appTitle": "Puntu pic",
+
+    "selectedColor": "Aukeratutako kolorea:",
+
+    "settings": "Ezarpen",
+
+    "totalColors": "Kolore guztira",
+
+    "stats": "Estatsak",
+
+    "count": "Zenbatze",
+
+    "boardSize": "Kontseiluaren tamaina",
+
+    "dotSize": "Puntu tamaina",
+
+    "saveWork": "Gorde zure lana hemen",
+
+    "saveAs": "Gorde",
+
+    "noSavedData": "Ez da gordetako datuak",
+
+    "name": "Izen",
+
+    "takePic": "Argazki bat atera",
+
+    "ok": "Ados",
+
+    "cancel": "Indargabetu",
+
+    "colorPicker": "Kolore hautatzailea",
+
+    "imageGallery": "Irudi galeria",
+
+    "saved": "Gordeta.",
+
+    "printing": "Inprimatze",
+
+    "loaded": "Kargatu",
+
+    "nothingHere": "Hemen ez ikusteko ezer",
+
+    "rename": "Berrizendatu",
+
+    "save": "Aurreztu",
+
+    "mustBeNum": "Zenbaki bat izan behar du.",
+
+    "color": "Kolore"
+}

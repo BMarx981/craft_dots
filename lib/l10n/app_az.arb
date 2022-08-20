@@ -1,0 +1,51 @@
+{
+    "appTitle": "Nöqtə pic",
+
+    "selectedColor": "Seçilmiş rəng:",
+
+    "settings": "Parametrlər",
+
+    "totalColors": "Ümumi rənglər",
+
+    "stats": "Statistika",
+
+    "count": "Saymaq",
+
+    "boardSize": "Lövhə ölçüsü",
+
+    "dotSize": "Dot ölçüsü",
+
+    "saveWork": "İşinizi burada saxlayın",
+
+    "saveAs": "Kimi saxlamaq",
+
+    "noSavedData": "Saxlanılan məlumat yoxdur",
+
+    "name": "Ad",
+
+    "takePic": "Şəkil çək",
+
+    "ok": "tamam",
+
+    "cancel": "Ləğv etmək",
+
+    "colorPicker": "Rəngli seçici",
+
+    "imageGallery": "Şəkil Qalereyası",
+
+    "saved": "Xilas edildi.",
+
+    "printing": "Çap",
+
+    "loaded": "Yüklü",
+
+    "nothingHere": "Burada görmək üçün heç nə yoxdur",
+
+    "rename": "Adını dəyişmək",
+
+    "save": "Yadda saxla",
+
+    "mustBeNum": "Bir sıra olmalıdır.",
+
+    "color": "Rəng"
+}

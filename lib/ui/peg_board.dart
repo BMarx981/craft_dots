@@ -1,9 +1,9 @@
 import 'package:craft_dots/common/board_utils.dart';
 import 'package:craft_dots/ui/color_row.dart';
-import 'package:craft_dots/ui/peg_board_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../common/edit_utils.dart';
 
@@ -12,6 +12,7 @@ class PegBoard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final text = AppLocalizations.of(context);
     int boardSize = Provider.of<BoardUtils>(context).getBoardSize;
     int dotSize = Provider.of<BoardUtils>(context).getDotSize;
     Provider.of<BoardUtils>(context, listen: false).initColorList(boardSize);
@@ -111,12 +112,14 @@ class PegBoard extends StatelessWidget {
               minScale: 0.1,
               maxScale: 8.6,
               clipBehavior: Clip.hardEdge,
-              // constrained: false,
               child: Center(
-                child: PegBoardWidget(
-                    board: Provider.of<BoardUtils>(context).board,
-                    boardSize: boardSize,
-                    dotSize: dotSize),
+                child: FittedBox(
+                  fit: BoxFit.contain,
+                  child: Column(
+                    children:
+                        Provider.of<BoardUtils>(context, listen: false).board,
+                  ),
+                ),
               ),
             ),
           ),
@@ -128,9 +131,9 @@ class PegBoard extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const Padding(
-                    padding: EdgeInsets.all(2.0),
-                    child: Text("Selected Color:"),
+                  Padding(
+                    padding: const EdgeInsets.all(2.0),
+                    child: Text(text!.selectedColor),
                   ),
                   Container(
                     height: 30,

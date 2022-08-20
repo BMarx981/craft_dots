@@ -14,17 +14,11 @@ class PegBoardWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return LayoutBuilder(
-      builder: (BuildContext context, BoxConstraints constraints) {
-        return FittedBox(
-          fit: BoxFit.contain,
-          child: Column(
-            // physics: const NeverScrollableScrollPhysics(),
-            // shrinkWrap: true,
-            children: board,
-          ),
-        );
-      },
+    return FittedBox(
+      fit: BoxFit.contain,
+      child: Column(
+        children: board,
+      ),
     );
   }
 }

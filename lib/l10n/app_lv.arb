@@ -1,0 +1,51 @@
+{
+    "appTitle": "Punktu attēls",
+
+    "selectedColor": "Atlasītā krāsa:",
+
+    "settings": "Iestatījumi",
+
+    "totalColors": "Kopējās krāsas",
+
+    "stats": "Statistika",
+
+    "count": "Skaitīt",
+
+    "boardSize": "Plāksnes izmērs",
+
+    "dotSize": "Punktu izmērs",
+
+    "saveWork": "Saglabājiet savu darbu šeit",
+
+    "saveAs": "Saglabāt kā",
+
+    "noSavedData": "Nav saglabātu datu",
+
+    "name": "Nosaukt",
+
+    "takePic": "Nofotogrāfē",
+
+    "ok": "labi",
+
+    "cancel": "Atcelt",
+
+    "colorPicker": "Krāsu atlasītājs",
+
+    "imageGallery": "Attēlu galerija",
+
+    "saved": "Izglābts.",
+
+    "printing": "Drukāšana",
+
+    "loaded": "Noslogots",
+
+    "nothingHere": "Nekas šeit redzēt",
+
+    "rename": "Pārdēvēt",
+
+    "save": "Ietaupīt",
+
+    "mustBeNum": "Jābūt skaitlim.",
+
+    "color": "Krāsa"
+}

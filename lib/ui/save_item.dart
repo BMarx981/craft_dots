@@ -4,6 +4,7 @@ import 'package:craft_dots/db/db_helper.dart';
 import 'package:craft_dots/ui/spinner.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../common/board_utils.dart';
 
@@ -23,11 +24,12 @@ class _SaveItemState extends State<SaveItem> {
   void dispose() {
     super.dispose();
     _controller.dispose();
-    imageCache?.clear();
+    imageCache.clear();
   }
 
   @override
   Widget build(BuildContext context) {
+    final text = AppLocalizations.of(context);
     return IntrinsicHeight(
       child: Card(
         elevation: 8,
@@ -79,8 +81,8 @@ class _SaveItemState extends State<SaveItem> {
                               board,
                               Provider.of<BoardUtils>(context, listen: false)
                                   .getDotSize);
-                          ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(content: Text("${widget.name} Saved.")));
+                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                              content: Text("${widget.name} ${text!.saved}")));
                           Navigator.pop(context);
                         }), // End save button
 
@@ -96,7 +98,8 @@ class _SaveItemState extends State<SaveItem> {
                               .printBoard(widget.name)
                               .then((item) {
                             ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                                content: Text("Printing ${widget.name}.")));
+                                content:
+                                    Text("${text!.printing} ${widget.name}.")));
                           });
                           Navigator.pop(context);
                         }), // End load button
@@ -127,7 +130,8 @@ class _SaveItemState extends State<SaveItem> {
                                 .loadBoard(boardMap[DBHelper.columnCanvas],
                                     boardMap[DBHelper.columnDotSize]);
                             ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                                content: Text("${widget.name} Loaded.")));
+                                content:
+                                    Text("${widget.name} ${text!.loaded}")));
                             Navigator.pop(context);
                           },
                           child: Image.file(
@@ -136,7 +140,7 @@ class _SaveItemState extends State<SaveItem> {
                         );
                       }
                     }
-                    return const Text("Nothing to see here");
+                    return Text(text!.nothingHere);
                   }),
             ],
           ),
@@ -147,10 +151,11 @@ class _SaveItemState extends State<SaveItem> {
 
   AlertDialog _buildAlertDialog(
       TextEditingController controller, BuildContext context, String board) {
+    final text = AppLocalizations.of(context);
     return AlertDialog(
       shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.all(Radius.circular(30))),
-      title: const Text("Rename"),
+      title: Text(text!.rename),
       content: TextField(
         controller: controller,
         decoration: InputDecoration(hintText: widget.name),
@@ -173,11 +178,11 @@ class _SaveItemState extends State<SaveItem> {
             Navigator.pop(context);
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
-                content: Text("${controller.text} Saved."),
+                content: Text("${controller.text} ${text.saved}"),
               ),
             );
           },
-          child: const Text('SAVE'),
+          child: Text(text.save),
         ),
       ],
     );

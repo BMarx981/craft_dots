@@ -1,0 +1,51 @@
+{
+    "appTitle": "डट PIC",
+
+    "selectedColor": "चयनित रंग:",
+
+    "settings": "बतंग",
+
+    "totalColors": "कुल रंग",
+
+    "stats": "तथ्या .्के",
+
+    "count": "गन्नु",
+
+    "boardSize": "बोर्ड आकार",
+
+    "dotSize": "डट आकार",
+
+    "saveWork": "यहाँ आफ्नो काम बचत गर्नुहोस्",
+
+    "saveAs": "यसरी राख",
+
+    "noSavedData": "कुनै बचत गरिएको डाटा छैन",
+
+    "name": "नाम",
+
+    "takePic": "फोटो खिच्नु",
+
+    "ok": "ठिक छ",
+
+    "cancel": "रद्द गर्नु",
+
+    "colorPicker": "रंग picker",
+
+    "imageGallery": "छवि ग्यालेरी",
+
+    "saved": "बचत भयो",
+
+    "printing": "छपाइ",
+
+    "loaded": "लोभ",
+
+    "nothingHere": "यहाँ देख्न केहि छैन",
+
+    "rename": "नामिल्नु",
+
+    "save": "बचाउनु",
+
+    "mustBeNum": "एक नम्बर हुनु पर्छ।",
+
+    "color": "रंग"
+}

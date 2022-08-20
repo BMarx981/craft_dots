@@ -1,0 +1,51 @@
+{
+    "appTitle": "Dot foto",
+
+    "selectedColor": "Color seleccionado:",
+
+    "settings": "Ajustes",
+
+    "totalColors": "Colores totales",
+
+    "stats": "Estadísticas",
+
+    "count": "Contar",
+
+    "boardSize": "Tamaño de tablero",
+
+    "dotSize": "Tamaño de punto",
+
+    "saveWork": "Guarde su trabajo aquí",
+
+    "saveAs": "Guardar como",
+
+    "noSavedData": "Sin datos guardados",
+
+    "name": "Nombre",
+
+    "takePic": "Toma una foto",
+
+    "ok": "OK",
+
+    "cancel": "Cancelar",
+
+    "colorPicker": "Selector de color",
+
+    "imageGallery": "galería de imágenes",
+
+    "saved": "Salvado.",
+
+    "printing": "Impresión",
+
+    "loaded": "Cargado",
+
+    "nothingHere": "Nada que ver aqui",
+
+    "rename": "Rebautizar",
+
+    "save": "Ahorrar",
+
+    "mustBeNum": "Tiene que ser un número.",
+
+    "color": "Color"
+}

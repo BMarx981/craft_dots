@@ -4,6 +4,7 @@ import 'package:craft_dots/ui/save_page.dart';
 import 'package:craft_dots/ui/settings.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import 'image_picker_page.dart';
 
@@ -20,9 +21,10 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final text = AppLocalizations.of(context);
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Dot Pic"),
+        title: Text(text!.appTitle),
         actions: [
           IconButton(
             icon: const Icon(CupertinoIcons.photo_fill),

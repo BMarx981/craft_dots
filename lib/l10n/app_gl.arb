@@ -1,0 +1,51 @@
+{
+    "appTitle": "Pic dot",
+
+    "selectedColor": "Cor seleccionada:",
+
+    "settings": "Configuración",
+
+    "totalColors": "Cores totais",
+
+    "stats": "Estatísticas",
+
+    "count": "Contar",
+
+    "boardSize": "Tamaño do taboleiro",
+
+    "dotSize": "Tamaño do punto",
+
+    "saveWork": "Garda o teu traballo aquí",
+
+    "saveAs": "Gardar como",
+
+    "noSavedData": "Non hai datos gardados",
+
+    "name": "Nome",
+
+    "takePic": "Sacar unha foto",
+
+    "ok": "Ok",
+
+    "cancel": "Cancelar",
+
+    "colorPicker": "Picker de cores",
+
+    "imageGallery": "Galería de imaxes",
+
+    "saved": "Gardado.",
+
+    "printing": "Impresión",
+
+    "loaded": "Cargado",
+
+    "nothingHere": "Nada que ver aquí",
+
+    "rename": "Cambiar o nome",
+
+    "save": "Gardar",
+
+    "mustBeNum": "Debe ser un número.",
+
+    "color": "Cor"
+}

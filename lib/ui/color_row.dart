@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../common/board_utils.dart';
 
@@ -54,9 +55,10 @@ class ColorRow extends StatelessWidget {
   }
 
   void _showAlert(BuildContext context, Color original) {
+    final text = AppLocalizations.of(context);
     Color tempColor = original;
     Widget okButton = TextButton(
-      child: const Text("OK"),
+      child: Text(text!.ok),
       onPressed: () {
         _changeColor(tempColor, context);
         Navigator.pop(context);
@@ -64,7 +66,7 @@ class ColorRow extends StatelessWidget {
     );
 
     Widget cancelButton = TextButton(
-      child: const Text("CANCEL"),
+      child: Text(text.cancel),
       onPressed: () {
         Provider.of<BoardUtils>(context, listen: false).setMainColor(original);
         Navigator.pop(context);
@@ -77,7 +79,7 @@ class ColorRow extends StatelessWidget {
 
     // set up the AlertDialog
     AlertDialog alert = AlertDialog(
-      title: const Text("Color Picker"),
+      title: Text(text.colorPicker),
       content: ColorPicker(
           pickerAreaBorderRadius: BorderRadius.circular(25),
           pickerColor: original,
