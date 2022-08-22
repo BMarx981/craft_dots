@@ -3,7 +3,7 @@
    <application
         android:label="Dot Pic"
         android:icon="@mipmap/ic_launcher"
-        android:roundIcon="@mipmap/roundIcon">
+        android:roundIcon="@mipmap/round_icon">
 
         <activity
             android:name=".MainActivity"
