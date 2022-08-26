@@ -1,4 +1,4 @@
-package com.example.craft_dots
+package com.bmarx981.dotpic
 
 import io.flutter.embedding.android.FlutterActivity
 
