@@ -128,20 +128,24 @@ class _SaveItemState extends State<SaveItem> {
                       if (snapshot.hasError) {
                         return Text(text!.nothingHere);
                       } else if (snapshot.hasData) {
-                        return GestureDetector(
-                          onTap: () async {
-                            final db = DBHelper.instance;
-                            Map boardMap = await db.getData(name: widget.name);
-                            Provider.of<BoardUtils>(context, listen: false)
-                                .loadBoard(boardMap[DBHelper.columnCanvas],
-                                    boardMap[DBHelper.columnDotSize]);
-                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                                content:
-                                    Text("${widget.name} ${text!.loaded}")));
-                            Navigator.pop(context);
-                          },
-                          child: Image.file(
-                            snapshot.data as File,
+                        return Expanded(
+                          child: GestureDetector(
+                            onTap: () async {
+                              final db = DBHelper.instance;
+                              Map boardMap =
+                                  await db.getData(name: widget.name);
+                              Provider.of<BoardUtils>(context, listen: false)
+                                  .loadBoard(boardMap[DBHelper.columnCanvas],
+                                      boardMap[DBHelper.columnDotSize]);
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                      content: Text(
+                                          "${widget.name} ${text!.loaded}")));
+                              Navigator.pop(context);
+                            },
+                            child: Image.file(
+                              snapshot.data as File,
+                            ),
                           ),
                         );
                       }
