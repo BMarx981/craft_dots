@@ -31,3 +31,4 @@ A few resources to get you started if this is your first Flutter project:
 ## 6.
 ![DotPic6](https://user-images.githubusercontent.com/6200008/191374776-9e65589d-5303-4891-bde5-35a8e721a9f0.png)
 
+Contact b.marx981@gmail.com for support.
