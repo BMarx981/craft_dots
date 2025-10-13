@@ -18,7 +18,7 @@ class BoardUtils extends ChangeNotifier {
   List<List<Color>> colorLists = [];
   List<Widget> board = [];
   Color mainBoardColor = Colors.blue;
-  static Color standardColor = Colors.grey.withOpacity(.3);
+  static Color standardColor = Colors.grey.withAlpha(77);
   int _boardSize = 29;
   int _dotSize = 11;
   bool _isFillEnabled = false;
@@ -273,8 +273,6 @@ class BoardUtils extends ChangeNotifier {
   Future<File> displayBoardImage(String name) async {
     final db = DBHelper.instance;
     Map data = await db.getData(name: name);
-    //TODO figure out why data is null here
-    debugPrint(data.keys.toString());
     String? canvas = data['canvas'];
     if (canvas == null) throw (Exception());
     List<String> split = canvas.split(" ");

@@ -156,9 +156,9 @@ class _CameraPageState extends State<CameraPage>
                   controlRow(context),
                 ],
               )
-            : Column(
+            : const Column(
                 mainAxisAlignment: MainAxisAlignment.center,
-                children: const [
+                children: [
                   Center(
                     child: Spinner(),
                   ),
@@ -225,14 +225,14 @@ class _CameraPageState extends State<CameraPage>
           Container(
             child: const SizedBox(height: 45, width: 45),
             decoration: BoxDecoration(
-              color: Colors.white.withOpacity(.2),
+              color: Colors.white.withAlpha(50),
               borderRadius: BorderRadius.circular(25),
             ),
           ),
           Container(
             child: const SizedBox(height: 35, width: 35),
             decoration: BoxDecoration(
-              color: Colors.white.withOpacity(.5),
+              color: Colors.white.withAlpha(128),
               borderRadius: BorderRadius.circular(25),
             ),
           ),

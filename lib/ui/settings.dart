@@ -97,13 +97,13 @@ class _SettingsPageState extends State<SettingsPage> {
                           begin: Alignment.topLeft,
                           end: Alignment.bottomRight,
                           colors: [
-                            Color?.lerp(
+                            Color.lerp(
                                 textEnteredBoardSize
                                     ? Colors.green[400]
                                     : Colors.grey,
                                 Colors.white,
                                 .1) as Color,
-                            Color?.lerp(Colors.white, Colors.green[100], .2)
+                            Color.lerp(Colors.white, Colors.green[100], .2)
                                 as Color,
                           ]),
                       boxShadow: [
@@ -124,7 +124,7 @@ class _SettingsPageState extends State<SettingsPage> {
                       ],
                       border: Border.all(
                         width: 0.6,
-                        color: Colors.white.withOpacity(.5),
+                        color: Colors.white.withAlpha(120),
                       ),
                     ),
                     child: Padding(
@@ -226,13 +226,13 @@ class _SettingsPageState extends State<SettingsPage> {
                           begin: Alignment.topLeft,
                           end: Alignment.bottomRight,
                           colors: [
-                            Color?.lerp(
+                            Color.lerp(
                                 textEnteredDotSize
                                     ? Colors.green[400]
                                     : Colors.grey,
                                 Colors.white,
                                 .1) as Color,
-                            Color?.lerp(Colors.white, Colors.green[100], .2)
+                            Color.lerp(Colors.white, Colors.green[100], .2)
                                 as Color,
                           ]),
                       boxShadow: [
