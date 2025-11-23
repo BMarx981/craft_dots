@@ -117,9 +117,9 @@ class _SaveItemState extends State<SaveItem> {
                       .displayBoardImage(widget.name),
                   builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) {
-                      return Row(
+                      return const Row(
                         mainAxisAlignment: MainAxisAlignment.center,
-                        children: const [
+                        children: [
                           Spinner(),
                         ],
                       );

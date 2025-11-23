@@ -287,7 +287,7 @@ class _CameraPageState extends State<CameraPage>
         Provider.of<BoardUtils>(context, listen: false).getBoardSize;
     List<Color> colors = [];
 
-    List<int> values = bytes!.buffer.asUint8List();
+    Uint8List values = bytes!.buffer.asUint8List();
     img.Image? image = img.decodeImage(values);
 
     int? width = image?.width;
@@ -300,7 +300,7 @@ class _CameraPageState extends State<CameraPage>
 
     for (int j = 1; j < noOfPixelsPerAxis + 1; j++) {
       for (int i = 1; i < noOfPixelsPerAxis + 1; i++) {
-        int? pixel = image?.getPixel(xChunk * i, yChunk * j);
+        int? pixel = image?.getPixelIndex(xChunk * i, yChunk * j);
         pixels.add(pixel);
         colors.add(abgrToColor(pixel!));
       }
