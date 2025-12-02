@@ -1,0 +1,51 @@
+{
+    "appTitle": "Pict pic",
+
+    "selectedColor": "Cor selecionada:",
+
+    "settings": "Definições",
+
+    "totalColors": "Cores totais",
+
+    "stats": "Estatísticas",
+
+    "count": "Contar",
+
+    "boardSize": "Tamanho da placa",
+
+    "dotSize": "Tamanho do ponto",
+
+    "saveWork": "Salve seu trabalho aqui",
+
+    "saveAs": "Salvar como",
+
+    "noSavedData": "Sem dados salvos",
+
+    "name": "Nome",
+
+    "takePic": "Tirar uma foto",
+
+    "ok": "OK",
+
+    "cancel": "Cancelar",
+
+    "colorPicker": "Seletor de cores",
+
+    "imageGallery": "Galeria de imagens",
+
+    "saved": "Salvou.",
+
+    "printing": "Impressão",
+
+    "loaded": "Carregado",
+
+    "nothingHere": "Nada para ver aqui",
+
+    "rename": "Renomear",
+
+    "save": "Salvar",
+
+    "mustBeNum": "Deve ser um número.",
+
+    "color": "Cor"
+}

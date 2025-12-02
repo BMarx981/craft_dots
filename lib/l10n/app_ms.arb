@@ -1,0 +1,51 @@
+{
+    "appTitle": "Dot pic",
+
+    "selectedColor": "Warna terpilih:",
+
+    "settings": "Tetapan",
+
+    "totalColors": "Jumlah warna",
+
+    "stats": "Statistik",
+
+    "count": "Hitung",
+
+    "boardSize": "Saiz papan",
+
+    "dotSize": "Saiz titik",
+
+    "saveWork": "Simpan karya anda di sini",
+
+    "saveAs": "Simpan sebagai",
+
+    "noSavedData": "Tiada data yang disimpan",
+
+    "name": "Nama",
+
+    "takePic": "Ambil gambar",
+
+    "ok": "okey",
+
+    "cancel": "Batalkan",
+
+    "colorPicker": "Pemetik warna",
+
+    "imageGallery": "Galeri Imej",
+
+    "saved": "Disimpan.",
+
+    "printing": "Percetakan",
+
+    "loaded": "Dimuatkan",
+
+    "nothingHere": "Tiada apa untuk dilihat di sini",
+
+    "rename": "Namakan semula",
+
+    "save": "Simpan",
+
+    "mustBeNum": "Mesti nombor.",
+
+    "color": "Warna"
+}

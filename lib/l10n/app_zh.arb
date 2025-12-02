@@ -1,0 +1,51 @@
+{
+    "appTitle": "点图",
+
+    "selectedColor": "选定的颜色：",
+
+    "settings": "设置",
+
+    "totalColors": "总颜色",
+
+    "stats": "统计",
+
+    "count": "数数",
+
+    "boardSize": "板尺寸",
+
+    "dotSize": "点大小",
+
+    "saveWork": "在这里保存您的工作",
+
+    "saveAs": "另存为",
+
+    "noSavedData": "没有保存的数据",
+
+    "name": "姓名",
+
+    "takePic": "拍照",
+
+    "ok": "好的",
+
+    "cancel": "取消",
+
+    "colorPicker": "选色器",
+
+    "imageGallery": "图片库",
+
+    "saved": "保存。",
+
+    "printing": "印刷",
+
+    "loaded": "加载",
+
+    "nothingHere": "这没东西看",
+
+    "rename": "改名",
+
+    "save": "节省",
+
+    "mustBeNum": "必须是一个数字。",
+
+    "color": "颜色"
+}
