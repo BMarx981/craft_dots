@@ -1,7 +1,7 @@
 import 'package:craft_dots/common/board_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:craft_dots/l10n/app_localizations.dart';
 
 class SettingsPage extends StatefulWidget {
   const SettingsPage({Key? key}) : super(key: key);
@@ -352,8 +352,8 @@ class _SettingsPageState extends State<SettingsPage> {
                           title: Container(
                             child: Padding(
                               padding: const EdgeInsets.all(12.0),
-                              child: Center(
-                                  child: Text(keys[index].toString())),
+                              child:
+                                  Center(child: Text(keys[index].toString())),
                             ),
                             decoration: BoxDecoration(
                               color: keys[index],

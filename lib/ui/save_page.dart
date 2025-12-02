@@ -3,7 +3,7 @@ import 'package:craft_dots/db/db_helper.dart';
 import 'package:craft_dots/ui/save_item.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:craft_dots/l10n/app_localizations.dart';
 
 class SavePage extends StatefulWidget {
   const SavePage({Key? key}) : super(key: key);
@@ -43,7 +43,8 @@ class _SavePageState extends State<SavePage> {
     final text = AppLocalizations.of(context);
     return Scaffold(
       appBar: AppBar(
-        title: Text(text!.saveWork),
+        title: Text(text!.saveWork,
+            style: const TextStyle(fontWeight: FontWeight.w600)),
       ),
       body: Container(
         color: Colors.grey.shade200,
@@ -63,9 +64,9 @@ class _SavePageState extends State<SavePage> {
                               begin: Alignment.topLeft,
                               end: Alignment.bottomRight,
                               colors: [
-                                Color?.lerp(Colors.grey[400], Colors.white, .1)
+                                Color.lerp(Colors.grey[400], Colors.white, .1)
                                     as Color,
-                                Color?.lerp(Colors.white, Colors.grey[100], .2)
+                                Color.lerp(Colors.white, Colors.grey[100], .2)
                                     as Color,
                               ]),
                           boxShadow: const [

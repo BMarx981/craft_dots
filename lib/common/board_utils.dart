@@ -88,6 +88,34 @@ class BoardUtils extends ChangeNotifier {
     );
   }
 
+  void addSingleChangeForGroup(
+      List<Map<String, dynamic>> undoData, List<List<Color>> board) {
+    _undo.add(
+      Change<List<Map<String, dynamic>>>(
+        undoData,
+        () {
+          for (var cell in undoData) {
+            int r = cell['row'] as int;
+            int c = cell['col'] as int;
+            Color newColor = cell['newColor'] as Color;
+            colorLists[r][c] = newColor;
+          }
+          rebuildBoard();
+        },
+        (List<Map<String, dynamic>> data) {
+          for (var cell in data) {
+            int r = cell['row'] as int;
+            int c = cell['col'] as int;
+            Color oldColor = cell['oldColor'] as Color;
+            colorLists[r][c] = oldColor;
+          }
+          rebuildBoard();
+          return data;
+        },
+      ),
+    );
+  }
+
   void addGroupToUndo(List<Change<Color>> changeList) {
     _undo.addGroup(changeList);
   }
@@ -97,13 +125,17 @@ class BoardUtils extends ChangeNotifier {
   }
 
   void undo() {
-    _undo.undo();
-    generateBoard(_boardSize, _dotSize);
+    if (_undo.canUndo) {
+      _undo.undo();
+      rebuildBoard();
+    }
   }
 
   void redo() {
-    _undo.redo();
-    generateBoard(_boardSize, _dotSize);
+    if (_undo.canRedo) {
+      _undo.redo();
+      rebuildBoard();
+    }
   }
 
   void clearUndoHistory() {

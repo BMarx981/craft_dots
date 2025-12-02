@@ -5,22 +5,93 @@ import 'package:undo/undo.dart';
 
 class EditUtils {
   static void fillFunc(int row, int col, Color color, BuildContext context) {
-    final board = Provider.of<BoardUtils>(context, listen: false).getColorLists;
+    final boardUtils = Provider.of<BoardUtils>(context, listen: false);
+    final board = boardUtils.getColorLists;
     final targetColor = board[row][col];
 
     if (targetColor == color) return;
 
-    List<Change<Color>> changeList = [];
+    List<Map<String, dynamic>> cellsToChange = [];
     Set<String> visited = {};
 
-    fillHelper(
-        row, col, color, targetColor, board, context, changeList, visited);
+    collectCells(row, col, targetColor, board, cellsToChange, visited);
 
-    if (changeList.isNotEmpty) {
-      Provider.of<BoardUtils>(context, listen: false)
-          .addGroupToUndo(changeList);
-      Provider.of<BoardUtils>(context, listen: false).rebuildBoard();
+    if (cellsToChange.isEmpty) return;
+
+    List<Map<String, dynamic>> undoData = cellsToChange
+        .map((cell) => {
+              'row': cell['row'],
+              'col': cell['col'],
+              'oldColor': cell['oldColor'],
+              'newColor': color,
+            })
+        .toList();
+
+    boardUtils.addSingleChangeForGroup(undoData, board);
+
+    for (var cell in cellsToChange) {
+      board[cell['row'] as int][cell['col'] as int] = color;
     }
+
+    boardUtils.rebuildBoard();
+  }
+
+  static void changeColorFill(
+      int row, int col, Color current, BuildContext context) {
+    final boardUtils = Provider.of<BoardUtils>(context, listen: false);
+    final board = boardUtils.getColorLists;
+    final selected = boardUtils.mainBoardColor;
+
+    if (current == selected) return;
+
+    List<Map<String, dynamic>> cellsToChange = [];
+    Set<String> visited = {};
+
+    collectCells(row, col, current, board, cellsToChange, visited);
+
+    if (cellsToChange.isEmpty) return;
+
+    List<Map<String, dynamic>> undoData = cellsToChange
+        .map((cell) => {
+              'row': cell['row'],
+              'col': cell['col'],
+              'oldColor': cell['oldColor'],
+              'newColor': selected,
+            })
+        .toList();
+
+    boardUtils.addSingleChangeForGroup(undoData, board);
+
+    for (var cell in cellsToChange) {
+      board[cell['row'] as int][cell['col'] as int] = selected;
+    }
+
+    boardUtils.rebuildBoard();
+  }
+
+  static void collectCells(
+    int row,
+    int col,
+    Color targetColor,
+    List<List<Color>> board,
+    List<Map<String, dynamic>> cells,
+    Set<String> visited,
+  ) {
+    if (row < 0 || col < 0 || row >= board.length || col >= board[row].length) {
+      return;
+    }
+
+    String key = '$row,$col';
+    if (visited.contains(key)) return;
+    if (board[row][col] != targetColor) return;
+
+    visited.add(key);
+    cells.add({'row': row, 'col': col, 'oldColor': board[row][col]});
+
+    collectCells(row + 1, col, targetColor, board, cells, visited);
+    collectCells(row - 1, col, targetColor, board, cells, visited);
+    collectCells(row, col + 1, targetColor, board, cells, visited);
+    collectCells(row, col - 1, targetColor, board, cells, visited);
   }
 
   static void fillHelper(
@@ -76,34 +147,6 @@ class EditUtils {
   static void clearBoard(BuildContext context) {
     Provider.of<BoardUtils>(context, listen: false).clearBoard(
         Provider.of<BoardUtils>(context, listen: false).getBoardSize);
-  }
-
-  static void changeColorFill(
-      int row, int col, Color current, BuildContext context) {
-    Color selected =
-        Provider.of<BoardUtils>(context, listen: false).mainBoardColor;
-
-    if (current == selected) return;
-
-    List<Change<Color>> changeList = [];
-    Set<String> visited = {};
-
-    changeColorHelper(
-      row,
-      col,
-      current,
-      selected,
-      Provider.of<BoardUtils>(context, listen: false).getColorLists,
-      context,
-      changeList,
-      visited,
-    );
-
-    if (changeList.isNotEmpty) {
-      Provider.of<BoardUtils>(context, listen: false)
-          .addGroupToUndo(changeList);
-      Provider.of<BoardUtils>(context, listen: false).rebuildBoard();
-    }
   }
 
   static void changeColorHelper(
