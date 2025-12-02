@@ -107,29 +107,26 @@ class _ImagePickerPageState extends State<ImagePickerPage> {
     Uint8List values = bytes!.buffer.asUint8List();
     img.Image? image = img.decodeImage(values);
 
-    int? width = image?.width;
-    int? height = image?.height;
+    if (image == null) return colors;
 
-    List<int?> pixels = [];
+    int width = image.width;
+    int height = image.height;
 
-    int xChunk = width! ~/ (noOfPixelsPerAxis + 1);
-    int yChunk = height! ~/ (noOfPixelsPerAxis + 1);
+    int xChunk = width ~/ (noOfPixelsPerAxis + 1);
+    int yChunk = height ~/ (noOfPixelsPerAxis + 1);
 
     for (int j = 1; j < noOfPixelsPerAxis + 1; j++) {
       for (int i = 1; i < noOfPixelsPerAxis + 1; i++) {
-        int? pixel = image?.getPixelIndex(xChunk * i, yChunk * j);
-        pixels.add(pixel);
-        colors.add(abgrToColor(pixel!));
+        img.Pixel pixel = image.getPixel(xChunk * i, yChunk * j);
+        colors.add(Color.fromARGB(
+          pixel.a.toInt(),
+          pixel.r.toInt(),
+          pixel.g.toInt(),
+          pixel.b.toInt(),
+        ));
       }
     }
 
     return colors;
-  }
-
-  Color abgrToColor(int argbColor) {
-    int r = (argbColor >> 16) & 0xFF;
-    int b = argbColor & 0xFF;
-    int hex = (argbColor & 0xFF00FF00) | (b << 16) | r;
-    return Color(hex);
   }
 }
