@@ -27,7 +27,10 @@ class _SettingsPageState extends State<SettingsPage> {
     keys = stats.keys.toList();
     return Scaffold(
       appBar: AppBar(
-        title: Text(text!.settings),
+        title: Text(
+          text!.settings,
+          style: const TextStyle(fontWeight: FontWeight.w600),
+        ),
       ),
       body: SafeArea(
         child: ListView(children: [
@@ -62,6 +65,7 @@ class _SettingsPageState extends State<SettingsPage> {
                                   .toString()),
                           textAlign: TextAlign.center,
                           onSubmitted: (str) {
+                            if (_currentSize == '') return;
                             Provider.of<BoardUtils>(context, listen: false)
                                 .updateSize(int.parse(_currentSize));
                           },
@@ -135,6 +139,7 @@ class _SettingsPageState extends State<SettingsPage> {
                             textEnteredBoardSize = false;
                             boardSizeController.text = "";
                           });
+                          if (_currentSize == '') return;
                           Provider.of<BoardUtils>(context, listen: false)
                               .updateSize(int.parse(_currentSize));
                           FocusScope.of(context).unfocus();
@@ -190,6 +195,7 @@ class _SettingsPageState extends State<SettingsPage> {
                                 .toString()),
                         textAlign: TextAlign.left,
                         onSubmitted: (str) {
+                          if (_currentDotSize == '') return;
                           Provider.of<BoardUtils>(context, listen: false)
                               .updateDotSize(int.parse(_currentDotSize));
                         },
@@ -253,7 +259,7 @@ class _SettingsPageState extends State<SettingsPage> {
                       ],
                       border: Border.all(
                         width: 0.6,
-                        color: Colors.white.withOpacity(.5),
+                        color: Colors.white.withAlpha(128),
                       ),
                     ),
                     child: Padding(
@@ -264,6 +270,7 @@ class _SettingsPageState extends State<SettingsPage> {
                             textEnteredDotSize = false;
                             dotSizeController.text = "";
                           });
+                          if (_currentDotSize == '') return;
                           Provider.of<BoardUtils>(context, listen: false)
                               .updateDotSize(int.parse(_currentDotSize));
                           FocusScope.of(context).unfocus();
@@ -346,7 +353,7 @@ class _SettingsPageState extends State<SettingsPage> {
                             child: Padding(
                               padding: const EdgeInsets.all(12.0),
                               child: Center(
-                                  child: Text(keys[index].value.toString())),
+                                  child: Text(keys[index].toString())),
                             ),
                             decoration: BoxDecoration(
                               color: keys[index],

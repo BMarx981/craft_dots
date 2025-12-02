@@ -21,7 +21,6 @@ Future<void> main() async {
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       supportedLocales: AppLocalizations.supportedLocales,
       debugShowCheckedModeBanner: false,
-      title: 'Craft Dots',
       theme: ThemeData(
         colorSchemeSeed: Colors.green,
       ),

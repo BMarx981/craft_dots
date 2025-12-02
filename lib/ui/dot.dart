@@ -29,6 +29,8 @@ class _DotState extends State<Dot> {
         Color main =
             Provider.of<BoardUtils>(context, listen: false).mainBoardColor;
         if (Provider.of<BoardUtils>(context, listen: false).getFillEnabled) {
+          Provider.of<BoardUtils>(context, listen: false)
+              .addToUndo(widget.row, widget.col, BoardUtils.standardColor);
           EditUtils.fillFunc(widget.row, widget.col, main, context);
           setState(() {});
           return;

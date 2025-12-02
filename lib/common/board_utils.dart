@@ -88,7 +88,7 @@ class BoardUtils extends ChangeNotifier {
     );
   }
 
-  void addGroupToUndo(List<Change> changeList) {
+  void addGroupToUndo(List<Change<Color>> changeList) {
     _undo.addGroup(changeList);
   }
 

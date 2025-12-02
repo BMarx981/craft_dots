@@ -82,7 +82,7 @@ class PegBoard extends StatelessWidget {
                     ? const Icon(Icons.undo)
                     : Icon(
                         Icons.undo,
-                        color: Colors.grey.withOpacity(.4),
+                        color: Colors.grey.withAlpha(102),
                       ),
                 onPressed: () {
                   Provider.of<BoardUtils>(context, listen: false).canUndo

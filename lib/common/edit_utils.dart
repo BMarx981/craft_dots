@@ -5,38 +5,72 @@ import 'package:undo/undo.dart';
 
 class EditUtils {
   static void fillFunc(int row, int col, Color color, BuildContext context) {
-    final ob = Provider.of<BoardUtils>(context, listen: false).getColorLists;
-    final sc = BoardUtils.standardColor;
-    List<Change> changeList = [];
-    fillHelper(row, col, color, ob, sc, context, changeList);
-    Provider.of<BoardUtils>(context, listen: false).addGroupToUndo(changeList);
-    Provider.of<BoardUtils>(context, listen: false).rebuildBoard();
+    final board = Provider.of<BoardUtils>(context, listen: false).getColorLists;
+    final targetColor = board[row][col];
+
+    if (targetColor == color) return;
+
+    List<Change<Color>> changeList = [];
+    Set<String> visited = {};
+
+    fillHelper(
+        row, col, color, targetColor, board, context, changeList, visited);
+
+    if (changeList.isNotEmpty) {
+      Provider.of<BoardUtils>(context, listen: false)
+          .addGroupToUndo(changeList);
+      Provider.of<BoardUtils>(context, listen: false).rebuildBoard();
+    }
   }
 
-  static void fillHelper(int row, int col, Color color, List<List<Color>> board,
-      Color sc, BuildContext bc, List<Change> cl) {
-    if (row < 0 ||
-        col < 0 ||
-        row > board.length - 1 ||
-        col > board[row].length - 1) {
+  static void fillHelper(
+    int row,
+    int col,
+    Color newColor,
+    Color targetColor,
+    List<List<Color>> board,
+    BuildContext bc,
+    List<Change<Color>> cl,
+    Set<String> visited,
+  ) {
+    if (row < 0 || col < 0 || row >= board.length || col >= board[row].length) {
       return;
     }
-    if (board[row][col] != sc) {
-      return;
-    }
-    cl.add(Change(board[row][col], () {
-      board[row][col] = color;
-      Provider.of<BoardUtils>(bc, listen: false).undoNotify();
-    }, (oldColor) {
-      board[row][col] = oldColor;
-      Provider.of<BoardUtils>(bc, listen: false).undoNotify();
-    }));
 
-    board[row][col] = color;
-    fillHelper(row + 1, col, color, board, sc, bc, cl);
-    fillHelper(row - 1, col, color, board, sc, bc, cl);
-    fillHelper(row, col + 1, color, board, sc, bc, cl);
-    fillHelper(row, col - 1, color, board, sc, bc, cl);
+    String key = '$row,$col';
+    if (visited.contains(key)) {
+      return;
+    }
+
+    if (board[row][col] != targetColor) {
+      return;
+    }
+
+    visited.add(key);
+
+    final capturedRow = row;
+    final capturedCol = col;
+    final oldColor = board[row][col];
+
+    cl.add(Change(
+      oldColor,
+      () {
+        board[capturedRow][capturedCol] = newColor;
+        Provider.of<BoardUtils>(bc, listen: false).undoNotify();
+      },
+      (old) {
+        board[capturedRow][capturedCol] = old;
+        Provider.of<BoardUtils>(bc, listen: false).undoNotify();
+        return old;
+      },
+    ));
+
+    board[row][col] = newColor;
+
+    fillHelper(row + 1, col, newColor, targetColor, board, bc, cl, visited);
+    fillHelper(row - 1, col, newColor, targetColor, board, bc, cl, visited);
+    fillHelper(row, col + 1, newColor, targetColor, board, bc, cl, visited);
+    fillHelper(row, col - 1, newColor, targetColor, board, bc, cl, visited);
   }
 
   static void clearBoard(BuildContext context) {
@@ -48,43 +82,81 @@ class EditUtils {
       int row, int col, Color current, BuildContext context) {
     Color selected =
         Provider.of<BoardUtils>(context, listen: false).mainBoardColor;
-    List<Change> changeList = [];
+
+    if (current == selected) return;
+
+    List<Change<Color>> changeList = [];
+    Set<String> visited = {};
+
     changeColorHelper(
-        row,
-        col,
-        current,
-        selected,
-        Provider.of<BoardUtils>(context, listen: false).getColorLists,
-        context,
-        changeList);
-    Provider.of<BoardUtils>(context, listen: false).addGroupToUndo(changeList);
-    Provider.of<BoardUtils>(context, listen: false).rebuildBoard();
+      row,
+      col,
+      current,
+      selected,
+      Provider.of<BoardUtils>(context, listen: false).getColorLists,
+      context,
+      changeList,
+      visited,
+    );
+
+    if (changeList.isNotEmpty) {
+      Provider.of<BoardUtils>(context, listen: false)
+          .addGroupToUndo(changeList);
+      Provider.of<BoardUtils>(context, listen: false).rebuildBoard();
+    }
   }
 
-  static void changeColorHelper(int row, int col, Color current, Color selected,
-      List<List<Color>> board, BuildContext bc, List<Change> cl) {
-    if (row < 0 ||
-        col < 0 ||
-        row > board.length - 1 ||
-        col > board[row].length - 1) {
-      return;
-    }
-    if (board[row][col] != current) {
+  static void changeColorHelper(
+    int row,
+    int col,
+    Color targetColor,
+    Color newColor,
+    List<List<Color>> board,
+    BuildContext bc,
+    List<Change<Color>> cl,
+    Set<String> visited,
+  ) {
+    if (row < 0 || col < 0 || row >= board.length || col >= board[row].length) {
       return;
     }
 
-    cl.add(Change(board[row][col], () {
-      board[row][col] = selected;
-      Provider.of<BoardUtils>(bc, listen: false).undoNotify();
-    }, (oldColor) {
-      board[row][col] = oldColor;
-      Provider.of<BoardUtils>(bc, listen: false).undoNotify();
-    }));
+    String key = '$row,$col';
+    if (visited.contains(key)) {
+      return;
+    }
 
-    board[row][col] = selected;
-    changeColorHelper(row + 1, col, current, selected, board, bc, cl);
-    changeColorHelper(row - 1, col, current, selected, board, bc, cl);
-    changeColorHelper(row, col + 1, current, selected, board, bc, cl);
-    changeColorHelper(row, col - 1, current, selected, board, bc, cl);
+    if (board[row][col] != targetColor) {
+      return;
+    }
+
+    visited.add(key);
+
+    final capturedRow = row;
+    final capturedCol = col;
+    final oldColor = board[row][col];
+
+    cl.add(Change(
+      oldColor,
+      () {
+        board[capturedRow][capturedCol] = newColor;
+        Provider.of<BoardUtils>(bc, listen: false).undoNotify();
+      },
+      (old) {
+        board[capturedRow][capturedCol] = old;
+        Provider.of<BoardUtils>(bc, listen: false).undoNotify();
+        return old;
+      },
+    ));
+
+    board[row][col] = newColor;
+
+    changeColorHelper(
+        row + 1, col, targetColor, newColor, board, bc, cl, visited);
+    changeColorHelper(
+        row - 1, col, targetColor, newColor, board, bc, cl, visited);
+    changeColorHelper(
+        row, col + 1, targetColor, newColor, board, bc, cl, visited);
+    changeColorHelper(
+        row, col - 1, targetColor, newColor, board, bc, cl, visited);
   }
 }

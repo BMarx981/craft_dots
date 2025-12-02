@@ -24,7 +24,8 @@ class HomePage extends StatelessWidget {
     final text = AppLocalizations.of(context);
     return Scaffold(
       appBar: AppBar(
-        title: Text(text!.appTitle),
+        title: Text(text!.appTitle,
+            style: const TextStyle(fontWeight: FontWeight.w600)),
         actions: [
           IconButton(
             icon: const Icon(CupertinoIcons.photo_fill),
@@ -59,8 +60,8 @@ class HomePage extends StatelessWidget {
           child: Center(
             child: Container(
               decoration: BoxDecoration(
-                border: Border.all(color: Colors.grey.withOpacity(.4)),
-                color: Colors.grey.withOpacity(0.3),
+                border: Border.all(color: Colors.grey.withAlpha(104)),
+                color: Colors.grey.withAlpha(77),
                 boxShadow: const [
                   BoxShadow(
                     color: Colors.grey,
