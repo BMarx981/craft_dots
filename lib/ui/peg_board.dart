@@ -32,29 +32,7 @@ class PegBoard extends StatelessWidget {
                     child: Container(
                       child: const Padding(
                         padding: EdgeInsets.all(8.0),
-                        child: Icon(Icons.format_paint_outlined),
-                      ),
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(25),
-                          color: Provider.of<BoardUtils>(context).getFillEnabled
-                              ? Colors.lightBlue
-                              : Colors.transparent),
-                    ),
-                    onTap: () {
-                      Provider.of<BoardUtils>(context, listen: false)
-                          .toggleFillEnabled();
-                    },
-                  ),
-                ],
-              ),
-              Stack(
-                alignment: Alignment.center,
-                children: [
-                  GestureDetector(
-                    child: Container(
-                      child: const Padding(
-                        padding: EdgeInsets.all(8.0),
-                        child: Icon(Icons.swap_horizontal_circle_outlined),
+                        child: Icon(Icons.format_color_fill),
                       ),
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(25),
