@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:craft_dots/l10n/app_localizations.dart';
 
 import 'image_picker_page.dart';
-
+ 
 class HomePage extends StatelessWidget {
   HomePage({Key? key}) : super(key: key) {
     getCameras();

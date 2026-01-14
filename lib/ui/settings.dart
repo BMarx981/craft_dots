@@ -353,7 +353,7 @@ class _SettingsPageState extends State<SettingsPage> {
                             child: Padding(
                               padding: const EdgeInsets.all(12.0),
                               child:
-                                  Center(child: Text(keys[index].toString())),
+                                  Center(child: Text(colorToHex(keys[index]))),
                             ),
                             decoration: BoxDecoration(
                               color: keys[index],
@@ -371,5 +371,13 @@ class _SettingsPageState extends State<SettingsPage> {
         ]),
       ),
     );
+  }
+
+  String colorToHex(Color color) {
+    final r = (color.r * 255).round().toRadixString(16).padLeft(2, '0');
+    final g = (color.g * 255).round().toRadixString(16).padLeft(2, '0');
+    final b = (color.b * 255).round().toRadixString(16).padLeft(2, '0');
+
+    return '#$r$g$b'.toUpperCase();
   }
 }
