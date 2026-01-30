@@ -7,16 +7,26 @@ import 'package:flutter/material.dart';
 import 'package:craft_dots/l10n/app_localizations.dart';
 
 import 'image_picker_page.dart';
- 
-class HomePage extends StatelessWidget {
-  HomePage({Key? key}) : super(key: key) {
+
+class HomePage extends StatefulWidget {
+  const HomePage({Key? key}) : super(key: key);
+
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  List<CameraDescription> cameras = [];
+
+  @override
+  void initState() {
+    super.initState();
     getCameras();
   }
 
-  late List<CameraDescription> cameras;
-
   void getCameras() async {
     cameras = await availableCameras();
+    setState(() {});
   }
 
   @override
@@ -69,8 +79,6 @@ class HomePage extends StatelessWidget {
                     blurRadius: 1,
                     spreadRadius: 1.7,
                   ),
-
-                  // Shadow for bottom-right corner
                   BoxShadow(
                     color: Colors.white,
                     offset: Offset(-3, -3),

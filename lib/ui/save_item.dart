@@ -10,9 +10,9 @@ import 'package:craft_dots/ui/spinner.dart';
 import '../common/board_utils.dart';
 
 class SaveItem extends StatefulWidget {
-  String name = "";
+  final String name;
 
-  SaveItem({
+  const SaveItem({
     Key? key,
     required this.name,
   }) : super(key: key);
@@ -23,6 +23,7 @@ class SaveItem extends StatefulWidget {
 
 class _SaveItemState extends State<SaveItem> {
   final TextEditingController _controller = TextEditingController();
+  String name = "";
 
   @override
   void dispose() {
@@ -33,6 +34,7 @@ class _SaveItemState extends State<SaveItem> {
 
   @override
   Widget build(BuildContext context) {
+    name = widget.name;
     final text = AppLocalizations.of(context);
     return IntrinsicHeight(
       child: Card(
@@ -47,7 +49,7 @@ class _SaveItemState extends State<SaveItem> {
               GestureDetector(
                 //**************Long press to Rename Save Item *******/
                 onLongPress: () {
-                  _controller.text = widget.name;
+                  _controller.text = name;
                   showDialog(
                       context: context,
                       builder: (BuildContext context) {
@@ -60,8 +62,7 @@ class _SaveItemState extends State<SaveItem> {
                 },
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child:
-                      Text(widget.name, style: const TextStyle(fontSize: 25)),
+                  child: Text(name, style: const TextStyle(fontSize: 25)),
                 ),
               ),
               Padding(
@@ -82,12 +83,12 @@ class _SaveItemState extends State<SaveItem> {
                               Provider.of<BoardUtils>(context, listen: false)
                                   .boardToString();
                           db.update(
-                              widget.name,
+                              name,
                               board,
                               Provider.of<BoardUtils>(context, listen: false)
                                   .getDotSize);
                           ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                              content: Text("${widget.name} ${text!.saved}")));
+                              content: Text("${name} ${text!.saved}")));
                           Navigator.pop(context);
                         }), // End save button
 
@@ -100,11 +101,10 @@ class _SaveItemState extends State<SaveItem> {
                         ),
                         onTap: () {
                           Provider.of<BoardUtils>(context, listen: false)
-                              .printBoard(widget.name)
+                              .printBoard(name)
                               .then((item) {
                             ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                                content:
-                                    Text("${text!.printing} ${widget.name}.")));
+                                content: Text("${text!.printing} $name.")));
                           });
                           Navigator.pop(context);
                         }), // End load button
@@ -113,7 +113,7 @@ class _SaveItemState extends State<SaveItem> {
               ),
               FutureBuilder(
                   future: Provider.of<BoardUtils>(context, listen: false)
-                      .displayBoardImage(widget.name),
+                      .displayBoardImage(name),
                   builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) {
                       return const Row(
@@ -131,15 +131,13 @@ class _SaveItemState extends State<SaveItem> {
                           child: GestureDetector(
                             onTap: () async {
                               final db = DBHelper.instance;
-                              Map boardMap =
-                                  await db.getData(name: widget.name);
+                              Map boardMap = await db.getData(name: name);
                               Provider.of<BoardUtils>(context, listen: false)
                                   .loadBoard(boardMap[DBHelper.columnCanvas],
                                       boardMap[DBHelper.columnDotSize]);
                               ScaffoldMessenger.of(context).showSnackBar(
                                   SnackBar(
-                                      content: Text(
-                                          "${widget.name} ${text!.loaded}")));
+                                      content: Text("$name ${text!.loaded}")));
                               Navigator.pop(context);
                             },
                             child: Image.file(
@@ -173,7 +171,7 @@ class _SaveItemState extends State<SaveItem> {
       actions: [
         TextButton(
           onPressed: () {
-            widget.name = controller.text;
+            name = controller.text;
             Navigator.pop(context);
           },
           child: Text(text.cancel),

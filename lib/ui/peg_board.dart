@@ -15,9 +15,9 @@ class PegBoard extends StatelessWidget {
     final text = AppLocalizations.of(context);
     int boardSize = Provider.of<BoardUtils>(context).getBoardSize;
     int dotSize = Provider.of<BoardUtils>(context).getDotSize;
-    Provider.of<BoardUtils>(context, listen: false).initColorList(boardSize);
-    Provider.of<BoardUtils>(context, listen: false)
-        .generateBoard(boardSize, dotSize);
+    final provider = Provider.of<BoardUtils>(context, listen: false);
+    provider.initColorList(boardSize);
+    provider.generateBoard(boardSize, dotSize);
     return Padding(
       padding: const EdgeInsets.all(1.0),
       child: Column(
@@ -42,7 +42,7 @@ class PegBoard extends StatelessWidget {
                               : Colors.transparent),
                     ),
                     onTap: () {
-                      Provider.of<BoardUtils>(context, listen: false)
+                      provider
                           .toggleChangeColorEnabled();
                     },
                   ),
@@ -56,29 +56,29 @@ class PegBoard extends StatelessWidget {
               ),
               IconButton(
                 disabledColor: Colors.grey.withAlpha(50),
-                icon: Provider.of<BoardUtils>(context, listen: false).canUndo
+                icon: provider.canUndo
                     ? const Icon(Icons.undo)
                     : Icon(
                         Icons.undo,
                         color: Colors.grey.withAlpha(102),
                       ),
                 onPressed: () {
-                  Provider.of<BoardUtils>(context, listen: false).canUndo
-                      ? Provider.of<BoardUtils>(context, listen: false).undo()
+                  provider.canUndo
+                      ? provider.undo()
                       : null;
                 },
               ),
               IconButton(
                 disabledColor: Colors.grey.shade300,
-                icon: Provider.of<BoardUtils>(context, listen: false).canRedo
+                icon: provider.canRedo
                     ? const Icon(Icons.redo)
                     : Icon(
                         Icons.redo,
                         color: Colors.grey.withAlpha(90),
                       ),
                 onPressed: () {
-                  Provider.of<BoardUtils>(context, listen: false).canRedo
-                      ? Provider.of<BoardUtils>(context, listen: false).redo()
+                  provider.canRedo
+                      ? provider.redo()
                       : null;
                 },
               ),
@@ -95,7 +95,7 @@ class PegBoard extends StatelessWidget {
                   fit: BoxFit.contain,
                   child: Column(
                     children:
-                        Provider.of<BoardUtils>(context, listen: false).board,
+                        provider.board,
                   ),
                 ),
               ),

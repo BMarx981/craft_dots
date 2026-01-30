@@ -5,7 +5,7 @@ import 'package:provider/provider.dart';
 import '../common/edit_utils.dart';
 
 class Dot extends StatefulWidget {
-  Dot({
+  const Dot({
     Key? key,
     this.size = 0,
     required this.color,
@@ -13,7 +13,7 @@ class Dot extends StatefulWidget {
     this.col = 0,
   }) : super(key: key);
   final double size;
-  Color color;
+  final Color color;
   final int row;
   final int col;
 
@@ -22,8 +22,10 @@ class Dot extends StatefulWidget {
 }
 
 class _DotState extends State<Dot> {
+  Color color = Colors.white;
   @override
   Widget build(BuildContext context) {
+    color = widget.color;
     return GestureDetector(
       onTap: () {
         Color main =
@@ -37,13 +39,12 @@ class _DotState extends State<Dot> {
         }
         if (Provider.of<BoardUtils>(context, listen: false)
             .getChangeColorEnabled) {
-          EditUtils.changeColorFill(
-              widget.row, widget.col, widget.color, context);
+          EditUtils.changeColorFill(widget.row, widget.col, color, context);
           setState(() {});
           return;
         }
-        if (widget.color == main) {
-          setState(() => widget.color = BoardUtils.standardColor);
+        if (color == main) {
+          setState(() => color = BoardUtils.standardColor);
           Provider.of<BoardUtils>(context, listen: false)
               .addToUndo(widget.row, widget.col, BoardUtils.standardColor);
           Provider.of<BoardUtils>(context, listen: false)
@@ -51,9 +52,9 @@ class _DotState extends State<Dot> {
 
           return;
         }
-        setState(() => widget.color = main);
+        setState(() => color = main);
         Provider.of<BoardUtils>(context, listen: false)
-            .addToUndo(widget.row, widget.col, widget.color);
+            .addToUndo(widget.row, widget.col, color);
         Provider.of<BoardUtils>(context, listen: false)
             .getColorLists[widget.row][widget.col] = main;
       },
@@ -61,7 +62,7 @@ class _DotState extends State<Dot> {
         height: widget.size,
         width: widget.size,
         decoration: BoxDecoration(
-          color: widget.color,
+          color: color,
           borderRadius: BorderRadius.circular(widget.size),
         ),
       ),
